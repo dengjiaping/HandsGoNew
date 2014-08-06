@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/app_tips_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/app_tips_hide_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/selector_x" />
+
+        <TextView
+            android:id="@+id/app_tips_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/app_tips_hide_btn"
+            android:textColor="#ff000000"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+        android:id="@+id/listview_game"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="1dp"
+        android:fadeScrollbars="true"
+        android:fadingEdgeLength="0dp"
+        android:listSelector="#00000000" />
+
+</LinearLayout>

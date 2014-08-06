@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/open_local_sgf"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_open_local_sgf"
+        android:text="@string/open_local_sgf"
+        android:textSize="20sp" />
+
+    <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+        android:id="@+id/listview_study"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="1dp"
+        android:fadeScrollbars="true"
+        android:fadingEdgeLength="0dp"
+        android:listSelector="#00000000" />
+
+</LinearLayout>
