@@ -2,14 +2,16 @@ package com.soyomaker.handsgonew.ui;
 
 import java.util.ArrayList;
 
-import zrc.widget.SimpleFooter;
-import zrc.widget.SimpleHeader;
-import zrc.widget.ZrcListView.OnStartListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.soyomaker.handsgonew.R;
 import com.soyomaker.handsgonew.adapter.ChessManualListViewAdapter;
@@ -17,6 +19,7 @@ import com.soyomaker.handsgonew.manager.ChessManualReaderManager;
 import com.soyomaker.handsgonew.manager.ChessManualReaderManager.IChessManualsReaderListener;
 import com.soyomaker.handsgonew.manager.ChessManualServerManager;
 import com.soyomaker.handsgonew.model.ChessManual;
+import com.soyomaker.handsgonew.server.IChessManualServer;
 import com.soyomaker.handsgonew.util.LogUtil;
 import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 
@@ -29,7 +32,32 @@ import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 public class GameFragment extends Fragment {
 
 	private ChessManualListViewAdapter mAdapter;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private ActionSlideExpandableListView mChessManualListView;
+
+	private IChessManualServer mCurrentServer;
+	private int mCurrentServerTag = -1;
+
+	private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (position >= mCurrentServer.getChessManuals().size()) {
+				if (!toastRefreshingOrLoading()) {
+					loadMoreChessManuals();
+				}
+			}
+		}
+	};
+	private OnRefreshListener mOnRefreshListener = new OnRefreshListener() {
+
+		@Override
+		public void onRefresh() {
+			if (!toastRefreshingOrLoading()) {
+				refreshChessManuals();
+			}
+		}
+	};
 
 	public GameFragment() {
 	}
@@ -39,6 +67,22 @@ public class GameFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
+	public void onResume() {
+		super.onResume();
+		mCurrentServer = ChessManualServerManager.getInstance().getChessManualServer();
+		int tag = mCurrentServer.getTag();
+		if (mCurrentServerTag != tag) {
+			mCurrentServerTag = tag;
+			// 用来在设置界面更改棋谱服务器后，及时刷新棋谱列表
+			mAdapter.updateChessManualServer(mCurrentServer);
+
+			if (mCurrentServer.getChessManuals().isEmpty()) {
+				mSwipeRefreshLayout.setRefreshing(true);
+				refreshChessManuals();
+			}
+		}
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_game, container, false);
@@ -46,7 +90,23 @@ public class GameFragment extends Fragment {
 		return rootView;
 	}
 
+	private boolean toastRefreshingOrLoading() {
+		if (mCurrentServer.isLoadingMore()) {
+			Toast.makeText(getActivity(), R.string.toast_loading, Toast.LENGTH_SHORT).show();
+			return true;
+		} else if (mCurrentServer.isRefreshing()) {
+			Toast.makeText(getActivity(), R.string.toast_refreshing, Toast.LENGTH_SHORT).show();
+			return true;
+		}
+		return false;
+	}
+
 	private void initView(View rootView) {
+		mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light, android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
 		mChessManualListView = (ActionSlideExpandableListView) rootView
 				.findViewById(R.id.listview_game);
 		mChessManualListView.setItemActionListener(
@@ -56,44 +116,15 @@ public class GameFragment extends Fragment {
 					public void onClick(View listView, View buttonview, int position) {
 						if (buttonview.getId() == R.id.buttonCollect) {
 							LogUtil.e("GameFragment", "收藏棋谱");
+							mCurrentServer.collect(mAdapter.getItem(position));
 						}
 					}
 				}, R.id.buttonCollect);
-		mChessManualListView.setOnRefreshStartListener(new OnStartListener() {
+		mChessManualListView.setOnItemClickListener(mOnItemClickListener);
 
-			@Override
-			public void onStart() {
-				refreshChessManuals();
-			}
-		});
-		mChessManualListView.setOnLoadMoreStartListener(new OnStartListener() {
-
-			@Override
-			public void onStart() {
-				loadMoreChessManuals();
-			}
-		});
-
-		// 设置下拉刷新的样式（可选，但如果没有Header则无法下拉刷新）
-		SimpleHeader header = new SimpleHeader(getActivity());
-		header.setTextColor(0xff0066aa);
-		header.setCircleColor(0xff33bbee);
-		mChessManualListView.setHeadable(header);
-
-		// 设置加载更多的样式（可选）
-		SimpleFooter footer = new SimpleFooter(getActivity());
-		footer.setCircleColor(0xff33bbee);
-		mChessManualListView.setFootable(footer);
-
-		mAdapter = new ChessManualListViewAdapter(getActivity(), ChessManualServerManager
-				.getInstance().getChessManualServer().getChessManuals());
+		mCurrentServer = ChessManualServerManager.getInstance().getChessManualServer();
+		mAdapter = new ChessManualListViewAdapter(getActivity(), mCurrentServer);
 		mChessManualListView.setAdapter(mAdapter);
-
-		if (mAdapter.getChessManuals().isEmpty()) {
-			refreshChessManuals();
-		}
-
-		LogUtil.e("GameFragment", "initView");
 	}
 
 	private void refreshChessManuals() {
@@ -102,16 +133,13 @@ public class GameFragment extends Fragment {
 
 					@Override
 					public void readSuccess(ArrayList<ChessManual> chessManuals) {
-						mChessManualListView.setRefreshSuccess();
+						mSwipeRefreshLayout.setRefreshing(false);
 						mAdapter.notifyDataSetChanged();
-						if (!chessManuals.isEmpty()) {
-							mChessManualListView.startLoadMore();
-						}
 					}
 
 					@Override
 					public void readFail() {
-						mChessManualListView.setRefreshFail();
+						mSwipeRefreshLayout.setRefreshing(false);
 						mAdapter.notifyDataSetChanged();
 					}
 				});
@@ -123,15 +151,14 @@ public class GameFragment extends Fragment {
 
 					@Override
 					public void readSuccess(ArrayList<ChessManual> chessManuals) {
-						mChessManualListView.setLoadMoreSuccess();
 						mAdapter.notifyDataSetChanged();
 					}
 
 					@Override
 					public void readFail() {
-						mChessManualListView.stopLoadMore();
 						mAdapter.notifyDataSetChanged();
 					}
 				});
+		mAdapter.notifyDataSetChanged();
 	}
 }

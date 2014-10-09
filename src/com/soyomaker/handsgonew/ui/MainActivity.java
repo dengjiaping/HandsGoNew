@@ -73,6 +73,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			startActivity(intent);
 		}
 			break;
+		case R.id.action_history: {
+			Intent intent = new Intent(this, HistoryActivity.class);
+			startActivity(intent);
+		}
+			break;
 		case R.id.action_settings: {
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);

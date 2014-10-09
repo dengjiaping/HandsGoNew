@@ -1,16 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg" >
+    android:background="@color/common_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/board_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:clipChildren="false"
         android:clipToPadding="false" >
     </RelativeLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/comment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/first_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_first_step" />
+
+            <Button
+                android:id="@+id/fast_prev_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_prev_10_step" />
+
+            <Button
+                android:id="@+id/prev_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_prev_step" />
+
+            <Button
+                android:id="@+id/change_var"
+                android:layout_width="25.6dp"
+                android:layout_height="33.6dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/selector_change_var" />
+
+            <Button
+                android:id="@+id/next_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_next_step" />
+
+            <Button
+                android:id="@+id/fast_next_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_next_10_step" />
+
+            <Button
+                android:id="@+id/last_step"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/selector_last_step" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/shape_comment_border"
+            android:scrollbarStyle="outsideOverlay" >
+
+            <TextView
+                android:id="@+id/text_comment"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColor="#ff000000"
+                android:textSize="18sp" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

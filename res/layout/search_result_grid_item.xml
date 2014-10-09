@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/result_layout"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1.0"
+        android:background="@drawable/selector_search_result_item"
+        android:clickable="true"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/result_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:singleLine="true"
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/result_image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/result_title"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/result_layout_2"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1.0"
+        android:background="@drawable/selector_search_result_item"
+        android:clickable="true"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/result_title_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:singleLine="true"
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/result_image_2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/result_title_2"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside" />
+    </RelativeLayout>
+
+</LinearLayout>

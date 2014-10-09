@@ -30,6 +30,15 @@ public class GoPoint {
 	private int mLetter = NONE;
 	private String mLabel;
 	private TreeNode mTreeNode;
+	private boolean mMarked;
+
+	public boolean isMarked() {
+		return mMarked;
+	}
+
+	public void setMarked(boolean marked) {
+		this.mMarked = marked;
+	}
 
 	public TreeNode getTreeNode() {
 		return mTreeNode;

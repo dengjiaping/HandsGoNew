@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/board_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false" >
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <RadioGroup
+            android:id="@+id/button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/add_black"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/selector_state"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/btn_add_black"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/add_white"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/selector_state"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/btn_add_white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/add_black_or_white"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/selector_state"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/btn_add_black_or_white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/delete_stone"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/selector_state"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/btn_delete_stone"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/reset_board"
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/selector_state"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/btn_reset"
+                android:textSize="14sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/search" />
+    </LinearLayout>
+
+</LinearLayout>

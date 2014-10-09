@@ -18,130 +18,27 @@ public class Match {
 
 	private static final String TAG = "Match";
 
-	/** 比赛名称. */
-	private String mGameName = "";
-
-	/** 比赛备注. */
-	private String mGameComment = "";
-
-	/** 棋盘大小. */
-	private int mBoardSize = 19;
-
-	/** 贴目. */
-	private String mKomi = "7.5";
-
-	/** 让子数. */
-	private String mHandicap = "0";
-
-	/** 比赛日期. */
-	private String mDate = "";
-
-	/** 比赛名称. */
-	private String mMatchName = "";
-
-	/** 比赛地点. */
-	private String mPlace = "";
-
-	/** 比赛结果. */
-	private String mResult = "";
-
-	/** 比赛时间. */
-	private String mTime = "";
-
-	private String mWhiteName = "";
-
-	private String mWhiteTeam = "";
-
-	private String mWhiteRank = "";
-
-	private String mBlackName = "";
-
-	private String mBlackTeam = "";
-
-	private String mBlackRank = "";
-
-	/** 棋谱内容. */
-	public String mSgfSource = "";
-
-	/** 棋谱来源. */
-	public String mSource = "";
-
 	private Vector<SGFTree> mSGFTrees;
 
-	public String getGameName() {
-		return mGameName;
-	}
+	private MatchInfo mMatchInfo = new MatchInfo();
 
-	public String getGameComment() {
-		return mGameComment;
-	}
-
-	public String getBlackName() {
-		return mBlackName;
-	}
-
-	public String getBlackTeam() {
-		return mBlackTeam;
-	}
-
-	public String getBlackRank() {
-		return mBlackRank;
-	}
-
-	public int getBoardSize() {
-		return mBoardSize;
-	}
-
-	public String getKomi() {
-		return mKomi;
-	}
-
-	public String getTime() {
-		return mTime;
-	}
-
-	public String getHandicap() {
-		return mHandicap;
-	}
-
-	public String getDate() {
-		return mDate;
-	}
-
-	public String getMatchName() {
-		return mMatchName;
-	}
-
-	public String getPlace() {
-		return mPlace;
-	}
-
-	public String getResult() {
-		return mResult;
-	}
-
-	public String getWhiteName() {
-		return mWhiteName;
-	}
-
-	public String getWhiteTeam() {
-		return mWhiteTeam;
-	}
-
-	public String getWhiteRank() {
-		return mWhiteRank;
-	}
+	/** 棋谱内容. */
+	private String mSgfSource = "";
 
 	public String getSgfSource() {
 		return mSgfSource;
 	}
 
-	public void setSgfSource(String sgfSource) {
-		this.mSgfSource = sgfSource;
+	public void setSgfSource(String mSgfSource) {
+		this.mSgfSource = mSgfSource;
 	}
 
-	public String getSource() {
-		return mSource;
+	public MatchInfo getMatchInfo() {
+		return mMatchInfo;
+	}
+
+	public void setMatchInfo(MatchInfo info) {
+		mMatchInfo = info;
 	}
 
 	public Vector<SGFTree> getSGFTrees() {
@@ -150,48 +47,50 @@ public class Match {
 
 	public void setSGFTrees(Vector<SGFTree> sgfTrees) {
 		this.mSGFTrees = sgfTrees;
-
+		if (mSGFTrees.isEmpty()) {
+			return;
+		}
 		SGFTree sgfTree = (SGFTree) mSGFTrees.elementAt(0);
 		TreeNode treeNode = sgfTree.top();
 		Node n = treeNode.getNode();
-		mGameName = n.getAction("GN");
-		mGameComment = n.getAction("GC");
+		mMatchInfo.mGameName = n.getAction("GN");
+		mMatchInfo.mGameComment = n.getAction("GC");
 		try {
-			mBoardSize = Integer.parseInt(n.getAction("SZ"));
+			mMatchInfo.mBoardSize = Integer.parseInt(n.getAction("SZ"));
 		} catch (Exception e) {
-			mBoardSize = 19;
+			mMatchInfo.mBoardSize = 19;
 		}
-		mKomi = n.getAction("KM");
-		mHandicap = n.getAction("HA");
-		mDate = n.getAction("DT");
-		mMatchName = n.getAction("EV");
-		mPlace = n.getAction("PC");
-		mResult = n.getAction("RE");
-		mTime = n.getAction("TM");
-		mWhiteName = n.getAction("PW");
-		mWhiteTeam = n.getAction("WT");
-		mWhiteRank = n.getAction("WR");
-		mBlackName = n.getAction("PB");
-		mBlackTeam = n.getAction("BT");
-		mBlackRank = n.getAction("BR");
-		mSource = n.getAction("SO");
+		mMatchInfo.mKomi = n.getAction("KM");
+		mMatchInfo.mHandicap = n.getAction("HA");
+		mMatchInfo.mDate = n.getAction("DT");
+		mMatchInfo.mMatchName = n.getAction("EV");
+		mMatchInfo.mPlace = n.getAction("PC");
+		mMatchInfo.mResult = n.getAction("RE");
+		mMatchInfo.mTime = n.getAction("TM");
+		mMatchInfo.mWhiteName = n.getAction("PW");
+		mMatchInfo.mWhiteTeam = n.getAction("WT");
+		mMatchInfo.mWhiteRank = n.getAction("WR");
+		mMatchInfo.mBlackName = n.getAction("PB");
+		mMatchInfo.mBlackTeam = n.getAction("BT");
+		mMatchInfo.mBlackRank = n.getAction("BR");
+		mMatchInfo.mSource = n.getAction("SO");
 
-		Log.e(TAG, "mGameName:" + mGameName);
-		Log.e(TAG, "mGameComment:" + mGameComment);
-		Log.e(TAG, "mBoardSize:" + mBoardSize);
-		Log.e(TAG, "mKomi:" + mKomi);
-		Log.e(TAG, "mHandicap:" + mHandicap);
-		Log.e(TAG, "mDate:" + mDate);
-		Log.e(TAG, "mMatchName:" + mMatchName);
-		Log.e(TAG, "mPlace:" + mPlace);
-		Log.e(TAG, "mResult:" + mResult);
-		Log.e(TAG, "mTime:" + mTime);
-		Log.e(TAG, "mWhiteName:" + mWhiteName);
-		Log.e(TAG, "mWhiteTeam:" + mWhiteTeam);
-		Log.e(TAG, "mWhiteRank:" + mWhiteRank);
-		Log.e(TAG, "mBlackName:" + mBlackName);
-		Log.e(TAG, "mBlackTeam:" + mBlackTeam);
-		Log.e(TAG, "mBlackRank:" + mBlackRank);
-		Log.e(TAG, "mSource:" + mSource);
+		Log.e(TAG, "mGameName:" + mMatchInfo.mGameName);
+		Log.e(TAG, "mGameComment:" + mMatchInfo.mGameComment);
+		Log.e(TAG, "mBoardSize:" + mMatchInfo.mBoardSize);
+		Log.e(TAG, "mKomi:" + mMatchInfo.mKomi);
+		Log.e(TAG, "mHandicap:" + mMatchInfo.mHandicap);
+		Log.e(TAG, "mDate:" + mMatchInfo.mDate);
+		Log.e(TAG, "mMatchName:" + mMatchInfo.mMatchName);
+		Log.e(TAG, "mPlace:" + mMatchInfo.mPlace);
+		Log.e(TAG, "mResult:" + mMatchInfo.mResult);
+		Log.e(TAG, "mTime:" + mMatchInfo.mTime);
+		Log.e(TAG, "mWhiteName:" + mMatchInfo.mWhiteName);
+		Log.e(TAG, "mWhiteTeam:" + mMatchInfo.mWhiteTeam);
+		Log.e(TAG, "mWhiteRank:" + mMatchInfo.mWhiteRank);
+		Log.e(TAG, "mBlackName:" + mMatchInfo.mBlackName);
+		Log.e(TAG, "mBlackTeam:" + mMatchInfo.mBlackTeam);
+		Log.e(TAG, "mBlackRank:" + mMatchInfo.mBlackRank);
+		Log.e(TAG, "mSource:" + mMatchInfo.mSource);
 	}
 }

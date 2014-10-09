@@ -112,6 +112,7 @@
             android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/choose_board_color"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
@@ -140,6 +141,7 @@
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
+                android:id="@+id/choose_piece_style"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
@@ -150,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="@string/options_piece_color"
+                    android:text="@string/options_piece_style"
                     android:textSize="18sp" />
 
                 <ImageView
@@ -189,6 +191,35 @@
                     android:layout_marginRight="20dp"
                     android:src="@drawable/arrow" />
             </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/chess_source"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/options_chess_source"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/arrow" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -204,6 +235,7 @@
             android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/about_app"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"

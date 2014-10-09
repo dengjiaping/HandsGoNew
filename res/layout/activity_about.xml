@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:shadowColor="#ff543210"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1.0"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:textColor="#ff000000"
+        android:textSize="32sp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/app_info"
+        android:textColor="#ff303030"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/qq_group"
+        android:textColor="#ff505050"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/qq"
+        android:textColor="#ff505050"
+        android:textSize="16sp" />
+
+</LinearLayout>

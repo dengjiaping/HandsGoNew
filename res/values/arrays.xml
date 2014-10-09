@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="chess_source">
+        <item>@string/sina_server</item>
+        <item>@string/xgoo_server</item>
+        <item>@string/tom_server</item>
+    </string-array>
+
+</resources>

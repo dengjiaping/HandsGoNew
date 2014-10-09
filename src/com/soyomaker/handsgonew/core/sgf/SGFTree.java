@@ -1,7 +1,9 @@
 package com.soyomaker.handsgonew.core.sgf;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Vector;
 
 public class SGFTree {
@@ -15,6 +17,18 @@ public class SGFTree {
 	public SGFTree(Node n) {
 		mHistory = new TreeNode(n);
 		mHistory.getNode().setMain(true);
+	}
+
+	public static SGFTree empty(int size) {
+		BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(
+				("(;SZ[" + size + "])").getBytes())));
+		try {
+			Vector<SGFTree> sgfTrees = SGFTree.load(br);
+			return sgfTrees.elementAt(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static Vector<SGFTree> load(BufferedReader in) throws IOException {

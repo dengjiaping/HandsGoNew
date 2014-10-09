@@ -80,6 +80,14 @@ public class Tree {
 		mContent = o;
 	}
 
+	public ListElement getFirstElement() {
+		return mChildren.getFirst();
+	}
+
+	public ListElement getLastElement() {
+		return mChildren.getLast();
+	}
+
 	public ListElement getListElement() {
 		return mListElement;
 	}
