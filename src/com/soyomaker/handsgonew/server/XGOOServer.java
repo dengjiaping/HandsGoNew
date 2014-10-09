@@ -103,7 +103,7 @@ public class XGOOServer implements IChessManualServer {
 	public boolean canLoadMore() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean canDelete() {
 		return false;
@@ -113,7 +113,7 @@ public class XGOOServer implements IChessManualServer {
 	public boolean delete(ChessManual chessManual) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean canCollect() {
 		return true;
