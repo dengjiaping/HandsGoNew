@@ -41,6 +41,11 @@
     <string name="xgoo_server">XGOO棋谱服务器</string>
     <string name="sina_server">SINA棋谱服务器</string>
     <string name="tom_server">TOM棋谱服务器</string>
+    <string name="auto_play_off">关闭自动打谱</string>
+    <string name="auto_play_on_1">间隔2s</string>
+    <string name="auto_play_on_2">间隔4s</string>
+    <string name="auto_play_on_3">间隔8s</string>
+    <string name="auto_play_on_4">间隔16s</string>
     <string name="options_show_number">显示棋子手数</string>
     <string name="options_show_location">显示棋盘坐标</string>
     <string name="options_play_sound">开启落子音效</string>
@@ -99,7 +104,7 @@
     <string name="info_black_team">黑棋队伍：%s</string>
     <string name="info_black_rank">黑棋段位：%s</string>
     <string name="info_source">棋谱来源：%s</string>
-    <string name="chess_board_color_picker_dialog_title">选择棋盘颜色</string>
-    <string name="chess_piece_style_choose_dialog_title">选择棋子样式</string>
+    <string name="chess_board_color_picker_dialog_title">棋盘颜色设置</string>
+    <string name="chess_piece_style_choose_dialog_title">棋子样式设置</string>
 
 </resources>

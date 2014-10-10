@@ -6,5 +6,12 @@
         <item>@string/xgoo_server</item>
         <item>@string/tom_server</item>
     </string-array>
+    <string-array name="auto_play_interval">
+        <item>@string/auto_play_off</item>
+        <item>@string/auto_play_on_1</item>
+        <item>@string/auto_play_on_2</item>
+        <item>@string/auto_play_on_3</item>
+        <item>@string/auto_play_on_4</item>
+    </string-array>
 
 </resources>

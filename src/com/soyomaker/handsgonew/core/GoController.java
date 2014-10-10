@@ -1,5 +1,6 @@
 package com.soyomaker.handsgonew.core;
 
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.soyomaker.handsgonew.HandsGoApplication;
@@ -64,10 +65,66 @@ public class GoController {
 
 	private PlaySoundPool mPlaySoundPool;
 
+	private Handler mHandler;
+
+	private IBoardChangedListener mListener;
+
+	public interface IBoardChangedListener {
+
+		public void onBoardChanged();
+	}
+
 	public GoController() {
 		this.mPlaySoundPool = new PlaySoundPool(HandsGoApplication.getAppContext());
 		this.mPlaySoundPool.loadSfx(R.raw.stone, 1);
+
+		this.mHandler = new Handler();
 	}
+
+	public IBoardChangedListener getBoardChangedListener() {
+		return mListener;
+	}
+
+	public void setBoardChangedListener(IBoardChangedListener mListener) {
+		this.mListener = mListener;
+	}
+
+	public void pauseAutoNext() {
+		mHandler.removeCallbacks(doAutoNextRunnable);
+	}
+
+	public void resumeAutoNext() {
+		doAutoNext();
+	}
+
+	private void doAutoNext() {
+		String interval = AppPrefrence.getAutoNextInterval(HandsGoApplication.getAppContext());
+		int intervalInt = 2000;
+		try {
+			intervalInt = Integer.valueOf(interval);
+		} catch (Exception e) {
+			intervalInt = 2000;
+		}
+		if (intervalInt <= 0) {
+			intervalInt = 1;
+		}
+		mHandler.removeCallbacks(doAutoNextRunnable);
+		mHandler.postDelayed(doAutoNextRunnable, intervalInt);
+	}
+
+	private Runnable doAutoNextRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			boolean flag = AppPrefrence.getAutoNext(HandsGoApplication.getAppContext());
+			if (flag) {
+
+				next();
+
+				doAutoNext();
+			}
+		}
+	};
 
 	public String getComment() {
 		return mComment;
@@ -84,6 +141,10 @@ public class GoController {
 		if (flag) {
 			mPlaySoundPool.play(1, 0);
 		}
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**
@@ -92,6 +153,10 @@ public class GoController {
 	public void prev() {
 		goBack();
 		updateComment();
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**
@@ -107,6 +172,10 @@ public class GoController {
 		if (flag) {
 			mPlaySoundPool.play(1, 0);
 		}
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**
@@ -117,6 +186,10 @@ public class GoController {
 			goBack();
 		}
 		updateComment();
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**
@@ -127,6 +200,10 @@ public class GoController {
 			goBack();
 		}
 		updateComment();
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**
@@ -141,6 +218,10 @@ public class GoController {
 		boolean flag = AppPrefrence.getLazySound(HandsGoApplication.getAppContext());
 		if (flag) {
 			mPlaySoundPool.play(1, 0);
+		}
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
 		}
 	}
 
@@ -161,6 +242,10 @@ public class GoController {
 		}
 		setNode();
 		updateComment();
+
+		if (mListener != null) {
+			mListener.onBoardChanged();
+		}
 	}
 
 	/**

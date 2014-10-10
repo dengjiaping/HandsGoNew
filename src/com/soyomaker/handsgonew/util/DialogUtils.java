@@ -1,5 +1,7 @@
 package com.soyomaker.handsgonew.util;
 
+import com.soyomaker.handsgonew.R;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -25,7 +27,7 @@ import android.widget.Toast;
 public final class DialogUtils {
 
 	/** 对话框标题默认图标, 如果调用方法没有指定则使用此图片。. */
-	public static final int DEFAULT_DIALOG_ICON = android.R.drawable.ic_dialog_alert;
+	public static final int DEFAULT_DIALOG_ICON = R.drawable.ic_launcher;
 
 	/** 使用系统默认图片。. */
 	public static final int ICON_RES_ID_SYSTEM = -1;

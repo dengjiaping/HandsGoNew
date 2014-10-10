@@ -97,6 +97,14 @@ public class OptionsActivity extends Activity {
 			}
 		});
 
+		findViewById(R.id.choose_auto_play_interval).setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showChooseAutoPlayInterval();
+			}
+		});
+
 		findViewById(R.id.about_app).setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -146,6 +154,51 @@ public class OptionsActivity extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 								AppPrefrence.saveChessSource(OptionsActivity.this, which);
 								ChessManualServerManager.getInstance().updateChessManualServer();
+								dialog.dismiss();
+							}
+						}).setNegativeButton(R.string.cancel, null).show();
+	}
+
+	private void showChooseAutoPlayInterval() {
+		int chooseItem = 0;
+		if (AppPrefrence.getAutoNext(OptionsActivity.this)) {
+			String interval = AppPrefrence.getAutoNextInterval(OptionsActivity.this);
+			if ("2000".equals(interval)) {
+				chooseItem = 1;
+			} else if ("4000".equals(interval)) {
+				chooseItem = 2;
+			} else if ("8000".equals(interval)) {
+				chooseItem = 3;
+			} else if ("16000".equals(interval)) {
+				chooseItem = 4;
+			}
+		}
+		new AlertDialog.Builder(OptionsActivity.this)
+				.setTitle(R.string.options_auto_play)
+				.setIcon(R.drawable.ic_launcher)
+				.setSingleChoiceItems(R.array.auto_play_interval, chooseItem,
+						new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface dialog, int which) {
+								if (which == 0) {
+									AppPrefrence.saveAutoNext(OptionsActivity.this, false);
+								} else {
+									AppPrefrence.saveAutoNext(OptionsActivity.this, true);
+									if (which == 1) {
+										AppPrefrence.saveAutoNextInterval(OptionsActivity.this,
+												"2000");
+									} else if (which == 2) {
+										AppPrefrence.saveAutoNextInterval(OptionsActivity.this,
+												"4000");
+									} else if (which == 3) {
+										AppPrefrence.saveAutoNextInterval(OptionsActivity.this,
+												"8000");
+									} else if (which == 4) {
+										AppPrefrence.saveAutoNextInterval(OptionsActivity.this,
+												"16000");
+									}
+								}
+
 								dialog.dismiss();
 							}
 						}).setNegativeButton(R.string.cancel, null).show();

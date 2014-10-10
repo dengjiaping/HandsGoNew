@@ -170,6 +170,7 @@
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
+                android:id="@+id/choose_auto_play_interval"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"

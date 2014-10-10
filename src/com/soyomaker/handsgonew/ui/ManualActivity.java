@@ -26,6 +26,7 @@ import com.soyomaker.handsgonew.R;
 import com.soyomaker.handsgonew.core.DefaultBoardModel;
 import com.soyomaker.handsgonew.core.GoBoard;
 import com.soyomaker.handsgonew.core.GoController;
+import com.soyomaker.handsgonew.core.GoController.IBoardChangedListener;
 import com.soyomaker.handsgonew.core.IGridListener;
 import com.soyomaker.handsgonew.core.io.SGFReader;
 import com.soyomaker.handsgonew.model.ChessManual;
@@ -72,6 +73,14 @@ public class ManualActivity extends Activity implements IGridListener {
 		if (mGoBoard != null) {
 			mGoBoard.postInvalidate();
 		}
+
+		mGoController.resumeAutoNext();
+	}
+
+	public void onPause() {
+		super.onPause();
+
+		mGoController.pauseAutoNext();
 	}
 
 	private void initData() {
@@ -151,6 +160,14 @@ public class ManualActivity extends Activity implements IGridListener {
 
 		mGoController.setBoardModel(mBoardModel);
 		mGoController.setBoardSize(size);
+		mGoController.setBoardChangedListener(new IBoardChangedListener() {
+
+			@Override
+			public void onBoardChanged() {
+				mCommentTextView.setText(mGoController.getComment());
+				mGoBoard.postInvalidate();
+			}
+		});
 
 		mGoController.setTreeNode(mMatch.getSGFTrees().elementAt(0).top());
 		mGoController.init();
@@ -174,8 +191,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.next();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.prev_step).setOnClickListener(new View.OnClickListener() {
@@ -183,8 +198,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.prev();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.fast_next_step).setOnClickListener(new View.OnClickListener() {
@@ -192,8 +205,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.fastNext();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.fast_prev_step).setOnClickListener(new View.OnClickListener() {
@@ -201,8 +212,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.fastPrev();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.first_step).setOnClickListener(new View.OnClickListener() {
@@ -210,8 +219,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.first();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.last_step).setOnClickListener(new View.OnClickListener() {
@@ -219,8 +226,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.last();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 		findViewById(R.id.change_var).setOnClickListener(new View.OnClickListener() {
@@ -228,8 +233,6 @@ public class ManualActivity extends Activity implements IGridListener {
 			@Override
 			public void onClick(View v) {
 				mGoController.changeVar();
-				mCommentTextView.setText(mGoController.getComment());
-				mGoBoard.postInvalidate();
 			}
 		});
 	}
