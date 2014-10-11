@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">掌中围棋New</string>
+    <string name="app_name">掌中围棋</string>
     <string name="app_info">做最好用的掌中围棋软件!</string>
     <string name="qq_group">棋友交流QQ群：278743263</string>
     <string name="qq">开发者QQ：397093109</string>

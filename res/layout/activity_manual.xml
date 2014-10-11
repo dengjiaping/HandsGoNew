@@ -6,6 +6,13 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:id="@+id/ad_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/board_layout"
         android:layout_width="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.soyomaker.handsgonew"
+    package="com.soyomaker.handsgo"
     android:versionCode="15"
     android:versionName="2.5" >
 
@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".HandsGoApplication"
@@ -23,7 +27,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.soyomaker.handsgonew.ui.MainActivity"
+            android:name="com.soyomaker.handsgo.ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -33,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.ManualActivity"
+            android:name="com.soyomaker.handsgo.ui.ManualActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -44,33 +48,93 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.ManualInfoActivity"
+            android:name="com.soyomaker.handsgo.ui.ManualInfoActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.SearchResultActivity"
+            android:name="com.soyomaker.handsgo.ui.SearchResultActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.OptionsActivity"
+            android:name="com.soyomaker.handsgo.ui.OptionsActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.CollectActivity"
+            android:name="com.soyomaker.handsgo.ui.CollectActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.HistoryActivity"
+            android:name="com.soyomaker.handsgo.ui.HistoryActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.AboutActivity"
+            android:name="com.soyomaker.handsgo.ui.AboutActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgonew.ui.fileexplorer.FileExplorerActivity"
+            android:name="com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity"
             android:screenOrientation="portrait" >
         </activity>
+
+        <!-- 有米广告必须组件 -->
+        <activity
+            android:name="net.youmi.android.AdBrowser"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+
+        <service
+            android:name="net.youmi.android.AdService"
+            android:exported="false" >
+        </service>
+
+        <receiver android:name="net.youmi.android.AdReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="net.youmi.android.spot.SpotAdContentProvider"
+            android:authorities="com.soyomaker.handsgo" />
+
+        <!-- 有米渠道号(可选配置) 渠道号不能带空格，类型为整数 -->
+        <meta-data
+            android:name="YOUMI_CHANNEL"
+            android:value="10050" >
+        </meta-data>
+
+        <!-- 友盟必须组件 -->
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        
+        <activity
+            android:name="com.umeng.fb.ContactActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="509530f35270154580000053" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="appchina" />
     </application>
 
 </manifest>
