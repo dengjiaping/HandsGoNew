@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.SearchResult;
-import com.soyomaker.handsgo.search.SearchController;
+import com.soyomaker.handsgo.search.ShapeSearchController;
 import com.soyomaker.handsgo.ui.ManualActivity;
 import com.weibo.image.SinaImageLoader;
 
@@ -109,7 +109,7 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 				public void onClick(View arg0) {
 					new Thread() {
 						public void run() {
-							final ChessManual chessManual = SearchController.getInstance()
+							final ChessManual chessManual = ShapeSearchController.getInstance()
 									.getChessManual(mContext, result.getId());
 							mHandler.post(new Runnable() {
 
@@ -140,7 +140,7 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 				public void onClick(View arg0) {
 					new Thread() {
 						public void run() {
-							final ChessManual chessManual = SearchController.getInstance()
+							final ChessManual chessManual = ShapeSearchController.getInstance()
 									.getChessManual(mContext, result2.getId());
 							mHandler.post(new Runnable() {
 

@@ -1,6 +1,7 @@
 package com.soyomaker.handsgo.reader;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -13,7 +14,7 @@ import com.soyomaker.handsgo.model.ChessManual;
  * @author like
  * 
  */
-public interface IChessManualReader {
+public interface IChessManualReader extends Serializable {
 
 	/**
 	 * 读取指定页的棋谱

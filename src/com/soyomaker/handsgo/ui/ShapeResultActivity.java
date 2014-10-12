@@ -11,7 +11,7 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.SearchResultListViewAdapter;
 import com.soyomaker.handsgo.model.SearchResultList;
 
-public class SearchResultActivity extends Activity {
+public class ShapeResultActivity extends Activity {
 
 	public static final String EXTRA_SEARCH_RESULT = "extra_search_result";
 
@@ -22,7 +22,7 @@ public class SearchResultActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search_result);
+		setContentView(R.layout.activity_shape_result);
 
 		initData();
 		initView();

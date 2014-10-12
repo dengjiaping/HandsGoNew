@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soyomaker.handsgo"
     android:versionCode="15"
-    android:versionName="2.5" >
+    android:versionName="@string/app_version" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -52,10 +52,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgo.ui.SearchResultActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.soyomaker.handsgo.ui.OptionsActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -69,6 +65,22 @@
         </activity>
         <activity
             android:name="com.soyomaker.handsgo.ui.AboutActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.ShapeSearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.ShapeResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.KeywordsSearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.KeywordsResultActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -112,7 +124,6 @@
             android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        
         <activity
             android:name="com.umeng.fb.ContactActivity"
             android:screenOrientation="portrait"

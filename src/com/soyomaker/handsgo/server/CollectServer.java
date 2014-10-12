@@ -6,6 +6,7 @@ import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.db.DBService;
 import com.soyomaker.handsgo.model.ChessManual;
+import com.soyomaker.handsgo.reader.IChessManualReader;
 import com.soyomaker.handsgo.util.AppConstants;
 
 public class CollectServer implements IChessManualServer {
@@ -82,5 +83,10 @@ public class CollectServer implements IChessManualServer {
 	@Override
 	public boolean collect(ChessManual chessManual) {
 		return false;
+	}
+
+	@Override
+	public IChessManualReader getReader() {
+		return null;
 	}
 }

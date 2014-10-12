@@ -20,6 +20,7 @@ import com.soyomaker.handsgo.util.WebUtil;
  */
 public class XGOOReader implements IChessManualReader {
 
+	private static final long serialVersionUID = 1L;
 	private String mSearchString = "";
 
 	public void setSearchString(String searchString) {

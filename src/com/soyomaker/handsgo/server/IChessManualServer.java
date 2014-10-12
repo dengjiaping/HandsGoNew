@@ -1,8 +1,10 @@
 package com.soyomaker.handsgo.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.soyomaker.handsgo.model.ChessManual;
+import com.soyomaker.handsgo.reader.IChessManualReader;
 
 /**
  * 棋谱服务器接口
@@ -10,7 +12,7 @@ import com.soyomaker.handsgo.model.ChessManual;
  * @author like
  * 
  */
-public interface IChessManualServer {
+public interface IChessManualServer extends Serializable {
 
 	/**
 	 * 获取该服务器已读取到的棋谱
@@ -32,6 +34,13 @@ public interface IChessManualServer {
 	 * @return
 	 */
 	public String getName();
+
+	/**
+	 * 获取该服务器的棋谱读取器
+	 * 
+	 * @return
+	 */
+	public IChessManualReader getReader();
 
 	/**
 	 * 是否正在刷新

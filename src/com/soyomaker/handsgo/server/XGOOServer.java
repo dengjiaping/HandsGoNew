@@ -8,11 +8,13 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.db.DBService;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
 import com.soyomaker.handsgo.model.ChessManual;
+import com.soyomaker.handsgo.reader.IChessManualReader;
 import com.soyomaker.handsgo.reader.XGOOReader;
 import com.soyomaker.handsgo.util.AppConstants;
 
 public class XGOOServer implements IChessManualServer {
 
+	private static final long serialVersionUID = 1L;
 	private static final int FIRST_PAGE = 1;
 	private int mPage = FIRST_PAGE;
 	private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
@@ -128,5 +130,10 @@ public class XGOOServer implements IChessManualServer {
 			chessManuals.add(chessManual);
 		}
 		return true;
+	}
+
+	@Override
+	public IChessManualReader getReader() {
+		return mXgooReader;
 	}
 }

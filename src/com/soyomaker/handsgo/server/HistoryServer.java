@@ -7,10 +7,12 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.db.DBService;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
 import com.soyomaker.handsgo.model.ChessManual;
+import com.soyomaker.handsgo.reader.IChessManualReader;
 import com.soyomaker.handsgo.util.AppConstants;
 
 public class HistoryServer implements IChessManualServer {
 
+	private static final long serialVersionUID = 1L;
 	private ArrayList<ChessManual> mChessManuals;
 
 	public HistoryServer() {
@@ -89,5 +91,10 @@ public class HistoryServer implements IChessManualServer {
 			chessManuals.add(chessManual);
 		}
 		return true;
+	}
+
+	@Override
+	public IChessManualReader getReader() {
+		return null;
 	}
 }

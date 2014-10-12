@@ -44,7 +44,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// 有米广告初始化
 		// 参数：appId, appSecret, 调试模式
-		AdManager.getInstance(this).init("85aa56a59eac8b3d", "a14006f66f58d5d7", false);
+		AdManager.getInstance(this).init("42c0cc4e4a6d8c62", "474c4c700c743e67", false);
 
 		// 友盟意见反馈初始化
 		mFeedbackAgent = new FeedbackAgent(this);

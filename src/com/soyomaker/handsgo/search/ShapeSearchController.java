@@ -24,23 +24,23 @@ import com.soyomaker.handsgo.network.parser.SearchResultParser;
 import com.soyomaker.handsgo.util.WebUtil;
 
 /**
- * 搜索控制器
+ * 棋型搜索控制器
  * <p/>
  * 负责101围棋网的棋型搜索
  * 
  * @author like
  * 
  */
-public class SearchController {
+public class ShapeSearchController {
 
-	private static final SearchController mInstance = new SearchController();
+	private static final ShapeSearchController mInstance = new ShapeSearchController();
 
 	private boolean mIsSearching;
 
-	private SearchController() {
+	private ShapeSearchController() {
 	}
 
-	public static SearchController getInstance() {
+	public static ShapeSearchController getInstance() {
 		return mInstance;
 	}
 
@@ -54,9 +54,7 @@ public class SearchController {
 	 * @param boardModel
 	 * @param listener
 	 */
-	public void findSearchResults(DefaultBoardModel boardModel, final ITaskFinishListener listener) {
-		mIsSearching = true;
-
+	public boolean find(DefaultBoardModel boardModel, final ITaskFinishListener listener) {
 		StringBuffer black = new StringBuffer();
 		StringBuffer white = new StringBuffer();
 		int size = boardModel.getBoardSize();
@@ -83,6 +81,13 @@ public class SearchController {
 			}
 		}
 
+		String posstr = black.toString() + "$$$" + white.toString();
+		if (posstr.length() < 16) {
+			return false;
+		}
+
+		mIsSearching = true;
+
 		IParser parser = new SearchResultParser();
 		RequestTask requestTask = new RequestTask(parser);
 		requestTask.setTaskFinishListener(new ITaskFinishListener() {
@@ -98,7 +103,7 @@ public class SearchController {
 		});
 
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		pairs.add(new BasicNameValuePair("posstr", black.toString() + "$$$" + white.toString()));
+		pairs.add(new BasicNameValuePair("posstr", posstr));
 		requestTask.setPostParams(pairs);
 
 		TaskParams params = new TaskParams();
@@ -106,6 +111,8 @@ public class SearchController {
 		params.put(RequestTask.PARAM_HTTP_METHOD, RequestTask.HTTP_POST);
 
 		requestTask.execute(params);
+
+		return true;
 	}
 
 	/**

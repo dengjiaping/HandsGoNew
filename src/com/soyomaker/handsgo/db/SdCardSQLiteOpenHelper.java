@@ -39,8 +39,11 @@ public abstract class SdCardSQLiteOpenHelper {
 	public SdCardSQLiteOpenHelper(String dbPath, String dbName, CursorFactory factory, int version) {
 		if (version < 1)
 			throw new IllegalArgumentException("Version must be >= 1, was " + version);
-
-		mDbPath = dbPath;
+		if (dbPath.endsWith("/")) {
+			mDbPath = dbPath;
+		} else {
+			mDbPath = dbPath + "/";
+		}
 		mDbName = dbName;
 		mFilePath = mDbPath + mDbName;
 		mFactory = factory;

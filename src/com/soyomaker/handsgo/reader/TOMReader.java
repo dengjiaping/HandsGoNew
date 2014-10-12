@@ -13,6 +13,8 @@ import com.soyomaker.handsgo.util.WebUtil;
 
 public class TOMReader implements IChessManualReader {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public ArrayList<ChessManual> readChessManuals(Context context, int page) throws IOException {
 		ArrayList<ChessManual> chessManuals = new ArrayList<ChessManual>();

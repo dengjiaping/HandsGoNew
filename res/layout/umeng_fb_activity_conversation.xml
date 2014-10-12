@@ -25,9 +25,9 @@
             android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:text="@string/umeng_fb_back"
-            android:textColor="#ffffff" 
-            android:visibility="invisible" />        
-        
+            android:textColor="#ffffff"
+            android:visibility="visible" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,4 +123,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</RelativeLayout><!-- From: file:/Users/lucas/dev/workspace/umeng/feedback/umeng-feedback-android/sdk/src/main/res/layout/umeng_fb_activity_conversation.xml -->
+</RelativeLayout> <!-- From: file:/Users/lucas/dev/workspace/umeng/feedback/umeng-feedback-android/sdk/src/main/res/layout/umeng_fb_activity_conversation.xml -->
