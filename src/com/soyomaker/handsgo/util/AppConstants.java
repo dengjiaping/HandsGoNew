@@ -29,4 +29,8 @@ public final class AppConstants {
 	public static final String APP_TIPS_CONTENT = "tips";
 
 	public static final String APP_TIPS_VERSION = "tips_version";
+
+	public static final String APP_ID = "42c0cc4e4a6d8c62";
+
+	public static final String APP_SECRET = "474c4c700c743e67";
 }

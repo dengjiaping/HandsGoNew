@@ -9,7 +9,6 @@ import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
 import net.youmi.android.banner.AdViewListener;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -47,7 +46,7 @@ import com.umeng.analytics.MobclickAgent;
  * @author like
  * 
  */
-public class ManualActivity extends Activity implements IGridListener {
+public class ManualActivity extends BaseActivity implements IGridListener {
 
 	public static final String EXTRA_CHESSMANUAL = "extra_chessmanual";
 
@@ -368,5 +367,10 @@ public class ManualActivity extends Activity implements IGridListener {
 	@Override
 	public void touchMoved(int col, int row) {
 		LogUtil.e(TAG, "touchMoved:" + col + "x" + row);
+	}
+
+	@Override
+	public String getPageName() {
+		return "棋谱展示界面";
 	}
 }

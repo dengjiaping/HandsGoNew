@@ -3,7 +3,6 @@ package com.soyomaker.handsgo.ui;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,7 +16,7 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.search.KeywordsSearchController;
 
-public class KeywordsSearchActivity extends Activity {
+public class KeywordsSearchActivity extends BaseActivity {
 
 	private Button mSearchButton;
 
@@ -97,5 +96,10 @@ public class KeywordsSearchActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "关键字搜索界面";
 	}
 }

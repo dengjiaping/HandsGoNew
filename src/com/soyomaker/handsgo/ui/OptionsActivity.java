@@ -1,7 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +26,7 @@ import com.soyomaker.handsgo.util.DialogUtils.ItemSelectedListener;
  * @author like
  * 
  */
-public class OptionsActivity extends Activity {
+public class OptionsActivity extends BaseActivity {
 
 	private ColorPickerDialog mChessBoardColorPickerDialog;
 
@@ -212,5 +211,10 @@ public class OptionsActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "应用设置界面";
 	}
 }

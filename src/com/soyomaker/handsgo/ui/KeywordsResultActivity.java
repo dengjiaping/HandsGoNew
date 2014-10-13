@@ -1,14 +1,13 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.ChessManualListViewAdapter;
@@ -16,7 +15,7 @@ import com.soyomaker.handsgo.server.IChessManualServer;
 import com.soyomaker.handsgo.util.LogUtil;
 import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 
-public class KeywordsResultActivity extends Activity {
+public class KeywordsResultActivity extends BaseActivity {
 
 	public static final String EXTRA_SEARCH_RESULT = "extra_search_result";
 
@@ -105,5 +104,10 @@ public class KeywordsResultActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "关键字搜索结果界面";
 	}
 }

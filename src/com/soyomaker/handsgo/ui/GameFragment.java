@@ -3,7 +3,6 @@ package com.soyomaker.handsgo.ui;
 import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
  * @author like
  * 
  */
-public class GameFragment extends Fragment {
+public class GameFragment extends BaseFragment {
 
 	private ChessManualListViewAdapter mAdapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -160,5 +159,10 @@ public class GameFragment extends Fragment {
 					}
 				});
 		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public String getPageName() {
+		return "精彩时局界面";
 	}
 }

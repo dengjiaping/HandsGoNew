@@ -161,7 +161,7 @@ public class AppPrefrence {
 
 	public static boolean getShowNumber(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SHOW_NUMBER_KEY, false);
+		return preferences.getBoolean(SHOW_NUMBER_KEY, true);
 	}
 
 	public static void saveShowCoordinate(Context context, boolean showCoordinate) {
@@ -173,6 +173,6 @@ public class AppPrefrence {
 
 	public static boolean getShowCoordinate(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return preferences.getBoolean(SHOW_COORDINATE_KEY, false);
+		return preferences.getBoolean(SHOW_COORDINATE_KEY, true);
 	}
 }

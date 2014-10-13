@@ -1,7 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,7 +15,7 @@ import com.soyomaker.handsgo.model.MatchInfo;
  * @author like
  * 
  */
-public class ManualInfoActivity extends Activity {
+public class ManualInfoActivity extends BaseActivity {
 
 	public static final String EXTRA_MATCH_INFO = "extra_match_info";
 	private MatchInfo mMatchInfo;
@@ -86,5 +85,10 @@ public class ManualInfoActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "棋谱信息界面";
 	}
 }

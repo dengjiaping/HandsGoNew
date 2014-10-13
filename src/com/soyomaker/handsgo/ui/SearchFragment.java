@@ -2,7 +2,6 @@ package com.soyomaker.handsgo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.soyomaker.handsgo.R;
  * @author like
  * 
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends BaseFragment {
 
 	private static final String TAG = "SearchFragment";
 
@@ -62,5 +61,10 @@ public class SearchFragment extends Fragment {
 
 	private void initData() {
 		// TODO
+	}
+
+	@Override
+	public String getPageName() {
+		return "棋谱搜索界面";
 	}
 }

@@ -1,7 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -13,7 +12,7 @@ import com.soyomaker.handsgo.R;
  * @author like
  * 
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +36,10 @@ public class AboutActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "关于界面";
 	}
 }

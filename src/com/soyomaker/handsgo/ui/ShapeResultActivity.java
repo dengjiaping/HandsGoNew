@@ -1,7 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,7 +10,7 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.SearchResultListViewAdapter;
 import com.soyomaker.handsgo.model.SearchResultList;
 
-public class ShapeResultActivity extends Activity {
+public class ShapeResultActivity extends BaseActivity {
 
 	public static final String EXTRA_SEARCH_RESULT = "extra_search_result";
 
@@ -54,5 +53,10 @@ public class ShapeResultActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "棋型搜索结果界面";
 	}
 }

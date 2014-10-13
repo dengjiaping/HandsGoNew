@@ -3,7 +3,6 @@ package com.soyomaker.handsgo.ui;
 import org.apache.http.HttpStatus;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,9 +12,9 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.core.DefaultBoardModel;
@@ -27,7 +26,7 @@ import com.soyomaker.handsgo.network.ITaskFinishListener;
 import com.soyomaker.handsgo.network.TaskResult;
 import com.soyomaker.handsgo.search.ShapeSearchController;
 
-public class ShapeSearchActivity extends Activity implements IGridListener {
+public class ShapeSearchActivity extends BaseActivity implements IGridListener {
 
 	private RelativeLayout mBoardLayout;
 	private GoBoard mGoBoard;
@@ -171,5 +170,10 @@ public class ShapeSearchActivity extends Activity implements IGridListener {
 
 	@Override
 	public void touchMoved(int col, int row) {
+	}
+
+	@Override
+	public String getPageName() {
+		return "棋型搜索界面";
 	}
 }

@@ -2,7 +2,6 @@ package com.soyomaker.handsgo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
  * @author like
  * 
  */
-public class StudyFragment extends Fragment {
+public class StudyFragment extends BaseFragment {
 
 	private Button mOpenLocalSgfButton;
 
@@ -51,5 +50,10 @@ public class StudyFragment extends Fragment {
 
 	private void initData() {
 		// TODO
+	}
+
+	@Override
+	public String getPageName() {
+		return "学习讲解界面";
 	}
 }

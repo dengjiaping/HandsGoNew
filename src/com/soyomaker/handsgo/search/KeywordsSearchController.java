@@ -2,7 +2,6 @@ package com.soyomaker.handsgo.search;
 
 import java.util.ArrayList;
 
-import android.renderscript.Program.TextureType;
 import android.text.TextUtils;
 
 import com.soyomaker.handsgo.model.ChessManual;

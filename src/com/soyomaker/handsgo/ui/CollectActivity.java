@@ -1,7 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
  * @author like
  * 
  */
-public class CollectActivity extends Activity {
+public class CollectActivity extends BaseActivity {
 
 	private ChessManualListViewAdapter mAdapter;
 	private ActionSlideExpandableListView mChessManualListView;
@@ -68,5 +67,10 @@ public class CollectActivity extends Activity {
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public String getPageName() {
+		return "我的收藏界面";
 	}
 }

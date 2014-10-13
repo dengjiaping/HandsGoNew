@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name=".HandsGoApplication"
@@ -98,6 +100,11 @@
 
         <service
             android:name="net.youmi.android.AdService"
+            android:exported="false" >
+        </service>
+        
+        <service
+            android:name="net.youmi.android.ExpService"
             android:exported="false" >
         </service>
 

@@ -2,12 +2,12 @@ package com.soyomaker.handsgo.ui;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.diy.DiyManager;
+import net.youmi.android.offers.OffersManager;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.soyomaker.handsgo.R;
+import com.soyomaker.handsgo.util.AppConstants;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -25,7 +26,7 @@ import com.umeng.update.UmengUpdateAgent;
  * @author like
  * 
  */
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener {
 
 	private static final String TAG = "MainActivity";
 
@@ -43,8 +44,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		initView();
 
 		// 有米广告初始化
-		// 参数：appId, appSecret, 调试模式
-		AdManager.getInstance(this).init("42c0cc4e4a6d8c62", "474c4c700c743e67", false);
+		AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
 
 		// 友盟意见反馈初始化
 		mFeedbackAgent = new FeedbackAgent(this);
@@ -55,6 +55,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// 友盟在线参数更新
 		MobclickAgent.updateOnlineConfig(this);
+
+		OffersManager.getInstance(this).onAppLaunch();
+	}
+
+	public void onDestory() {
+		super.onDestroy();
+
+		OffersManager.getInstance(this).onAppExit();
 	}
 
 	private void initView() {
@@ -172,5 +180,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 			return null;
 		}
+	}
+
+	@Override
+	public String getPageName() {
+		return "主界面";
 	}
 }

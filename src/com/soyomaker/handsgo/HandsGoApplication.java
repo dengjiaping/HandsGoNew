@@ -7,6 +7,7 @@ import com.soyomaker.handsgo.db.DBService;
 import com.soyomaker.handsgo.model.Group;
 import com.soyomaker.handsgo.util.CrashHandler;
 import com.soyomaker.handsgo.util.StorageUtil;
+import com.umeng.analytics.MobclickAgent;
 import com.weibo.image.SinaImageLoader;
 
 public class HandsGoApplication extends Application {
@@ -33,6 +34,9 @@ public class HandsGoApplication extends Application {
 
 		// 初始化图片加载器
 		SinaImageLoader.init(sContext, StorageUtil.getDirByType(StorageUtil.DIR_TYPE_IMAGE));
+
+		// 友盟统计初始配置
+		MobclickAgent.openActivityDurationTrack(false);
 	}
 
 	public static Context getAppContext() {
