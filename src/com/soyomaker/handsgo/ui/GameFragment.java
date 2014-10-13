@@ -116,6 +116,8 @@ public class GameFragment extends BaseFragment {
 						if (buttonview.getId() == R.id.buttonCollect) {
 							LogUtil.e("GameFragment", "收藏棋谱");
 							mCurrentServer.collect(mAdapter.getItem(position));
+							Toast.makeText(getActivity(), R.string.toast_collect_success,
+									Toast.LENGTH_LONG).show();
 						}
 					}
 				}, R.id.buttonCollect);

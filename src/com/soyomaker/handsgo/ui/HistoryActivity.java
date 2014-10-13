@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.ChessManualListViewAdapter;
@@ -47,6 +48,8 @@ public class HistoryActivity extends BaseActivity {
 						if (id == R.id.buttonCollect) {
 							LogUtil.e("HistoryActivity", "收藏棋谱");
 							mHistoryServer.collect(mAdapter.getItem(position));
+							Toast.makeText(HistoryActivity.this, R.string.toast_collect_success,
+									Toast.LENGTH_LONG).show();
 						} else if (id == R.id.buttonDelete) {
 							LogUtil.e("HistoryActivity", "删除棋谱");
 							boolean result = mHistoryServer.delete(mAdapter.getItem(position));
