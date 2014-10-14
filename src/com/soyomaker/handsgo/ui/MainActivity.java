@@ -58,9 +58,13 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
         // 关闭积分到账悬浮框提示功能
         PointsManager.setEnableEarnPointsToastTips(false);
 
-        int points = PointsManager.getInstance(this).queryPoints();
-        LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
-        AppPrefrence.savePoints(this, points);
+        new Thread() {
+            public void run() {
+                int points = PointsManager.getInstance(MainActivity.this).queryPoints();
+                LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
+                AppPrefrence.savePoints(MainActivity.this, points);
+            }
+        }.start();
 
         AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
 
@@ -210,8 +214,12 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
     }
 
     @Override
-    public void onPointBalanceChange(int arg0) {
-        LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);
-        AppPrefrence.savePoints(this, arg0);
+    public void onPointBalanceChange(final int arg0) {
+        new Thread() {
+            public void run() {
+                LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);
+                AppPrefrence.savePoints(MainActivity.this, arg0);
+            }
+        }.start();
     }
 }
