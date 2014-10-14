@@ -39,4 +39,8 @@ public final class AppConstants {
     public static final String APP_SECRET = "474c4c700c743e67";
 
     public final static String INTENT_GNUGO_ACTION = "org.ligi.gobandroidhd.ai.gnugo.GnuGoService";
+
+    public final static String PACKAGE_NAME_GNUGO = "org.ligi.gobandroidhd.ai.gnugo";
+
+    public final static String DOWNLOAD_GNUGO_URL = "https://raw.githubusercontent.com/uestccokey/HandsGoNew/master/Gnugo-3.8.apk";
 }

@@ -1,14 +1,22 @@
 package com.soyomaker.handsgo.ui;
 
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
+import com.soyomaker.handsgo.util.AppConstants;
+import com.soyomaker.handsgo.util.AppUtil;
+import com.soyomaker.handsgo.util.LogUtil;
 
 /**
  * 学习讲解界面
@@ -53,8 +61,23 @@ public class StudyFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FightActivity.class);
-                startActivity(intent);
+                if (AppUtil.hasInstalled(AppConstants.PACKAGE_NAME_GNUGO)) {
+                    Intent intent = new Intent(getActivity(), FightActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), R.string.gnugo_start_download, Toast.LENGTH_LONG)
+                            .show();
+                    DownloadManager downloadManager = (DownloadManager) getActivity()
+                            .getSystemService(Context.DOWNLOAD_SERVICE);
+                    Uri uri = Uri.parse(AppConstants.DOWNLOAD_GNUGO_URL);
+                    Request request = new Request(uri);
+                    // 设置允许使用的网络类型，这里是移动网络和wifi都可以
+                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+                    // 不显示下载界面
+                    request.setVisibleInDownloadsUi(false);
+                    long id = downloadManager.enqueue(request);
+                    LogUtil.e("StudyFragment", id + "系统下载：" + AppConstants.DOWNLOAD_GNUGO_URL);
+                }
             }
         });
     }

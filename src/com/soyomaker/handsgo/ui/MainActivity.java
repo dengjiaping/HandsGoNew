@@ -47,6 +47,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
         initView();
 
+        long time = System.currentTimeMillis();
         // 有米广告初始化
         AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
 
@@ -72,6 +73,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
         // 友盟在线参数更新
         MobclickAgent.updateOnlineConfig(this);
+        LogUtil.e(TAG, "初始化用时：" + (System.currentTimeMillis() - time));
     }
 
     public void onDestory() {

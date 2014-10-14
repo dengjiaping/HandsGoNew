@@ -99,6 +99,7 @@
     <string name="toast_collect_success">棋谱收藏成功！</string>
     <string name="toast_invalid_shape_search">至少需要摆放5颗子</string>
     <string name="toast_invalid_keywords_search">搜索关键字不能为空</string>
+    <string name="gnugo_start_download">人工智能（GNUGO3.8）开始下载</string>
     <string name="info_game_name">对局名称：%s</string>
     <string name="info_game_comment">对局评论：%s</string>
     <string name="info_board_size">棋盘大小：%s</string>
