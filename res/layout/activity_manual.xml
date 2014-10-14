@@ -13,6 +13,15 @@
         android:orientation="horizontal" >
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/load_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:textColor="#ff000000"
+        android:textSize="18sp" />
+
     <RelativeLayout
         android:id="@+id/board_layout"
         android:layout_width="wrap_content"

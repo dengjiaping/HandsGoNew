@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\HandsGoNew\\libproject\\gobandroid-ai-gnugo\\src\\org\\ligi\\gobandroidhd\\ai\\gnugo\\IGnuGoService.aidl
+ * Original file: /Users/like/Desktop/HandsGoNew/libproject/gobandroid-ai-gnugo/src/org/ligi/gobandroidhd/ai/gnugo/IGnuGoService.aidl
  */
 package org.ligi.gobandroidhd.ai.gnugo;
 public interface IGnuGoService extends android.os.IInterface

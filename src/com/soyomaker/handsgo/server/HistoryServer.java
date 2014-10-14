@@ -13,15 +13,13 @@ import com.soyomaker.handsgo.util.AppConstants;
 public class HistoryServer implements IChessManualServer {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<ChessManual> mChessManuals;
 
 	public HistoryServer() {
-		mChessManuals = DBService.getAllHistoryChessManual();
 	}
 
 	@Override
 	public ArrayList<ChessManual> getChessManuals() {
-		return mChessManuals;
+		return DBService.getAllHistoryChessManual();
 	}
 
 	@Override
@@ -71,10 +69,11 @@ public class HistoryServer implements IChessManualServer {
 
 	@Override
 	public boolean delete(ChessManual chessManual) {
-		if (mChessManuals.contains(chessManual)) {
+		ArrayList<ChessManual> chessManuals = DBService.getAllHistoryChessManual();
+		if (chessManuals.contains(chessManual)) {
 			DBService.deleteHistoryChessManual(chessManual);
 		}
-		return mChessManuals.remove(chessManual);
+		return chessManuals.remove(chessManual);
 	}
 
 	@Override

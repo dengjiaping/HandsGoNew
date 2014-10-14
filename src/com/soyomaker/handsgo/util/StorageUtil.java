@@ -24,10 +24,12 @@ public class StorageUtil {
 	private static final String IMAGE_DIR = DIR_HOME + "/image";
 	private static final String LOG_DIR = DIR_HOME + "/log";
 	private static final String DB_DIR = DIR_HOME + "/db";
+	private static final String APK_DIR = DIR_HOME + "/apk";
 
 	public static final int DIR_TYPE_IMAGE = 1;
 	public static final int DIR_TYPE_LOG = 2;
 	public static final int DIR_TYPE_DB = 3;
+	public static final int DIR_TYPE_APK = 4;
 
 	public static final int SD_NO_SPACE = 0;
 	public static final int SD_NO_SD = 1;
@@ -55,6 +57,10 @@ public class StorageUtil {
 		}
 		case DIR_TYPE_DB: {
 			filePath = DB_DIR;
+			break;
+		}
+		case DIR_TYPE_APK: {
+			filePath = APK_DIR;
 			break;
 		}
 		}

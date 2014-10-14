@@ -11,15 +11,14 @@ import com.soyomaker.handsgo.util.AppConstants;
 
 public class CollectServer implements IChessManualServer {
 
-	private ArrayList<ChessManual> mChessManuals;
+	private static final long serialVersionUID = 1L;
 
 	public CollectServer() {
-		mChessManuals = DBService.getAllFavoriteChessManual();
 	}
 
 	@Override
 	public ArrayList<ChessManual> getChessManuals() {
-		return mChessManuals;
+		return DBService.getAllFavoriteChessManual();
 	}
 
 	@Override
@@ -69,10 +68,11 @@ public class CollectServer implements IChessManualServer {
 
 	@Override
 	public boolean delete(ChessManual chessManual) {
-		if (mChessManuals.contains(chessManual)) {
+		ArrayList<ChessManual> chessManuals = DBService.getAllFavoriteChessManual();
+		if (chessManuals.contains(chessManual)) {
 			DBService.deleteFavoriteChessManual(chessManual);
 		}
-		return mChessManuals.remove(chessManual);
+		return chessManuals.remove(chessManual);
 	}
 
 	@Override

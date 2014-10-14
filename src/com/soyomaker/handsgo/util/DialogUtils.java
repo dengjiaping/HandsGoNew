@@ -8,11 +8,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -292,7 +289,7 @@ public final class DialogUtils {
 	 */
 	public static void showMessageDialog(Context context, String title, int iconResId, String msg,
 			int positiveId, DialogInterface.OnClickListener listener) {
-		showMessageDialog(context, title, iconResId, msg, positiveId, listener, Color.WHITE, true);
+		showMessageDialog(context, title, iconResId, msg, positiveId, listener, true);
 	}
 
 	/**
@@ -317,8 +314,7 @@ public final class DialogUtils {
 			int msgResId, int positiveId, DialogInterface.OnClickListener listener,
 			boolean cancelable) {
 		showMessageDialog(context, getStringFromResource(context, titleResId), iconResId,
-				getStringFromResource(context, msgResId), positiveId, listener, Color.WHITE,
-				cancelable);
+				getStringFromResource(context, msgResId), positiveId, listener, cancelable);
 	}
 
 	/**
@@ -340,8 +336,7 @@ public final class DialogUtils {
 	 *            能否按返回键关闭对话框 {@link DialogUtils#ICON_RES_ID_DEFAULT}表示使用程序图标
 	 */
 	public static void showMessageDialog(Context context, String title, int iconResId, String msg,
-			int positiveId, DialogInterface.OnClickListener listener, int textColor,
-			boolean cancelable) {
+			int positiveId, DialogInterface.OnClickListener listener, boolean cancelable) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(title);
 
@@ -351,12 +346,7 @@ public final class DialogUtils {
 			builder.setIcon(iconResId);
 		}
 
-		TextView tv = new TextView(context);
-		tv.setGravity(Gravity.CENTER);
-		tv.setTextAppearance(context, android.R.style.TextAppearance_Large_Inverse);
-		tv.setText(msg);
-		tv.setTextColor(textColor);
-		builder.setView(tv);
+		builder.setMessage(msg);
 
 		builder.setCancelable(cancelable);
 		builder.setPositiveButton(positiveId == STRING_RES_ID_NULL ? android.R.string.ok
@@ -559,7 +549,7 @@ public final class DialogUtils {
 	}
 
 	/**
-	 * 显示确认对方框。.
+	 * 显示确认对方框。（李可 20121022）.
 	 * 
 	 * @param context
 	 *            上下文
@@ -581,67 +571,6 @@ public final class DialogUtils {
 	 */
 	public static void showPromptDialog(Context context, String title, int iconResId, String msg,
 			boolean cancelable, DefaultDialogListener listener, int... buttonResIds) {
-		showPromptDialog(context, title, iconResId, msg, cancelable, listener, Color.WHITE,
-				buttonResIds);
-	}
-
-	/**
-	 * 显示确认对方框。（李可 20121022）.
-	 * 
-	 * @param context
-	 *            上下文
-	 * @param title
-	 *            标题，若无则null
-	 * @param iconResId
-	 *            标题图标，{@link DialogUtils#ICON_RES_ID_SYSTEM}表示使用系统默认，
-	 * @param msg
-	 *            消息内容
-	 * @param cancelable
-	 *            能否按返回键关闭对话框
-	 * @param listener
-	 *            对话框相关事件，null则不处理事件s
-	 * @param textColor
-	 *            the text color
-	 * @param buttonResIds
-	 *            按钮显示字符资源ID，依次代表确认、中立、取消按钮。确认对方框至少有2个按钮，
-	 *            如果数组长度为小于2个这是用系统默认文字，超过3个的无效。 {@link DialogUtils#DialogUtils
-	 *            #STRING_RES_ID_NULL}则使用系统默认
-	 *            {@link DialogUtils#ICON_RES_ID_DEFAULT}表示使用程序图标
-	 */
-	public static void showPromptDialog(Context context, String title, int iconResId, String msg,
-			boolean cancelable, DefaultDialogListener listener, int textColor, int... buttonResIds) {
-		showPromptDialog(context, title, iconResId, msg, cancelable, listener, Color.WHITE,
-				Gravity.CENTER, buttonResIds);
-	}
-
-	/**
-	 * 显示确认对方框。（李可 20121022）.
-	 * 
-	 * @param context
-	 *            上下文
-	 * @param title
-	 *            标题，若无则null
-	 * @param iconResId
-	 *            标题图标，{@link DialogUtils#ICON_RES_ID_SYSTEM}表示使用系统默认，
-	 * @param msg
-	 *            消息内容
-	 * @param cancelable
-	 *            能否按返回键关闭对话框
-	 * @param listener
-	 *            对话框相关事件，null则不处理事件s
-	 * @param textColor
-	 *            the text color
-	 * @param textGravity
-	 *            the text gravity
-	 * @param buttonResIds
-	 *            按钮显示字符资源ID，依次代表确认、中立、取消按钮。确认对方框至少有2个按钮，
-	 *            如果数组长度为小于2个这是用系统默认文字，超过3个的无效。 {@link DialogUtils#DialogUtils
-	 *            #STRING_RES_ID_NULL}则使用系统默认
-	 *            {@link DialogUtils#ICON_RES_ID_DEFAULT}表示使用程序图标
-	 */
-	public static void showPromptDialog(Context context, String title, int iconResId, String msg,
-			boolean cancelable, DefaultDialogListener listener, int textColor, int textGravity,
-			int... buttonResIds) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(title);
 
@@ -651,12 +580,7 @@ public final class DialogUtils {
 			builder.setIcon(iconResId);
 		}
 
-		TextView tv = new TextView(context);
-		tv.setGravity(textGravity);
-		tv.setTextAppearance(context, android.R.style.TextAppearance_Large_Inverse);
-		tv.setText(msg);
-		tv.setTextColor(textColor);
-		builder.setView(tv);
+		builder.setMessage(msg);
 		builder.setCancelable(cancelable);
 
 		try {
