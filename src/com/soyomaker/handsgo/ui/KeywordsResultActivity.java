@@ -62,6 +62,8 @@ public class KeywordsResultActivity extends BaseActivity {
 						if (buttonview.getId() == R.id.buttonCollect) {
 							LogUtil.e("GameFragment", "收藏棋谱");
 							mResultServer.collect(mAdapter.getItem(position));
+							Toast.makeText(KeywordsResultActivity.this,
+									R.string.toast_collect_success, Toast.LENGTH_LONG).show();
 						}
 					}
 				}, R.id.buttonCollect);
