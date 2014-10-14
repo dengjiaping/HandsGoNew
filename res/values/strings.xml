@@ -15,7 +15,7 @@
     <string name="action_history">历史记录</string>
     <string name="action_settings">应用设置</string>
     <string name="action_feedback">意见反馈</string>
-    <string name="action_recommend">应用推荐</string>
+    <string name="action_recommend">赚取积分</string>
     <string name="action_manual_match_info">棋谱信息</string>
     <string name="action_manual_settings">应用设置</string>
     <string name="action_manual_collect">收藏棋谱</string>

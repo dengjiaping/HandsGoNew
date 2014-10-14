@@ -1,8 +1,9 @@
 package com.soyomaker.handsgo.ui;
 
 import net.youmi.android.AdManager;
-import net.youmi.android.diy.DiyManager;
 import net.youmi.android.offers.OffersManager;
+import net.youmi.android.offers.PointsChangeNotify;
+import net.youmi.android.offers.PointsManager;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.util.AppConstants;
+import com.soyomaker.handsgo.util.AppPrefrence;
+import com.soyomaker.handsgo.util.LogUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -26,164 +29,187 @@ import com.umeng.update.UmengUpdateAgent;
  * @author like
  * 
  */
-public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener,
+        PointsChangeNotify {
 
-	private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
-	private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-	private ViewPager mViewPager;
+    private ViewPager mViewPager;
 
-	private FeedbackAgent mFeedbackAgent;
+    private FeedbackAgent mFeedbackAgent;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		initView();
+        initView();
 
-		// 有米广告初始化
-		AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
+        // 有米广告初始化
+        AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
 
-		// 友盟意见反馈初始化
-		mFeedbackAgent = new FeedbackAgent(this);
-		mFeedbackAgent.sync();
+        OffersManager.getInstance(this).onAppLaunch();
 
-		// 友盟自动检测更新
-		UmengUpdateAgent.update(this);
+        PointsManager.getInstance(this).registerNotify(this);
 
-		// 友盟在线参数更新
-		MobclickAgent.updateOnlineConfig(this);
+        // 关闭积分到账悬浮框提示功能
+        PointsManager.setEnableEarnPointsToastTips(false);
 
-		OffersManager.getInstance(this).onAppLaunch();
-	}
+        int points = PointsManager.getInstance(this).queryPoints();
+        LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
+        AppPrefrence.savePoints(this, points);
 
-	public void onDestory() {
-		super.onDestroy();
+        AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
 
-		OffersManager.getInstance(this).onAppExit();
-	}
+        // 友盟意见反馈初始化
+        mFeedbackAgent = new FeedbackAgent(this);
+        mFeedbackAgent.sync();
 
-	private void initView() {
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        // 友盟自动检测更新
+        UmengUpdateAgent.update(this);
 
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // 友盟在线参数更新
+        MobclickAgent.updateOnlineConfig(this);
+    }
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager.setOffscreenPageLimit(2);// 缓存两页，防止左右切换时Fragment被销毁
+    public void onDestory() {
+        super.onDestroy();
 
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
+        OffersManager.getInstance(this).onAppExit();
 
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
-	}
+        PointsManager.getInstance(this).unRegisterNotify(this);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+    private void initView() {
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_collect: {
-			Intent intent = new Intent(this, CollectActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_history: {
-			Intent intent = new Intent(this, HistoryActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_settings: {
-			Intent intent = new Intent(this, OptionsActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_feedback: {
-			mFeedbackAgent.startFeedbackActivity();
-		}
-			break;
-		case R.id.action_recommend: {
-			DiyManager.showRecommendWall(this);
-		}
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);// 缓存两页，防止左右切换时Fragment被销毁
 
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
 
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
+        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+            actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
+                    .setTabListener(this));
+        }
+    }
 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-		static final int INDEX_GAME = 0;
-		static final int INDEX_STUDY = 1;
-		static final int INDEX_SEARCH = 2;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.action_collect: {
+            Intent intent = new Intent(this, CollectActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_history: {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_settings: {
+            Intent intent = new Intent(this, OptionsActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_feedback: {
+            mFeedbackAgent.startFeedbackActivity();
+        }
+            break;
+        case R.id.action_recommend: {
+            // 应用推荐
+            // DiyManager.showRecommendWall(this);
+            // 积分墙
+            OffersManager.getInstance(this).showOffersWall();
+        }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
 
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment = null;
-			switch (position) {
-			case INDEX_GAME:
-				fragment = new GameFragment();
-				break;
-			case INDEX_STUDY:
-				fragment = new StudyFragment();
-				break;
-			case INDEX_SEARCH:
-				fragment = new SearchFragment();
-				break;
-			}
-			return fragment;
-		}
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-		@Override
-		public int getCount() {
-			return 3;
-		}
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case INDEX_GAME:
-				return getString(R.string.title_section1);
-			case INDEX_STUDY:
-				return getString(R.string.title_section2);
-			case INDEX_SEARCH:
-				return getString(R.string.title_section3);
-			}
-			return null;
-		}
-	}
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-	@Override
-	public String getPageName() {
-		return "主界面";
-	}
+        static final int INDEX_GAME = 0;
+        static final int INDEX_STUDY = 1;
+        static final int INDEX_SEARCH = 2;
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            switch (position) {
+            case INDEX_GAME:
+                fragment = new GameFragment();
+                break;
+            case INDEX_STUDY:
+                fragment = new StudyFragment();
+                break;
+            case INDEX_SEARCH:
+                fragment = new SearchFragment();
+                break;
+            }
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+            case INDEX_GAME:
+                return getString(R.string.title_section1);
+            case INDEX_STUDY:
+                return getString(R.string.title_section2);
+            case INDEX_SEARCH:
+                return getString(R.string.title_section3);
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public String getPageName() {
+        return "主界面";
+    }
+
+    @Override
+    public void onPointBalanceChange(int arg0) {
+        LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);
+        AppPrefrence.savePoints(this, arg0);
+    }
 }

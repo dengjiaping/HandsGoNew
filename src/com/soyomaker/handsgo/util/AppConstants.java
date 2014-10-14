@@ -2,6 +2,8 @@ package com.soyomaker.handsgo.util;
 
 public final class AppConstants {
 
+    public static final boolean DEBUG = true;
+    
 	public static final int COLLECT = -2;
 
 	public static final int HISTORY = -1;
