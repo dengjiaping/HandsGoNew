@@ -6,6 +6,11 @@
         <item>@string/xgoo_server</item>
         <item>@string/tom_server</item>
     </string-array>
+    <string-array name="chess_piece_style">
+        <item>@string/chess_piece_style_2d</item>
+        <item>@string/chess_piece_style_3d_1</item>
+        <item>@string/chess_piece_style_3d_2</item>
+    </string-array>
     <string-array name="auto_play_interval">
         <item>@string/auto_play_off</item>
         <item>@string/auto_play_on_1</item>

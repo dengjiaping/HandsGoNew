@@ -12,13 +12,13 @@ public class GnuGoService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        return myRemoteServiceStub;
+        return mRemoteServiceStub;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(this, "GnuGo 3.8 Service created...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.service_create, Toast.LENGTH_SHORT).show();
         System.loadLibrary("gnuGo-3.8");
         GnuGoConnection.initGTP(8);
     }
@@ -26,10 +26,10 @@ public class GnuGoService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "GnuGo Service destroyed...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.service_destory, Toast.LENGTH_SHORT).show();
     }
 
-    private IGnuGoService.Stub myRemoteServiceStub = new IGnuGoService.Stub() {
+    private IGnuGoService.Stub mRemoteServiceStub = new IGnuGoService.Stub() {
 
         @Override
         public String processGTP(String command) throws RemoteException {

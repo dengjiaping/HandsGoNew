@@ -52,6 +52,9 @@
     <string name="auto_play_on_2">间隔4s</string>
     <string name="auto_play_on_3">间隔8s</string>
     <string name="auto_play_on_4">间隔16s</string>
+    <string name="chess_piece_style_2d">2d棋子</string>
+    <string name="chess_piece_style_3d_1">3d棋子（云子）</string>
+    <string name="chess_piece_style_3d_2">3d棋子（蛤碁石）</string>
     <string name="options_show_number">显示棋子手数</string>
     <string name="options_show_location">显示棋盘坐标</string>
     <string name="options_play_sound">开启落子音效</string>
