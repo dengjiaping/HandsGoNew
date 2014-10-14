@@ -30,6 +30,7 @@
     <string name="title_section2">学习讲解</string>
     <string name="title_section3">棋谱搜索</string>
     <string name="title_settings">应用设置</string>
+    <string name="title_fight">幽玄之间</string>
     <string name="title_about">关于软件</string>
     <string name="title_collect">我的收藏</string>
     <string name="title_history">历史记录</string>
@@ -40,6 +41,7 @@
     <string name="keywords_search">关键字搜索(XGOO)</string>
     <string name="shape_search">棋型搜索(101WEIQI)</string>
     <string name="open_local_sgf">打开本地棋谱</string>
+    <string name="fighting_with_gnugo">人工智能（GNUGO3.8）</string>
     <string name="button_collect">收藏棋谱</string>
     <string name="button_delete">删除棋谱</string>
     <string name="xgoo_server">XGOO棋谱服务器</string>

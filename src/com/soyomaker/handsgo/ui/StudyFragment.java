@@ -18,42 +18,53 @@ import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
  */
 public class StudyFragment extends BaseFragment {
 
-	private Button mOpenLocalSgfButton;
+    private Button mOpenLocalSgfButton;
 
-	public StudyFragment() {
-	}
+    private Button mFightingWithGnugo;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		initData();
-	}
+    public StudyFragment() {
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main_study, container, false);
-		initView(rootView);
-		return rootView;
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
 
-	private void initView(View rootView) {
-		mOpenLocalSgfButton = (Button) rootView.findViewById(R.id.open_local_sgf);
-		mOpenLocalSgfButton.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main_study, container, false);
+        initView(rootView);
+        return rootView;
+    }
 
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(getActivity(), FileExplorerActivity.class);
-				startActivity(intent);
-			}
-		});
-	}
+    private void initView(View rootView) {
+        mOpenLocalSgfButton = (Button) rootView.findViewById(R.id.open_local_sgf);
+        mOpenLocalSgfButton.setOnClickListener(new View.OnClickListener() {
 
-	private void initData() {
-		// TODO
-	}
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), FileExplorerActivity.class);
+                startActivity(intent);
+            }
+        });
+        mFightingWithGnugo = (Button) rootView.findViewById(R.id.fighting_with_gnugo);
+        mFightingWithGnugo.setOnClickListener(new View.OnClickListener() {
 
-	@Override
-	public String getPageName() {
-		return "学习讲解界面";
-	}
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FightActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initData() {
+        // TODO
+    }
+
+    @Override
+    public String getPageName() {
+        return "学习讲解界面";
+    }
 }

@@ -70,6 +70,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.soyomaker.handsgo.ui.FightActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.soyomaker.handsgo.ui.ShapeSearchActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -102,7 +106,6 @@
             android:name="net.youmi.android.AdService"
             android:exported="false" >
         </service>
-        
         <service
             android:name="net.youmi.android.ExpService"
             android:exported="false" >
