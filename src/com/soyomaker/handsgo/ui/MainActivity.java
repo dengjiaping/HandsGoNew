@@ -15,6 +15,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.sina.sae.cloudservice.api.CloudClient;
+import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
@@ -30,194 +32,212 @@ import com.umeng.update.UmengUpdateAgent;
  * 
  */
 public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener,
-		PointsChangeNotify {
+        PointsChangeNotify {
 
-	private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
-	private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-	private ViewPager mViewPager;
+    private ViewPager mViewPager;
 
-	private FeedbackAgent mFeedbackAgent;
+    private FeedbackAgent mFeedbackAgent;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		initView();
+        initView();
 
-		// 有米广告初始化
-		AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
+        // 有米广告初始化
+        AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
 
-		OffersManager.getInstance(this).onAppLaunch();
+        OffersManager.getInstance(this).onAppLaunch();
 
-		PointsManager.getInstance(this).registerNotify(this);
+        PointsManager.getInstance(this).registerNotify(this);
 
-		// 关闭积分到账悬浮框提示功能
-		PointsManager.setEnableEarnPointsToastTips(false);
+        // 关闭积分到账悬浮框提示功能
+        PointsManager.setEnableEarnPointsToastTips(false);
 
-		AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
+        AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
 
-		// 友盟意见反馈初始化
-		mFeedbackAgent = new FeedbackAgent(MainActivity.this);
-		mFeedbackAgent.sync();
+        // 友盟意见反馈初始化
+        mFeedbackAgent = new FeedbackAgent(MainActivity.this);
 
-		// 友盟自动检测更新
-		UmengUpdateAgent.update(MainActivity.this);
+        // 首先检测网络是否通畅
+        if (CloudClient.checkNetwork(MainActivity.this)) {
 
-		new Thread() {
-			public void run() {
-				int points = PointsManager.getInstance(MainActivity.this).queryPoints();
-				LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
-				AppPrefrence.savePoints(MainActivity.this, points);
+            // 获取意见反馈数据
+            mFeedbackAgent.sync();
 
-				// 友盟在线参数更新
-				MobclickAgent.updateOnlineConfig(MainActivity.this);
-			}
-		}.start();
-	}
+            // 友盟自动检测更新
+            UmengUpdateAgent.update(MainActivity.this);
 
-	public void onDestory() {
-		super.onDestroy();
+            new Thread() {
+                public void run() {
+                    // 查询有米积分
+                    int points = PointsManager.getInstance(MainActivity.this).queryPoints();
+                    LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
+                    AppPrefrence.savePoints(MainActivity.this, points);
 
-		OffersManager.getInstance(this).onAppExit();
+                    // 友盟在线参数更新
+                    MobclickAgent.updateOnlineConfig(MainActivity.this);
 
-		PointsManager.getInstance(this).unRegisterNotify(this);
-	}
+                    // 初始化CloudClient
+                    try {
+                        CloudClient.init(MainActivity.this, AppConstants.CLOUD_APP_NAME,
+                                AppConstants.CLOUD_APP_ACCESS_KEY,
+                                AppConstants.CLOUD_APP_SECRET_KEY);
+                        // 接下来就可以使用SDK各功能接口了
+                        // CloudObject CloudDB CloudFile CloudMail ......
+                    } catch (CloudServiceException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
+    }
 
-	private void initView() {
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+    public void onDestory() {
+        super.onDestroy();
 
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        OffersManager.getInstance(this).onAppExit();
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager.setOffscreenPageLimit(2);// 缓存两页，防止左右切换时Fragment被销毁
+        PointsManager.getInstance(this).unRegisterNotify(this);
+    }
 
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
+    private void initView() {
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
-	}
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);// 缓存两页，防止左右切换时Fragment被销毁
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_collect: {
-			Intent intent = new Intent(this, CollectActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_history: {
-			Intent intent = new Intent(this, HistoryActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_settings: {
-			Intent intent = new Intent(this, OptionsActivity.class);
-			startActivity(intent);
-		}
-			break;
-		case R.id.action_feedback: {
-			mFeedbackAgent.startFeedbackActivity();
-		}
-			break;
-		case R.id.action_recommend: {
-			// 应用推荐
-			// DiyManager.showRecommendWall(this);
-			// 积分墙
-			OffersManager.getInstance(this).showOffersWall();
-		}
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
 
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
+        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+            actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i))
+                    .setTabListener(this));
+        }
+    }
 
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	}
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.action_collect: {
+            Intent intent = new Intent(this, CollectActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_history: {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_settings: {
+            Intent intent = new Intent(this, OptionsActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_feedback: {
+            mFeedbackAgent.startFeedbackActivity();
+        }
+            break;
+        case R.id.action_recommend: {
+            // 应用推荐
+            // DiyManager.showRecommendWall(this);
+            // 积分墙
+            OffersManager.getInstance(this).showOffersWall();
+        }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
 
-		static final int INDEX_GAME = 0;
-		static final int INDEX_STUDY = 1;
-		static final int INDEX_SEARCH = 2;
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
 
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment = null;
-			switch (position) {
-			case INDEX_GAME:
-				fragment = new GameFragment();
-				break;
-			case INDEX_STUDY:
-				fragment = new StudyFragment();
-				break;
-			case INDEX_SEARCH:
-				fragment = new SearchFragment();
-				break;
-			}
-			return fragment;
-		}
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		@Override
-		public int getCount() {
-			return 3;
-		}
+        static final int INDEX_GAME = 0;
+        static final int INDEX_STUDY = 1;
+        static final int INDEX_SEARCH = 2;
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case INDEX_GAME:
-				return getString(R.string.title_section1);
-			case INDEX_STUDY:
-				return getString(R.string.title_section2);
-			case INDEX_SEARCH:
-				return getString(R.string.title_section3);
-			}
-			return null;
-		}
-	}
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-	@Override
-	public String getPageName() {
-		return "主界面";
-	}
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = null;
+            switch (position) {
+            case INDEX_GAME:
+                fragment = new GameFragment();
+                break;
+            case INDEX_STUDY:
+                fragment = new StudyFragment();
+                break;
+            case INDEX_SEARCH:
+                fragment = new SearchFragment();
+                break;
+            }
+            return fragment;
+        }
 
-	@Override
-	public void onPointBalanceChange(final int arg0) {
-		new Thread() {
-			public void run() {
-				LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);
-				AppPrefrence.savePoints(MainActivity.this, arg0);
-			}
-		}.start();
-	}
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+            case INDEX_GAME:
+                return getString(R.string.title_section1);
+            case INDEX_STUDY:
+                return getString(R.string.title_section2);
+            case INDEX_SEARCH:
+                return getString(R.string.title_section3);
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public String getPageName() {
+        return "主界面";
+    }
+
+    @Override
+    public void onPointBalanceChange(final int arg0) {
+        new Thread() {
+            public void run() {
+                LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);
+                AppPrefrence.savePoints(MainActivity.this, arg0);
+            }
+        }.start();
+    }
 }
