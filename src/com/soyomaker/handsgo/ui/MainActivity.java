@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.sina.sae.cloudservice.api.CloudClient;
-import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
@@ -82,17 +81,6 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
                     // 友盟在线参数更新
                     MobclickAgent.updateOnlineConfig(MainActivity.this);
-
-                    // 初始化CloudClient
-                    try {
-                        CloudClient.init(MainActivity.this, AppConstants.CLOUD_APP_NAME,
-                                AppConstants.CLOUD_APP_ACCESS_KEY,
-                                AppConstants.CLOUD_APP_SECRET_KEY);
-                        // 接下来就可以使用SDK各功能接口了
-                        // CloudObject CloudDB CloudFile CloudMail ......
-                    } catch (CloudServiceException e) {
-                        e.printStackTrace();
-                    }
                 }
             }.start();
         }

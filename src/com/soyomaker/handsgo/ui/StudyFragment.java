@@ -30,106 +30,106 @@ import com.soyomaker.handsgo.util.StorageUtil;
  */
 public class StudyFragment extends BaseFragment {
 
-	private Button mOpenLocalSgfButton;
+    private Button mOpenLocalSgfButton;
 
-	private Button mFightingWithGnugo;
+    private Button mFightingWithGnugo;
 
-	private long mDownloadId;
+    private long mDownloadId;
 
-	private BroadcastReceiver mDownloadReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mDownloadReceiver = new BroadcastReceiver() {
 
-		public void onReceive(Context context, Intent intent) {
-			if (mDownloadId == intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)) {
-				Intent install = new Intent(Intent.ACTION_VIEW);
-				DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(
-						Context.DOWNLOAD_SERVICE);
-				Uri downloadFileUri = downloadManager.getUriForDownloadedFile(mDownloadId);
-				install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-				install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(install);
-			}
-		}
-	};
+        public void onReceive(Context context, Intent intent) {
+            if (mDownloadId == intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)) {
+                Intent install = new Intent(Intent.ACTION_VIEW);
+                DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(
+                        Context.DOWNLOAD_SERVICE);
+                Uri downloadFileUri = downloadManager.getUriForDownloadedFile(mDownloadId);
+                install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
+                install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(install);
+            }
+        }
+    };
 
-	public StudyFragment() {
-	}
+    public StudyFragment() {
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		initData();
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main_study, container, false);
-		initView(rootView);
-		return rootView;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main_study, container, false);
+        initView(rootView);
+        return rootView;
+    }
 
-	private void initView(View rootView) {
-		mOpenLocalSgfButton = (Button) rootView.findViewById(R.id.open_local_sgf);
-		mOpenLocalSgfButton.setOnClickListener(new View.OnClickListener() {
+    private void initView(View rootView) {
+        mOpenLocalSgfButton = (Button) rootView.findViewById(R.id.open_local_sgf);
+        mOpenLocalSgfButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(getActivity(), FileExplorerActivity.class);
-				startActivity(intent);
-			}
-		});
-		mFightingWithGnugo = (Button) rootView.findViewById(R.id.fighting_with_gnugo);
-		mFightingWithGnugo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), FileExplorerActivity.class);
+                startActivity(intent);
+            }
+        });
+        mFightingWithGnugo = (Button) rootView.findViewById(R.id.fighting_with_gnugo);
+        mFightingWithGnugo.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				if (AppUtil.hasInstalled(AppConstants.PACKAGE_NAME_GNUGO)) {
-					Intent intent = new Intent(getActivity(), FightActivity.class);
-					startActivity(intent);
-				} else if (mDownloadId > 0) {
-					Toast.makeText(getActivity(), R.string.toast_downloading, Toast.LENGTH_LONG)
-							.show();
-				} else {
-					DialogUtils.showPromptDialog(getActivity(),
-							R.string.dialog_download_gnugo_title,
-							R.string.dialog_download_gnugo_content,
-							new DialogUtils.DefaultDialogListener() {
-								public void onPositiveClick(DialogInterface dialog) {
-									downloadGnugoApk();
-								}
-							}, R.string.dialog_download_gnugo_ok, R.string.cancel);
-				}
-			}
-		});
-	}
+            @Override
+            public void onClick(View v) {
+                if (AppUtil.hasInstalled(AppConstants.PACKAGE_NAME_GNUGO)) {
+                    Intent intent = new Intent(getActivity(), FightActivity.class);
+                    startActivity(intent);
+                } else if (mDownloadId > 0) {
+                    Toast.makeText(getActivity(), R.string.toast_downloading, Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    DialogUtils.showPromptDialog(getActivity(),
+                            R.string.dialog_download_gnugo_title,
+                            R.string.dialog_download_gnugo_content,
+                            new DialogUtils.DefaultDialogListener() {
+                                public void onPositiveClick(DialogInterface dialog) {
+                                    downloadGnugoApk();
+                                }
+                            }, R.string.dialog_download_gnugo_ok, R.string.cancel);
+                }
+            }
+        });
+    }
 
-	private void downloadGnugoApk() {
-		Toast.makeText(getActivity(), R.string.gnugo_start_download, Toast.LENGTH_LONG).show();
-		DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(
-				Context.DOWNLOAD_SERVICE);
-		Uri uri = Uri.parse(AppConstants.DOWNLOAD_GNUGO_URL);
-		Request request = new Request(uri);
-		// 设置允许使用的网络类型，这里是移动网络和wifi都可以
-		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-		// 设置下载中通知栏提示的标题
-		request.setTitle(getString(R.string.gnugo_name));
-		// 设置下载中通知栏提示的介绍
-		request.setDescription(getString(R.string.gnugo_description));
-		// 确保handsgo/apk文件夹已存在
-		StorageUtil.getDirByType(StorageUtil.DIR_TYPE_APK);
-		// 设置下载地址
-		request.setDestinationInExternalPublicDir("handsgo/apk", "Gnugo-3.8.apk");
-		request.setMimeType("application/vnd.android.package-archive");
-		mDownloadId = downloadManager.enqueue(request);
-	}
+    private void downloadGnugoApk() {
+        Toast.makeText(getActivity(), R.string.gnugo_start_download, Toast.LENGTH_LONG).show();
+        DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(
+                Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(AppConstants.DOWNLOAD_GNUGO_URL);
+        Request request = new Request(uri);
+        // 设置允许使用的网络类型，这里是移动网络和wifi都可以
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        // 设置下载中通知栏提示的标题
+        request.setTitle(getString(R.string.gnugo_name));
+        // 设置下载中通知栏提示的介绍
+        request.setDescription(getString(R.string.gnugo_description));
+        // 确保handsgo/apk文件夹已存在
+        StorageUtil.getDirByType(StorageUtil.DIR_TYPE_APK);
+        // 设置下载地址
+        request.setDestinationInExternalPublicDir("handsgo/apk", "Gnugo-3.8.apk");
+        request.setMimeType("application/vnd.android.package-archive");
+        mDownloadId = downloadManager.enqueue(request);
+    }
 
-	private void initData() {
-		// 注册广播接收器，当下载完成时自动安装
-		IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-		getActivity().registerReceiver(mDownloadReceiver, filter);
-	}
+    private void initData() {
+        // 注册广播接收器，当下载完成时自动安装
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        getActivity().registerReceiver(mDownloadReceiver, filter);
+    }
 
-	@Override
-	public String getPageName() {
-		return "学习讲解界面";
-	}
+    @Override
+    public String getPageName() {
+        return "学习讲解界面";
+    }
 }

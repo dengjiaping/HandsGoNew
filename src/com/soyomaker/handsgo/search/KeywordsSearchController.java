@@ -19,51 +19,51 @@ import com.soyomaker.handsgo.server.XGOOServer;
  */
 public class KeywordsSearchController {
 
-	private static final KeywordsSearchController mInstance = new KeywordsSearchController();
+    private static final KeywordsSearchController mInstance = new KeywordsSearchController();
 
-	private XGOOServer mXgooServer = new XGOOServer();
+    private XGOOServer mXgooServer = new XGOOServer();
 
-	private KeywordsSearchController() {
-	}
+    private KeywordsSearchController() {
+    }
 
-	public static KeywordsSearchController getInstance() {
-		return mInstance;
-	}
+    public static KeywordsSearchController getInstance() {
+        return mInstance;
+    }
 
-	public boolean isSearching() {
-		return mXgooServer.isRefreshing();
-	}
+    public boolean isSearching() {
+        return mXgooServer.isRefreshing();
+    }
 
-	public boolean isLoadingMore() {
-		return mXgooServer.isLoadingMore();
-	}
+    public boolean isLoadingMore() {
+        return mXgooServer.isLoadingMore();
+    }
 
-	/**
-	 * 查找搜索结果
-	 * 
-	 * @param key
-	 * @param listener
-	 */
-	public boolean find(String key) {
-		if (TextUtils.isEmpty(key)) {
-			return false;
-		}
-		String search = key.replaceAll("\\s{1,}", "+");
-		XGOOReader reader = (XGOOReader) mXgooServer.getReader();
-		reader.setSearchString(search);
-		mXgooServer.refresh();
-		return true;
-	}
+    /**
+     * 查找搜索结果
+     * 
+     * @param key
+     * @param listener
+     */
+    public boolean find(String key) {
+        if (TextUtils.isEmpty(key)) {
+            return false;
+        }
+        String search = key.replaceAll("\\s{1,}", "+");
+        XGOOReader reader = (XGOOReader) mXgooServer.getReader();
+        reader.setSearchString(search);
+        mXgooServer.refresh();
+        return true;
+    }
 
-	public void loadMore() {
-		mXgooServer.loadMore();
-	}
+    public void loadMore() {
+        mXgooServer.loadMore();
+    }
 
-	public ArrayList<ChessManual> getChessManuals() {
-		return mXgooServer.getChessManuals();
-	}
+    public ArrayList<ChessManual> getChessManuals() {
+        return mXgooServer.getChessManuals();
+    }
 
-	public IChessManualServer getServer() {
-		return mXgooServer;
-	}
+    public IChessManualServer getServer() {
+        return mXgooServer;
+    }
 }
