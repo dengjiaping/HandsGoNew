@@ -29,9 +29,37 @@ public class AppPrefrence {
 
     private static final String POINTS_KEY = "POINTS";
 
+    private static final String USER_NAME_KEY = "USER_NAME";
+
+    private static final String USER_PASSWORD_KEY = "USER_PASSWORD";
+
     private static int sBoardColor = -1;
 
     private static int sPieceStyle = -1;
+
+    public static final String getUserName(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(USER_NAME_KEY, "");
+    }
+
+    public static final void saveUserName(Context context, String password) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor editor = preferences.edit();
+        editor.putString(USER_NAME_KEY, password);
+        editor.commit();
+    }
+
+    public static final String getUserPassword(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(USER_PASSWORD_KEY, "");
+    }
+
+    public static final void saveUserPassword(Context context, String password) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor editor = preferences.edit();
+        editor.putString(USER_PASSWORD_KEY, password);
+        editor.commit();
+    }
 
     public static final void savePoints(Context context, int points) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

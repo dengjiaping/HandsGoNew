@@ -74,6 +74,14 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.soyomaker.handsgo.ui.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.RegisterActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.soyomaker.handsgo.ui.ShapeSearchActivity"
             android:screenOrientation="portrait" >
         </activity>

@@ -3,7 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_bg"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="126dp"
+        android:layout_height="42dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/selector_open_local_sgf"
+        android:text="@string/btn_upload"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#ff808080" />
 
     <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
         android:id="@+id/listview_collect"

@@ -4,11 +4,13 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.ChessManualListViewAdapter;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
 import com.soyomaker.handsgo.server.CollectServer;
+import com.soyomaker.handsgo.util.AppPrefrence;
 import com.soyomaker.handsgo.util.LogUtil;
 import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 
@@ -23,6 +25,7 @@ public class CollectActivity extends BaseActivity {
     private ChessManualListViewAdapter mAdapter;
     private ActionSlideExpandableListView mChessManualListView;
     private CollectServer mCollectServer;
+    private Button mUploadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class CollectActivity extends BaseActivity {
                     public void onClick(View listView, View buttonview, int position) {
                         int id = buttonview.getId();
                         if (id == R.id.buttonDelete) {
-                            LogUtil.e("HistoryActivity", "删除棋谱");
+                            LogUtil.e("CollectActivity", "删除棋谱");
                             boolean result = mCollectServer.delete(mAdapter.getItem(position));
                             if (result) {
                                 mAdapter.notifyDataSetChanged();
@@ -53,6 +56,16 @@ public class CollectActivity extends BaseActivity {
                         }
                     }
                 }, R.id.buttonCollect, R.id.buttonDelete);
+        mUploadButton = (Button) findViewById(R.id.btn_upload);
+        mUploadButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LogUtil.e("CollectActivity", "上传服务器备份");
+                String name = AppPrefrence.getUserName(CollectActivity.this);
+                String password = AppPrefrence.getUserPassword(CollectActivity.this);
+            }
+        });
 
         mCollectServer = ChessManualServerManager.getInstance().getCollectServer();
         mAdapter = new ChessManualListViewAdapter(this, mCollectServer);
