@@ -13,12 +13,14 @@
         android:layout_margin="6dp"
         android:background="@drawable/selector_open_local_sgf"
         android:text="@string/btn_upload"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="1px"
-        android:background="#ff808080" />
+        android:background="#ff808080"
+        android:visibility="gone" />
 
     <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
         android:id="@+id/listview_collect"

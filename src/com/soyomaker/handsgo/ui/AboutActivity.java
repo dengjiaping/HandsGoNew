@@ -14,32 +14,32 @@ import com.soyomaker.handsgo.R;
  */
 public class AboutActivity extends BaseActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_about);
 
-        initView();
-    }
+		initView();
+	}
 
-    private void initView() {
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.title_about);
-    }
+	private void initView() {
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.title_about);
+	}
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            finish();
-            break;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 
-    @Override
-    public String getPageName() {
-        return "关于界面";
-    }
+	@Override
+	public String getPageName() {
+		return "关于界面";
+	}
 }

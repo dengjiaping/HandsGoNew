@@ -9,5 +9,5 @@ import org.json.JSONException;
  */
 public interface IParser {
 
-    public Object parse(String jsonString) throws JSONException;
+	public Object parse(String jsonString) throws JSONException;
 }

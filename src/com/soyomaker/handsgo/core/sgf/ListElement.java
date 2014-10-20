@@ -8,43 +8,43 @@ package com.soyomaker.handsgo.core.sgf;
  */
 public class ListElement {
 
-    private ListElement mNextElement, mPreviousElement;
-    private Object mContent;
-    private ListClass mListClass;
+	private ListElement mNextElement, mPreviousElement;
+	private Object mContent;
+	private ListClass mListClass;
 
-    public ListElement(Object content) {
-        mContent = content;
-    }
+	public ListElement(Object content) {
+		mContent = content;
+	}
 
-    public Object getContent() {
-        return mContent;
-    }
+	public Object getContent() {
+		return mContent;
+	}
 
-    public ListElement getNext() {
-        return mNextElement;
-    }
+	public ListElement getNext() {
+		return mNextElement;
+	}
 
-    public ListElement getPrevious() {
-        return mPreviousElement;
-    }
+	public ListElement getPrevious() {
+		return mPreviousElement;
+	}
 
-    public ListClass getList() {
-        return mListClass;
-    }
+	public ListClass getList() {
+		return mListClass;
+	}
 
-    public void setContent(Object o) {
-        mContent = o;
-    }
+	public void setContent(Object o) {
+		mContent = o;
+	}
 
-    public void setNext(ListElement o) {
-        mNextElement = o;
-    }
+	public void setNext(ListElement o) {
+		mNextElement = o;
+	}
 
-    public void setPrevious(ListElement o) {
-        mPreviousElement = o;
-    }
+	public void setPrevious(ListElement o) {
+		mPreviousElement = o;
+	}
 
-    public void setList(ListClass l) {
-        mListClass = l;
-    }
+	public void setList(ListClass l) {
+		mListClass = l;
+	}
 }

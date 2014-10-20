@@ -22,68 +22,68 @@ import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
  */
 public class CollectActivity extends BaseActivity {
 
-    private ChessManualListViewAdapter mAdapter;
-    private ActionSlideExpandableListView mChessManualListView;
-    private CollectServer mCollectServer;
-    private Button mUploadButton;
+	private ChessManualListViewAdapter mAdapter;
+	private ActionSlideExpandableListView mChessManualListView;
+	private CollectServer mCollectServer;
+	private Button mUploadButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collect);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_collect);
 
-        initView();
-    }
+		initView();
+	}
 
-    private void initView() {
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.title_collect);
+	private void initView() {
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.title_collect);
 
-        mChessManualListView = (ActionSlideExpandableListView) findViewById(R.id.listview_collect);
-        mChessManualListView.setItemActionListener(
-                new ActionSlideExpandableListView.OnActionClickListener() {
+		mChessManualListView = (ActionSlideExpandableListView) findViewById(R.id.listview_collect);
+		mChessManualListView.setItemActionListener(
+				new ActionSlideExpandableListView.OnActionClickListener() {
 
-                    @Override
-                    public void onClick(View listView, View buttonview, int position) {
-                        int id = buttonview.getId();
-                        if (id == R.id.buttonDelete) {
-                            LogUtil.e("CollectActivity", "删除棋谱");
-                            boolean result = mCollectServer.delete(mAdapter.getItem(position));
-                            if (result) {
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                }, R.id.buttonCollect, R.id.buttonDelete);
-        mUploadButton = (Button) findViewById(R.id.btn_upload);
-        mUploadButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View listView, View buttonview, int position) {
+						int id = buttonview.getId();
+						if (id == R.id.buttonDelete) {
+							LogUtil.e("CollectActivity", "删除棋谱");
+							boolean result = mCollectServer.delete(mAdapter.getItem(position));
+							if (result) {
+								mAdapter.notifyDataSetChanged();
+							}
+						}
+					}
+				}, R.id.buttonCollect, R.id.buttonDelete);
+		mUploadButton = (Button) findViewById(R.id.btn_upload);
+		mUploadButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                LogUtil.e("CollectActivity", "上传服务器备份");
-                String name = AppPrefrence.getUserName(CollectActivity.this);
-                String password = AppPrefrence.getUserPassword(CollectActivity.this);
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				LogUtil.e("CollectActivity", "上传服务器备份");
+				String name = AppPrefrence.getUserName(CollectActivity.this);
+				String password = AppPrefrence.getUserPassword(CollectActivity.this);
+			}
+		});
 
-        mCollectServer = ChessManualServerManager.getInstance().getCollectServer();
-        mAdapter = new ChessManualListViewAdapter(this, mCollectServer);
-        mChessManualListView.setAdapter(mAdapter);
-    }
+		mCollectServer = ChessManualServerManager.getInstance().getCollectServer();
+		mAdapter = new ChessManualListViewAdapter(this, mCollectServer);
+		mChessManualListView.setAdapter(mAdapter);
+	}
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            finish();
-            break;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 
-    @Override
-    public String getPageName() {
-        return "我的收藏界面";
-    }
+	@Override
+	public String getPageName() {
+		return "我的收藏界面";
+	}
 }

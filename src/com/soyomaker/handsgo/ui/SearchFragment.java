@@ -17,54 +17,54 @@ import com.soyomaker.handsgo.R;
  */
 public class SearchFragment extends BaseFragment {
 
-    private static final String TAG = "SearchFragment";
+	private static final String TAG = "SearchFragment";
 
-    private Button mShapeSearchButton;
-    private Button mKeywordsSearchButton;
+	private Button mShapeSearchButton;
+	private Button mKeywordsSearchButton;
 
-    public SearchFragment() {
-    }
+	public SearchFragment() {
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initData();
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		initData();
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_search, container, false);
-        initView(rootView);
-        return rootView;
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_main_search, container, false);
+		initView(rootView);
+		return rootView;
+	}
 
-    private void initView(View rootView) {
-        mShapeSearchButton = (Button) rootView.findViewById(R.id.shape_search);
-        mShapeSearchButton.setOnClickListener(new View.OnClickListener() {
+	private void initView(View rootView) {
+		mShapeSearchButton = (Button) rootView.findViewById(R.id.shape_search);
+		mShapeSearchButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ShapeSearchActivity.class);
-                startActivity(intent);
-            }
-        });
-        mKeywordsSearchButton = (Button) rootView.findViewById(R.id.keywords_search);
-        mKeywordsSearchButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), ShapeSearchActivity.class);
+				startActivity(intent);
+			}
+		});
+		mKeywordsSearchButton = (Button) rootView.findViewById(R.id.keywords_search);
+		mKeywordsSearchButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), KeywordsSearchActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), KeywordsSearchActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
 
-    private void initData() {
-        // TODO
-    }
+	private void initData() {
+		// TODO
+	}
 
-    @Override
-    public String getPageName() {
-        return "棋谱搜索界面";
-    }
+	@Override
+	public String getPageName() {
+		return "棋谱搜索界面";
+	}
 }

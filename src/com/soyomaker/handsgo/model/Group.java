@@ -10,39 +10,39 @@ import java.util.ArrayList;
  */
 public class Group {
 
-    public static final int DEFAULT_GROUP = 1;
+	public static final int DEFAULT_GROUP = 1;
 
-    private int mId = -1;
+	private int mId = -1;
 
-    private String mName;
+	private String mName;
 
-    private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
+	private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
 
-    public int getId() {
-        return mId;
-    }
+	public int getId() {
+		return mId;
+	}
 
-    public void setId(int mId) {
-        this.mId = mId;
-    }
+	public void setId(int mId) {
+		this.mId = mId;
+	}
 
-    public String getName() {
-        return mName;
-    }
+	public String getName() {
+		return mName;
+	}
 
-    public void setName(String mName) {
-        this.mName = mName;
-    }
+	public void setName(String mName) {
+		this.mName = mName;
+	}
 
-    public ArrayList<ChessManual> getChessManuals() {
-        return mChessManuals;
-    }
+	public ArrayList<ChessManual> getChessManuals() {
+		return mChessManuals;
+	}
 
-    public void setChessManuals(ArrayList<ChessManual> mChessManuals) {
-        this.mChessManuals = mChessManuals;
-    }
+	public void setChessManuals(ArrayList<ChessManual> mChessManuals) {
+		this.mChessManuals = mChessManuals;
+	}
 
-    public String toString() {
-        return mName + "[" + mChessManuals.size() + "]";
-    }
+	public String toString() {
+		return mName + "[" + mChessManuals.size() + "]";
+	}
 }
