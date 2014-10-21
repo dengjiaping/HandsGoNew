@@ -20,9 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.core.DefaultBoardModel;
@@ -190,6 +192,10 @@ public class ManualActivity extends BaseActivity implements IGridListener {
         actionBar.setTitle(mChessManual.getMatchName());
 
         mAdLayout = (LinearLayout) this.findViewById(R.id.ad_layout);
+        if (AppConstants.DEBUG) {
+            mAdLayout.setVisibility(View.GONE);
+        }
+        mAdLayout.setVisibility(View.GONE);
         mBoardLayout = (RelativeLayout) this.findViewById(R.id.board_layout);
         mCommentLayout = (LinearLayout) this.findViewById(R.id.comment_container);
         mCommentTextView = (TextView) this.findViewById(R.id.text_comment);
@@ -243,6 +249,19 @@ public class ManualActivity extends BaseActivity implements IGridListener {
                 mGoController.changeVar();
             }
         });
+        if (mChessManual.getType() == ChessManual.ONLINE_CHESS_MANUAL) {
+            Button comments = (Button) findViewById(R.id.btn_comments);
+            comments.setVisibility(View.VISIBLE);
+            comments.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
+                    intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
+                    startActivity(intent);
+                }
+            });
+        }
 
         // 有米广告条
         AdView adView = new AdView(this, AdSize.FIT_SCREEN);
@@ -298,11 +317,14 @@ public class ManualActivity extends BaseActivity implements IGridListener {
             break;
         case R.id.action_manual_collect: {
             LogUtil.e(TAG, "收藏棋谱");
+            DBService.saveFavoriteChessManual(mChessManual);
+            Toast.makeText(ManualActivity.this, R.string.toast_collect_success, Toast.LENGTH_LONG)
+                    .show();
         }
             break;
         case R.id.action_manual_share: {
             LogUtil.e(TAG, "分享棋谱");
-            if (mMatch != null) {
+            if (mMatch != null && mMatch.getMatchInfo() != null) {
                 mGoBoard.destroyDrawingCache();
                 mGoBoard.setDrawingCacheEnabled(true);
                 Bitmap bm = Bitmap.createBitmap(mGoBoard.getDrawingCache());
@@ -334,6 +356,8 @@ public class ManualActivity extends BaseActivity implements IGridListener {
                         + mMatch.getMatchInfo().getWhiteName()
                         + "( @掌中围棋，与您分享精彩棋谱！http://www.appchina.com/app/com.soyomaker.handsgo/ )");
                 startActivity(Intent.createChooser(intent, getTitle()));
+            } else {
+                // TODO 弹框提示
             }
         }
             break;

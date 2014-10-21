@@ -28,7 +28,7 @@ public abstract class AbsNormalAsyncTask<Params, Progress, Result> implements IC
     private static final String LOG_TAG = "FictionAsyncTask";
 
     private static final int CORE_POOL_SIZE = 4;
-    private static final int MAXIMUM_POOL_SIZE = 64;
+    private static final int MAXIMUM_POOL_SIZE = 128;
     private static final int KEEP_ALIVE = 1;
 
     private static final BlockingQueue<Runnable> sWorkQueue = new LinkedBlockingQueue<Runnable>(64);

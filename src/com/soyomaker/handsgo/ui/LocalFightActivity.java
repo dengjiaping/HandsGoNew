@@ -14,9 +14,9 @@ import android.view.MenuItem;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.util.AppConstants;
 
-public class FightActivity extends BaseActivity {
+public class LocalFightActivity extends BaseActivity {
 
-    private static final String TAG = "FightActivity";
+    private static final String TAG = "LocalFightActivity";
 
     private IGnuGoService mGnuGoService;
     private ServiceConnection mGnugoConnection;
@@ -24,7 +24,7 @@ public class FightActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fight);
+        setContentView(R.layout.activity_local_fight);
 
         initView();
 
@@ -43,7 +43,7 @@ public class FightActivity extends BaseActivity {
                 mGnugoConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public void onDestory() {
+    public void onDestroy() {
         super.onDestroy();
         if (mGnuGoService != null) {
             try {
@@ -57,7 +57,7 @@ public class FightActivity extends BaseActivity {
     private void initView() {
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.title_fight);
+        actionBar.setTitle(R.string.title_local_fight);
     }
 
     @Override
@@ -72,6 +72,6 @@ public class FightActivity extends BaseActivity {
 
     @Override
     public String getPageName() {
-        return "对弈界面";
+        return "单机对弈界面";
     }
 }

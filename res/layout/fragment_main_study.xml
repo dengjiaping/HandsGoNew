@@ -21,6 +21,7 @@
         android:layout_margin="8dp"
         android:background="@drawable/selector_open_local_sgf"
         android:text="@string/fighting_with_gnugo"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 </LinearLayout>

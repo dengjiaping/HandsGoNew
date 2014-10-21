@@ -42,8 +42,7 @@ public final class AppConstants {
 
     public final static String PACKAGE_NAME_GNUGO = "org.ligi.gobandroidhd.ai.gnugo";
 
-    // https://raw.githubusercontent.com/uestccokey/HandsGoNew/master/Gnugo-3.8.apk
-    public final static String DOWNLOAD_GNUGO_URL = "http://handsgo-cloud.stor.sinaapp.com/Gnugo-3.8.apk";
+    public final static String DOWNLOAD_GNUGO_URL = "gnugo_url";
 
     public final static String CLOUD_APP_NAME = "handsgo";
 

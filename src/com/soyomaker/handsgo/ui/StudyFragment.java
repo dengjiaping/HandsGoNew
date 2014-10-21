@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppUtil;
 import com.soyomaker.handsgo.util.DialogUtils;
 import com.soyomaker.handsgo.util.StorageUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 学习讲解界面
@@ -83,7 +85,7 @@ public class StudyFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (AppUtil.hasInstalled(AppConstants.PACKAGE_NAME_GNUGO)) {
-                    Intent intent = new Intent(getActivity(), FightActivity.class);
+                    Intent intent = new Intent(getActivity(), LocalFightActivity.class);
                     startActivity(intent);
                 } else if (mDownloadId > 0) {
                     Toast.makeText(getActivity(), R.string.toast_downloading, Toast.LENGTH_LONG)
@@ -104,9 +106,13 @@ public class StudyFragment extends BaseFragment {
 
     private void downloadGnugoApk() {
         Toast.makeText(getActivity(), R.string.gnugo_start_download, Toast.LENGTH_LONG).show();
+        String url = MobclickAgent.getConfigParams(getActivity(), AppConstants.DOWNLOAD_GNUGO_URL);
+        if (TextUtils.isEmpty(url)) {
+            url = "https://raw.githubusercontent.com/uestccokey/HandsGoNew/master/Gnugo-3.8.apk";
+        }
         DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(
                 Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(AppConstants.DOWNLOAD_GNUGO_URL);
+        Uri uri = Uri.parse(url);
         Request request = new Request(uri);
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
