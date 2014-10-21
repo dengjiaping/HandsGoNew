@@ -60,6 +60,14 @@
     <string name="auto_play_on_3">间隔4s</string>
     <string name="auto_play_on_4">间隔8s</string>
     <string name="auto_play_on_5">间隔16s</string>
+    <string name="register_name">昵称</string>
+    <string name="register_password">密码</string>
+    <string name="register_re_enter_password">确认密码</string>
+    <string name="register_email">邮箱</string>
+    <string name="register_gender">性别</string>
+    <string name="register_btn">立即注册</string>
+    <string name="register_female">女</string>
+    <string name="register_male">男</string>
     <string name="chess_piece_style_2d">2d棋子</string>
     <string name="chess_piece_style_3d_1">3d棋子（云子）</string>
     <string name="chess_piece_style_3d_2">3d棋子（蛤碁石）</string>
@@ -110,6 +118,8 @@
     <string name="toast_collect_success">棋谱收藏成功！</string>
     <string name="toast_invalid_shape_search">至少需要摆放5颗子</string>
     <string name="toast_invalid_keywords_search">搜索关键字不能为空</string>
+    <string name="toast_register_success">账号注册成功！</string>
+    <string name="toast_register_fail">账号注册失败！</string>
     <string name="gnugo_name">围棋AI（Gnugo3.8）</string>
     <string name="gnugo_description">一款智商超高的围棋AI，赶紧安装挑战吧！</string>
     <string name="gnugo_start_download">围棋AI（Gnugo3.8）开始下载</string>

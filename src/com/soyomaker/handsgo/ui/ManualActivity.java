@@ -256,8 +256,10 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
-                    intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
+//                    Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
+//                    intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
+//                    startActivity(intent);
+                    Intent intent = new Intent(ManualActivity.this, RegisterActivity.class);
                     startActivity(intent);
                 }
             });

@@ -1,8 +1,13 @@
 package com.soyomaker.handsgo.manager;
 
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 
 import com.sina.sae.cloudservice.api.CloudClient;
+import com.sina.sae.cloudservice.api.CloudLogin;
+import com.sina.sae.cloudservice.api.CloudRegister;
 import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.model.User;
 import com.soyomaker.handsgo.util.AppConstants;
@@ -41,33 +46,55 @@ public class CloudManager {
      */
 
     /**
-     * 注册账号（异步线程调用）
+     * 注册账号（需在异步线程调用）
      * 
      * @param context
      * @param name
      * @param password
+     * @param deviceId
+     * @param email
+     * @param gender
      * @return
      */
-    public boolean register(Context context, String name, String password) {
+    public boolean register(Context context, String name, String password, String deviceId,
+            String email, String gender) {
         init(context);
 
-        // TODO
-        return false;
+        int rows = -1;
+        try {
+            rows = CloudRegister.register(name, password, deviceId, email, gender);
+        } catch (CloudServiceException e) {
+            e.printStackTrace();
+        }
+
+        return rows > 0;
     }
 
     /**
-     * 登录账号（异步线程调用）
+     * 登录账号（需在异步线程调用）
      * 
      * @param context
      * @param name
      * @param password
      * @return
      */
-    public boolean login(Context context, String name, String password) {
+    public User login(Context context, String name, String password) {
         init(context);
 
-        // TODO
-        return false;
+        List<Map<String, String>> maps = null;
+        try {
+            maps = CloudLogin.login(name, password);
+        } catch (CloudServiceException e) {
+            e.printStackTrace();
+        }
+
+        if (maps != null) {
+            User user = new User();
+            // TODO
+            return user;
+        } else {
+            return null;
+        }
     }
 
     /**
