@@ -2,6 +2,8 @@ package com.soyomaker.handsgo.model;
 
 public class User {
 
+    public static final int MALE = 0;
+    public static final int FEMALE = 1;
     private int mId;
     private String mName;
     private String mPassword;
@@ -9,6 +11,7 @@ public class User {
     private int mSpace;
     private int mLevel;
     private int mScore;
+    private int mGender;
 
     public int getId() {
         return mId;
@@ -64,5 +67,13 @@ public class User {
 
     public void setScore(int mScore) {
         this.mScore = mScore;
+    }
+
+    public int getGender() {
+        return mGender;
+    }
+
+    public void setGender(int mGender) {
+        this.mGender = mGender;
     }
 }

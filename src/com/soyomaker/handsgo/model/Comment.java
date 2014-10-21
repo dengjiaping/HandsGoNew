@@ -1,5 +1,7 @@
 package com.soyomaker.handsgo.model;
 
+import java.sql.Date;
+
 public class Comment {
 
     private int mId;
@@ -8,6 +10,7 @@ public class Comment {
     private String mComment;
     private String mCommentSgf;
     private long mInsertTime;
+    private Date mInsertTimeDate;
 
     public int getId() {
         return mId;
@@ -53,7 +56,15 @@ public class Comment {
         return mInsertTime;
     }
 
+    public Date getInsertTimeDate() {
+        if (mInsertTimeDate != null) {
+            mInsertTimeDate = new Date(mInsertTime);
+        }
+        return mInsertTimeDate;
+    }
+
     public void setInsertTime(long mInsertTime) {
         this.mInsertTime = mInsertTime;
+        mInsertTimeDate = null;
     }
 }

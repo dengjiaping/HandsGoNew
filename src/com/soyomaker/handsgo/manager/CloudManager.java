@@ -1,14 +1,18 @@
 package com.soyomaker.handsgo.manager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.sina.sae.cloudservice.api.CloudLogin;
 import com.sina.sae.cloudservice.api.CloudRegister;
 import com.sina.sae.cloudservice.exception.CloudServiceException;
+import com.soyomaker.handsgo.model.Comment;
 import com.soyomaker.handsgo.model.User;
 import com.soyomaker.handsgo.util.AppConstants;
 
@@ -17,6 +21,8 @@ public class CloudManager {
     private static CloudManager mInstance = new CloudManager();
 
     private boolean mInitSuccess;
+    private User mLoginUser;
+    private Map<String, ArrayList<Comment>> mCommentMap = new HashMap<String, ArrayList<Comment>>();
 
     private CloudManager() {
     }
@@ -39,11 +45,22 @@ public class CloudManager {
         }
     }
 
-    /**
-     * TODO
-     * 1，注册账号，2，登录账号，3，同步该账号已收藏的棋谱（获取，上传，删除）（每个账号分配1MB空间，使用积分换取更大空间100积分=1MB
-     * ，最大5MB）
-     */
+    public User getLoginUser() {
+        return mLoginUser;
+    }
+
+    public boolean hasLogin() {
+        return mLoginUser != null;
+    }
+
+    public ArrayList<Comment> getComments(String sgfUrl) {
+        ArrayList<Comment> comments = mCommentMap.get(sgfUrl);
+        if (comments == null) {
+            comments = new ArrayList<Comment>();
+            mCommentMap.put(sgfUrl, comments);
+        }
+        return comments;
+    }
 
     /**
      * 注册账号（需在异步线程调用）
@@ -81,29 +98,42 @@ public class CloudManager {
     public User login(Context context, String name, String password) {
         init(context);
 
-        List<Map<String, String>> maps = null;
+        List<Map<String, String>> lists = null;
         try {
-            maps = CloudLogin.login(name, password);
+            lists = CloudLogin.login(name, password);
         } catch (CloudServiceException e) {
             e.printStackTrace();
         }
 
-        if (maps != null) {
-            User user = new User();
-            // TODO
-            return user;
+        if (lists != null && !lists.isEmpty()) {
+            Map<String, String> map = lists.get(0);
+            mLoginUser = new User();
+            mLoginUser.setEmail(map.get("email"));
+            String userid = map.get("userid");
+            if (!TextUtils.isEmpty(userid) && TextUtils.isDigitsOnly(userid)) {
+                mLoginUser.setId(Integer.valueOf(userid));
+            }
+            String level = map.get("level");
+            if (!TextUtils.isEmpty(level) && TextUtils.isDigitsOnly(level)) {
+                mLoginUser.setLevel(Integer.valueOf(level));
+            }
+            mLoginUser.setName(map.get("name"));
+            mLoginUser.setPassword(map.get("password"));
+            String score = map.get("score");
+            if (!TextUtils.isEmpty(score) && TextUtils.isDigitsOnly(score)) {
+                mLoginUser.setScore(Integer.valueOf(score));
+            }
+            String space = map.get("space");
+            if (!TextUtils.isEmpty(space) && TextUtils.isDigitsOnly(space)) {
+                mLoginUser.setSpace(Integer.valueOf(space));
+            }
+            String gender = map.get("gender");
+            if (!TextUtils.isEmpty(gender) && TextUtils.isDigitsOnly(gender)) {
+                mLoginUser.setGender(Integer.valueOf(gender));
+            }
+            return mLoginUser;
         } else {
             return null;
         }
-    }
-
-    /**
-     * 获取用户信息（异步线程调用）
-     */
-    public User getUserInfo(Context context) {
-        init(context);
-        User user = new User();
-        // TODO
-        return user;
     }
 }

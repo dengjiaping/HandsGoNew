@@ -5,4 +5,20 @@
     android:background="@color/common_bg"
     android:orientation="vertical" >
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/listview_comment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:dividerHeight="1dp"
+            android:fadeScrollbars="true"
+            android:fadingEdgeLength="0dp"
+            android:listSelector="#00000000" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

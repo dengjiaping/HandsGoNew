@@ -35,6 +35,7 @@ import com.soyomaker.handsgo.core.IGridListener;
 import com.soyomaker.handsgo.core.io.SGFReader;
 import com.soyomaker.handsgo.core.sgf.SGFTree;
 import com.soyomaker.handsgo.db.DBService;
+import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.Match;
 import com.soyomaker.handsgo.model.MatchInfo;
@@ -192,10 +193,6 @@ public class ManualActivity extends BaseActivity implements IGridListener {
         actionBar.setTitle(mChessManual.getMatchName());
 
         mAdLayout = (LinearLayout) this.findViewById(R.id.ad_layout);
-        if (AppConstants.DEBUG) {
-            mAdLayout.setVisibility(View.GONE);
-        }
-        mAdLayout.setVisibility(View.GONE);
         mBoardLayout = (RelativeLayout) this.findViewById(R.id.board_layout);
         mCommentLayout = (LinearLayout) this.findViewById(R.id.comment_container);
         mCommentTextView = (TextView) this.findViewById(R.id.text_comment);
@@ -256,11 +253,14 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
-//                    intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
-//                    startActivity(intent);
-                    Intent intent = new Intent(ManualActivity.this, RegisterActivity.class);
-                    startActivity(intent);
+                    if (CloudManager.getInstance().hasLogin()) {
+                        Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
+                        intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(ManualActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
         }
@@ -319,9 +319,13 @@ public class ManualActivity extends BaseActivity implements IGridListener {
             break;
         case R.id.action_manual_collect: {
             LogUtil.e(TAG, "收藏棋谱");
-            DBService.saveFavoriteChessManual(mChessManual);
-            Toast.makeText(ManualActivity.this, R.string.toast_collect_success, Toast.LENGTH_LONG)
-                    .show();
+            if (mMatch != null && mMatch.getMatchInfo() != null) {
+                DBService.saveFavoriteChessManual(mChessManual);
+                Toast.makeText(ManualActivity.this, R.string.toast_collect_success,
+                        Toast.LENGTH_LONG).show();
+            } else {
+                // TODO 弹框提示
+            }
         }
             break;
         case R.id.action_manual_share: {

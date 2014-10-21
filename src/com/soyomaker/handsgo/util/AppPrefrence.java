@@ -116,7 +116,6 @@ public class AppPrefrence {
         Editor editor = preferences.edit();
         editor.putInt(CHESS_PIECE_STYLE_KEY, style);
         editor.commit();
-
     }
 
     public static final int getChessPieceStyle(Context context) {

@@ -1,7 +1,5 @@
 package org.ligi.gobandroidhd.ai.gnugo;
 
-import org.ligi.gobandroidhd.ai.gnugo.IGnuGoService;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
