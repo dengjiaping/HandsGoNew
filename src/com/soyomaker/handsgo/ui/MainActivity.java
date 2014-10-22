@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.soyomaker.handsgo.R;
+import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
 import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
 import com.soyomaker.handsgo.util.LogUtil;
@@ -102,7 +103,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(2);// 缓存两页，防止左右切换时Fragment被销毁
+        mViewPager.setOffscreenPageLimit(mSectionsPagerAdapter.getCount() - 1);// 缓存全部页数，防止左右切换时Fragment被销毁
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -132,6 +133,11 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
             break;
         case R.id.action_history: {
             Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        }
+            break;
+        case R.id.action_local: {
+            Intent intent = new Intent(this, FileExplorerActivity.class);
             startActivity(intent);
         }
             break;
@@ -171,8 +177,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         static final int INDEX_GAME = 0;
-        static final int INDEX_STUDY = 1;
-        static final int INDEX_SEARCH = 2;
+        static final int INDEX_SEARCH = 1;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -185,9 +190,6 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
             case INDEX_GAME:
                 fragment = new GameFragment();
                 break;
-            case INDEX_STUDY:
-                fragment = new StudyFragment();
-                break;
             case INDEX_SEARCH:
                 fragment = new SearchFragment();
                 break;
@@ -197,7 +199,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -205,10 +207,8 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
             switch (position) {
             case INDEX_GAME:
                 return getString(R.string.title_section1);
-            case INDEX_STUDY:
-                return getString(R.string.title_section2);
             case INDEX_SEARCH:
-                return getString(R.string.title_section3);
+                return getString(R.string.title_section2);
             }
             return null;
         }

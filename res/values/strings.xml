@@ -12,6 +12,7 @@
     <string name="btn_delete_stone">删除</string>
     <string name="btn_reset">重置</string>
     <string name="action_collect">我的收藏</string>
+    <string name="action_local">本地棋谱</string>
     <string name="action_history">历史记录</string>
     <string name="action_settings">应用设置</string>
     <string name="action_feedback">意见反馈</string>
@@ -27,13 +28,14 @@
     <string name="manual_button_fast_prev">快退</string>
     <string name="manual_button_last">终局</string>
     <string name="title_section1">精彩时局</string>
-    <string name="title_section2">学习讲解</string>
-    <string name="title_section3">棋谱搜索</string>
+    <string name="title_section2">棋谱搜索</string>
+    <string name="title_section3">学习讲解</string>
     <string name="title_settings">应用设置</string>
     <string name="title_local_fight">单机对弈</string>
     <string name="title_about">关于软件</string>
-    <string name="title_login">登录</string>
-    <string name="title_register">注册</string>
+    <string name="title_laboratory">实验室</string>
+    <string name="title_login">登录账号</string>
+    <string name="title_register">注册账号</string>
     <string name="title_comments">评论列表</string>
     <string name="title_collect">我的收藏</string>
     <string name="title_history">历史记录</string>
@@ -44,6 +46,7 @@
     <string name="keywords_search">关键字搜索</string>
     <string name="shape_search">棋型搜索</string>
     <string name="btn_login">登录账号</string>
+    <string name="btn_signin">退出</string>
     <string name="btn_register">注册账号</string>
     <string name="btn_upload">上传服务器备份</string>
     <string name="btn_comments">进入评论列表</string>
@@ -73,17 +76,22 @@
     <string name="comment_dialog_title">发表评论</string>
     <string name="comment_dialog_ok">发送</string>
     <string name="comment_dialog_cancel">取消</string>
+    <string name="chess_board_style_color">彩色棋盘</string>
+    <string name="chess_board_style_3d_1">木纹棋盘1</string>
+    <string name="chess_board_style_3d_2">木纹棋盘2</string>
+    <string name="chess_board_style_3d_3">木纹棋盘3</string>
     <string name="chess_piece_style_2d">2d棋子</string>
     <string name="chess_piece_style_3d_1">3d棋子（云子）</string>
     <string name="chess_piece_style_3d_2">3d棋子（蛤碁石）</string>
     <string name="options_show_number">显示棋子手数</string>
     <string name="options_show_location">显示棋盘坐标</string>
     <string name="options_play_sound">开启落子音效</string>
-    <string name="options_board_color">棋盘颜色设置</string>
+    <string name="options_board_color">棋盘样式设置</string>
     <string name="options_piece_style">棋子样式设置</string>
     <string name="options_auto_play">自动打谱设置</string>
     <string name="options_chess_source">棋谱来源设置</string>
     <string name="options_about_app">关于掌中围棋</string>
+    <string name="local_point">本机积分：%s</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="menu_item_search">搜索</string>
@@ -153,5 +161,6 @@
     <string name="info_source">棋谱来源：%s</string>
     <string name="chess_board_color_picker_dialog_title">棋盘颜色设置</string>
     <string name="chess_piece_style_choose_dialog_title">棋子样式设置</string>
+    <string name="chess_board_style_choose_dialog_title">棋盘样式设置</string>
 
 </resources>

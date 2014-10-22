@@ -14,6 +14,12 @@ import android.view.MenuItem;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.util.AppConstants;
 
+/**
+ * 单机对弈界面
+ * 
+ * @author like
+ *
+ */
 public class LocalFightActivity extends BaseActivity {
 
     private static final String TAG = "LocalFightActivity";

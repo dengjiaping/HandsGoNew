@@ -5,23 +5,4 @@
     android:background="@color/common_bg"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/open_local_sgf"
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/selector_open_local_sgf"
-        android:text="@string/open_local_sgf"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/fighting_with_gnugo"
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/selector_open_local_sgf"
-        android:text="@string/fighting_with_gnugo"
-        android:textSize="20sp"
-        android:visibility="gone" />
-
 </LinearLayout>

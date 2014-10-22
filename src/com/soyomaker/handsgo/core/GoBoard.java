@@ -30,6 +30,10 @@ public class GoBoard extends Grid {
     protected Bitmap mHajiBlackCubic;
     protected Bitmap mHajiziWhiteCubic;
 
+    protected Bitmap mMuWen1Board;
+    protected Bitmap mMuWen2Board;
+    protected Bitmap mMuWen3Board;
+
     protected int mBasicTextSize = 9;
 
     protected Paint mChessmanPaint;
@@ -74,10 +78,71 @@ public class GoBoard extends Grid {
 
     @Override
     public void drawBoard(Canvas g) {
-        // 1，绘制棋盘背景色
-        mBoardPaint.setColor(AppPrefrence.getChessBoardColor(getContext()));
-        g.drawRect(0, 0, mCubicSize * mGridModel.getGridSize() + 2 * mLeftRightBorder, mCubicSize
-                * mGridModel.getGridSize() + 2 * mTopBottomBorder, mBoardPaint);
+        // 1，绘制棋盘背景
+        switch (AppPrefrence.getChessBoardStyle(getContext())) {
+        case AppConstants.CHESS_BOARD_STYLE_COLOR:
+            mBoardPaint.setColor(AppPrefrence.getChessBoardColor(getContext()));
+            g.drawRect(0, 0, mCubicSize * mGridModel.getGridSize() + 2 * mLeftRightBorder,
+                    mCubicSize * mGridModel.getGridSize() + 2 * mTopBottomBorder, mBoardPaint);
+            break;
+        case AppConstants.CHESS_BOARD_STYLE_3D_1:
+            if (mMuWen1Board == null || mMuWen1Board.isRecycled()) {
+                this.mMuWen1Board = BitmapFactory.decodeResource(this.getResources(),
+                        R.drawable.board_1);
+            }
+            if (mMuWen2Board != null && !mMuWen2Board.isRecycled()) {
+                mMuWen2Board.recycle();
+                mMuWen2Board = null;
+            }
+            if (mMuWen3Board != null && !mMuWen3Board.isRecycled()) {
+                mMuWen3Board.recycle();
+                mMuWen3Board = null;
+            }
+            g.drawBitmap(mMuWen1Board,
+                    new Rect(0, 0, mMuWen1Board.getWidth(), mMuWen1Board.getHeight()), new Rect(0,
+                            0, mCubicSize * mGridModel.getGridSize() + 2 * mLeftRightBorder,
+                            mCubicSize * mGridModel.getGridSize() + 2 * mTopBottomBorder),
+                    mBoardPaint);
+            break;
+        case AppConstants.CHESS_BOARD_STYLE_3D_2:
+            if (mMuWen2Board == null || mMuWen2Board.isRecycled()) {
+                this.mMuWen2Board = BitmapFactory.decodeResource(this.getResources(),
+                        R.drawable.board_2);
+            }
+            if (mMuWen1Board != null && !mMuWen1Board.isRecycled()) {
+                mMuWen1Board.recycle();
+                mMuWen1Board = null;
+            }
+            if (mMuWen3Board != null && !mMuWen3Board.isRecycled()) {
+                mMuWen3Board.recycle();
+                mMuWen3Board = null;
+            }
+            g.drawBitmap(mMuWen2Board,
+                    new Rect(0, 0, mMuWen2Board.getWidth(), mMuWen2Board.getHeight()), new Rect(0,
+                            0, mCubicSize * mGridModel.getGridSize() + 2 * mLeftRightBorder,
+                            mCubicSize * mGridModel.getGridSize() + 2 * mTopBottomBorder),
+                    mBoardPaint);
+            break;
+        case AppConstants.CHESS_BOARD_STYLE_3D_3:
+            if (mMuWen3Board == null || mMuWen3Board.isRecycled()) {
+                this.mMuWen3Board = BitmapFactory.decodeResource(this.getResources(),
+                        R.drawable.board_3);
+            }
+            if (mMuWen2Board != null && !mMuWen2Board.isRecycled()) {
+                mMuWen2Board.recycle();
+                mMuWen2Board = null;
+            }
+            if (mMuWen1Board != null && !mMuWen1Board.isRecycled()) {
+                mMuWen1Board.recycle();
+                mMuWen1Board = null;
+            }
+            g.drawBitmap(mMuWen3Board,
+                    new Rect(0, 0, mMuWen3Board.getWidth(), mMuWen3Board.getHeight()), new Rect(0,
+                            0, mCubicSize * mGridModel.getGridSize() + 2 * mLeftRightBorder,
+                            mCubicSize * mGridModel.getGridSize() + 2 * mTopBottomBorder),
+                    mBoardPaint);
+            break;
+        }
 
         if (AppPrefrence.getShowCoordinate(getContext())) {
             // 2，绘制棋盘坐标

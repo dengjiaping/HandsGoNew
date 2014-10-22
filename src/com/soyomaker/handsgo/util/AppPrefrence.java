@@ -21,6 +21,8 @@ public class AppPrefrence {
 
     private static final String CHESS_PIECE_STYLE_KEY = "CHESS_PIECE_STYLE";
 
+    private static final String CHESS_BOARD_STYLE_KEY = "CHESS_BOARD_STYLE";
+
     private static final String APP_TIPS_VERSION_KEY = "APP_TIPS_VERSION";
 
     private static final String APP_TIPS_HIDE_KEY = "APP_TIPS_HIDE";
@@ -34,6 +36,8 @@ public class AppPrefrence {
     private static final String USER_PASSWORD_KEY = "USER_PASSWORD";
 
     private static int sBoardColor = -1;
+
+    private static int sBoardStyle = -1;
 
     private static int sPieceStyle = -1;
 
@@ -125,6 +129,24 @@ public class AppPrefrence {
                     AppConstants.DEFAULT_PIECE_STYLE);
         }
         return sPieceStyle;
+    }
+
+    public static final void saveChessBoardStyle(Context context, int style) {
+        sBoardStyle = style;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor editor = preferences.edit();
+        editor.putInt(CHESS_BOARD_STYLE_KEY, style);
+        editor.commit();
+    }
+
+    public static final int getChessBoardStyle(Context context) {
+        if (sBoardStyle == -1) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            sBoardStyle = preferences.getInt(CHESS_BOARD_STYLE_KEY,
+                    AppConstants.DEFAULT_BOARD_STYLE);
+        }
+        return sBoardStyle;
     }
 
     /**

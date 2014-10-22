@@ -20,9 +20,19 @@ public final class AppConstants {
 
     public static final int CHESS_PIECE_STYLE_3D_2 = 2;
 
+    public static final int CHESS_BOARD_STYLE_COLOR = 0;
+
+    public static final int CHESS_BOARD_STYLE_3D_1 = 1;
+
+    public static final int CHESS_BOARD_STYLE_3D_2 = 2;
+
+    public static final int CHESS_BOARD_STYLE_3D_3 = 3;
+
     public static final int DEFAULT_BOARD_COLOR = 0xffEE9A00;
 
     public static final int DEFAULT_PIECE_STYLE = CHESS_PIECE_STYLE_2D;
+
+    public static final int DEFAULT_BOARD_STYLE = CHESS_BOARD_STYLE_COLOR;
 
     /** 广告开关. */
     public static final String AD_ON_STRING = "ad_on";

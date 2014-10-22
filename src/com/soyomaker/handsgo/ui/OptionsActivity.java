@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
+import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.ui.view.CheckSwitchButton;
 import com.soyomaker.handsgo.ui.view.ColorPickerDialog;
 import com.soyomaker.handsgo.ui.view.ColorPickerDialog.OnColorChangedListener;
+import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
 import com.soyomaker.handsgo.util.DialogUtils;
 import com.soyomaker.handsgo.util.DialogUtils.ItemSelectedListener;
@@ -84,7 +87,7 @@ public class OptionsActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                showChooseChessBoardColorDialog();
+                showChooseChessBoardStyleDialog();
             }
         });
 
@@ -112,6 +115,58 @@ public class OptionsActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.about_app).setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                if (!AppConstants.DEBUG) {
+                    return false;
+                }
+                Intent intent = new Intent(OptionsActivity.this, LaboratoryActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+    }
+
+    private void updateLoginUI() {
+        if (CloudManager.getInstance().hasLogin()) {
+            ((TextView) findViewById(R.id.txt_user_name)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.txt_user_name)).setText(CloudManager.getInstance()
+                    .getLoginUser().getName());
+            ((TextView) findViewById(R.id.txt_point)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.txt_point)).setText(String.format(
+                    getString(R.string.local_point), AppPrefrence.getPoints(this)));
+            findViewById(R.id.btn_signin).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_signin).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    CloudManager.getInstance().signin(OptionsActivity.this);
+                    updateLoginUI();
+                }
+            });
+            findViewById(R.id.btn_login).setVisibility(View.GONE);
+        } else {
+            ((TextView) findViewById(R.id.txt_user_name)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.txt_point)).setVisibility(View.GONE);
+            findViewById(R.id.btn_signin).setVisibility(View.GONE);
+            findViewById(R.id.btn_login).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(OptionsActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        updateLoginUI();
     }
 
     private void showChooseChessPieceStyleDialog() {
@@ -122,6 +177,21 @@ public class OptionsActivity extends BaseActivity {
                     @Override
                     public void onItemSelected(DialogInterface dialog, String text, int which) {
                         AppPrefrence.saveChessPieceStyle(OptionsActivity.this, which);
+                    }
+                });
+    }
+
+    private void showChooseChessBoardStyleDialog() {
+        DialogUtils.showSingleChoiceItemsDialog(this,
+                R.string.chess_board_style_choose_dialog_title, R.array.chess_board_style,
+                AppPrefrence.getChessBoardStyle(this), new ItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(DialogInterface dialog, String text, int which) {
+                        AppPrefrence.saveChessBoardStyle(OptionsActivity.this, which);
+                        if (which == AppConstants.CHESS_BOARD_STYLE_COLOR) {
+                            showChooseChessBoardColorDialog();
+                        }
                     }
                 });
     }
