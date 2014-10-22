@@ -52,11 +52,6 @@
             android:name="com.soyomaker.handsgo.ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.soyomaker.handsgo.ui.ManualActivity"
@@ -72,6 +67,17 @@
         <activity
             android:name="com.soyomaker.handsgo.ui.ManualInfoActivity"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.soyomaker.handsgo.ui.SplashActivity"
+            android:alwaysRetainTaskState="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashActivityTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.soyomaker.handsgo.ui.OptionsActivity"
@@ -234,6 +240,19 @@
         <!-- 注册Service，应用下载所需 -->
         <service android:name="net.cavas.show.MonitorService" >
         </service>
+
+        <!-- 多盟配置 -->
+        <activity
+            android:name="cn.domob.android.ads.DomobActivity"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <!-- 多盟积分墙v1.1.1 (开始) -->
+        <activity
+            android:name="cn.domob.download.OActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>
