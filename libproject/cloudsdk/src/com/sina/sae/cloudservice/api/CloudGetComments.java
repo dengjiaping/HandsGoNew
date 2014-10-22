@@ -13,14 +13,12 @@ import com.google.gson.reflect.TypeToken;
 import com.sina.sae.cloudservice.callback.QueryCallback;
 import com.sina.sae.cloudservice.exception.CloudServiceException;
 
-public class CloudLogin {
+public class CloudGetComments {
 
-	public static List<Map<String, String>> login(String name, String password)
-			throws CloudServiceException {
+	public static List<Map<String, String>> getComments(String sgfUrl) throws CloudServiceException {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("name", name);
-		params.put("password", password);
-		JsonObject json = CloudClient.get(CloudClient.REST_LOGIN, params, null);
+		params.put("sgfurl", sgfUrl);
+		JsonObject json = CloudClient.get(CloudClient.REST_GET_COMMENTS, params, null);
 		int code = json.get("code").getAsInt();
 		String message = json.get("message").getAsString();
 		if (0 == code && "success".equalsIgnoreCase(message)) {
@@ -29,18 +27,17 @@ public class CloudLogin {
 			return gson.fromJson(data, new TypeToken<List<Map<String, String>>>() {
 			}.getType());
 		} else {
-			String errorMessage = "CloudLogin.login(" + name + "," + password + ") Error!Code: "
-					+ code + " message:" + message;
+			String errorMessage = "CloudComment.getComments(" + sgfUrl + ") Error!Code: " + code
+					+ " message:" + message;
 			Log.e("CloudService", errorMessage);
 			throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
 		}
 	}
 
-	public static <T> void login(String name, String password, QueryCallback callback)
+	public static <T> void getComments(String sgfUrl, QueryCallback callback)
 			throws CloudServiceException {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("name", name);
-		params.put("password", password);
-		CloudClient.get(CloudClient.REST_LOGIN, params, callback);
+		params.put("sgfurl", sgfUrl);
+		CloudClient.get(CloudClient.REST_GET_COMMENTS, params, callback);
 	}
 }
