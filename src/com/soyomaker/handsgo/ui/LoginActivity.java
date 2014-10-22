@@ -12,8 +12,12 @@ import android.widget.Toast;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.model.User;
+import com.soyomaker.handsgo.util.AppPrefrence;
 
 public class LoginActivity extends BaseActivity {
+
+    private EditText mEdtName;
+    private EditText mEdtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +32,37 @@ public class LoginActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.title_login);
 
+        mEdtName = (EditText) findViewById(R.id.edt_name);
+        String name = AppPrefrence.getUserName(this);
+        if (TextUtils.isEmpty(name)) {
+            mEdtName.setText(name);
+        }
+        mEdtPassword = (EditText) findViewById(R.id.edt_password);
+        String password = AppPrefrence.getUserPassword(this);
+        if (TextUtils.isEmpty(password)) {
+            mEdtPassword.setText(password);
+        }
         findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                EditText edtName = (EditText) findViewById(R.id.edt_name);
-                EditText edtPassword = (EditText) findViewById(R.id.edt_password);
-                final String name = edtName.getText().toString();
-                final String password = edtPassword.getText().toString();
+                final String name = mEdtName.getText().toString();
+                final String password = mEdtPassword.getText().toString();
                 if (TextUtils.isEmpty(name)) {
-                    // TODO toast
+                    Toast.makeText(LoginActivity.this, R.string.toast_user_name_null,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    // TODO toast
+                    Toast.makeText(LoginActivity.this, R.string.toast_user_password_null,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 new Thread() {
 
                     public void run() {
-                        User user = CloudManager.getInstance().login(LoginActivity.this, name,
-                                password);
+                        final User user = CloudManager.getInstance().login(LoginActivity.this,
+                                name, password);
                         if (user != null) {
                             runOnUiThread(new Runnable() {
 

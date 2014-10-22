@@ -28,7 +28,6 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
     }
 
     @Override
@@ -57,10 +56,6 @@ public class SearchFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
-    }
-
-    private void initData() {
-        // TODO
     }
 
     @Override

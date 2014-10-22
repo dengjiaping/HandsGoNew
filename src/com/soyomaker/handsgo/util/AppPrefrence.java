@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 
 public class AppPrefrence {
 
+    private static final String AD_OFF_KEY = "AD_OFF";
+
     private static final String SHOW_NUMBER_KEY = "SHOW_NUMBER";
 
     private static final String SHOW_COORDINATE_KEY = "SHOW_COORDINATE";
@@ -41,6 +43,18 @@ public class AppPrefrence {
 
     private static int sPieceStyle = -1;
 
+    public static final void saveAdOff(Context context, boolean adOff) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor editor = preferences.edit();
+        editor.putBoolean(AD_OFF_KEY, adOff);
+        editor.commit();
+    }
+
+    public static final boolean getAdOff(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(AD_OFF_KEY, false);
+    }
+
     public static final String getUserName(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(USER_NAME_KEY, "");
@@ -65,16 +79,16 @@ public class AppPrefrence {
         editor.commit();
     }
 
-    public static final void savePoints(Context context, int points) {
+    public static final void savePoints(Context context, long points) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Editor editor = preferences.edit();
-        editor.putInt(POINTS_KEY, points);
+        editor.putLong(POINTS_KEY, points);
         editor.commit();
     }
 
-    public static final int getPoints(Context context) {
+    public static final long getPoints(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getInt(POINTS_KEY, 0);
+        return preferences.getLong(POINTS_KEY, 0);
     }
 
     public static final void saveChessSource(Context context, int chessSource) {

@@ -17,6 +17,7 @@ import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.model.Comment;
 import com.soyomaker.handsgo.model.User;
 import com.soyomaker.handsgo.util.AppConstants;
+import com.soyomaker.handsgo.util.AppPrefrence;
 
 public class CloudManager {
 
@@ -149,6 +150,9 @@ public class CloudManager {
      */
     public void signin(Context context) {
         mLoginUser = null;
+
+        AppPrefrence.saveUserName(context, "");
+        AppPrefrence.saveUserPassword(context, "");
     }
 
     /**
@@ -195,6 +199,8 @@ public class CloudManager {
             if (!TextUtils.isEmpty(gender) && TextUtils.isDigitsOnly(gender)) {
                 mLoginUser.setGender(Integer.valueOf(gender));
             }
+            AppPrefrence.saveUserName(context, name);
+            AppPrefrence.saveUserPassword(context, password);
             return mLoginUser;
         } else {
             return null;

@@ -44,24 +44,29 @@ public class RegisterActivity extends BaseActivity {
                 final String gender = (genderGroup.getCheckedRadioButtonId() == R.id.male ? "0"
                         : "1");
                 if (TextUtils.isEmpty(name)) {
-                    // TODO toast
+                    Toast.makeText(RegisterActivity.this, R.string.toast_user_name_null,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
-                    // TODO toast
+                    Toast.makeText(RegisterActivity.this, R.string.toast_user_email_null,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    // TODO toast
+                    Toast.makeText(RegisterActivity.this, R.string.toast_user_password_null,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(reEnterPassword)) {
-                    // TODO toast
+                    Toast.makeText(RegisterActivity.this,
+                            R.string.toast_user_re_enter_password_null, Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (!edtPassword.getText().toString()
                         .equals(edtReEnterPassword.getText().toString())) {
-                    // TODO toast
+                    Toast.makeText(RegisterActivity.this, R.string.toast_user_password_not_equal,
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 new Thread() {

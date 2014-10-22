@@ -1,6 +1,5 @@
 package com.soyomaker.handsgo.model;
 
-import java.sql.Date;
 
 public class Comment {
 

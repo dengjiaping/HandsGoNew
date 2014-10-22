@@ -1,9 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
-import net.youmi.android.AdManager;
-import net.youmi.android.offers.OffersManager;
-import net.youmi.android.offers.PointsChangeNotify;
-import net.youmi.android.offers.PointsManager;
+import ad.soyomaker.handsgo.util.L;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.adsmogo.offers.MogoOffer;
+import com.adsmogo.offers.MogoOfferPointCallBack;
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
@@ -32,7 +31,7 @@ import com.umeng.update.UmengUpdateAgent;
  * 
  */
 public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener,
-        PointsChangeNotify {
+        MogoOfferPointCallBack {
 
     private static final String TAG = "MainActivity";
 
@@ -49,17 +48,15 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
         initView();
 
-        // 有米广告初始化
-        AdManager.getInstance(this).init(AppConstants.APP_ID, AppConstants.APP_SECRET, false);
+        // 芒果日志开启
+        L.debug = AppConstants.DEBUG;
 
-        OffersManager.getInstance(this).onAppLaunch();
+        // 芒果广告初始化
+        MogoOffer.init(this, AppConstants.MOGO_ID);
 
-        PointsManager.getInstance(this).registerNotify(this);
+        MogoOffer.addPointCallBack(this);
 
-        // 关闭积分到账悬浮框提示功能
-        PointsManager.setEnableEarnPointsToastTips(false);
-
-        AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
+        MogoOffer.setMogoOfferScoreVisible(false);
 
         // 友盟意见反馈初始化
         mFeedbackAgent = new FeedbackAgent(MainActivity.this);
@@ -75,11 +72,6 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
             new Thread() {
                 public void run() {
-                    // 查询有米积分
-                    int points = PointsManager.getInstance(MainActivity.this).queryPoints();
-                    LogUtil.e(TAG, "onCreate 现有积分余额：" + points);
-                    AppPrefrence.savePoints(MainActivity.this, points);
-
                     // 友盟在线参数更新
                     MobclickAgent.updateOnlineConfig(MainActivity.this);
                 }
@@ -87,12 +79,14 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
         }
     }
 
+    public void onResume() {
+        MogoOffer.RefreshPoints(this);
+        super.onResume();
+    }
+
     public void onDestory() {
+        MogoOffer.clear(this);
         super.onDestroy();
-
-        OffersManager.getInstance(this).onAppExit();
-
-        PointsManager.getInstance(this).unRegisterNotify(this);
     }
 
     private void initView() {
@@ -151,10 +145,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
         }
             break;
         case R.id.action_recommend: {
-            // 应用推荐
-            // DiyManager.showRecommendWall(this);
-            // 积分墙
-            OffersManager.getInstance(this).showOffersWall();
+            MogoOffer.showOffer(this);
         }
             break;
         }
@@ -220,7 +211,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
     }
 
     @Override
-    public void onPointBalanceChange(final int arg0) {
+    public void updatePoint(final long arg0) {
         new Thread() {
             public void run() {
                 LogUtil.e(TAG, "onPointBalanceChange 当前积分余额：" + arg0);

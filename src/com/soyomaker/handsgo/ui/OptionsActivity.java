@@ -53,6 +53,17 @@ public class OptionsActivity extends BaseActivity {
                 showChooseChessSourceDialog();
             }
         });
+
+        CheckSwitchButton adCheck = (CheckSwitchButton) findViewById(R.id.ad_off);
+        adCheck.setChecked(AppPrefrence.getAdOff(this));
+        adCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AppPrefrence.saveAdOff(OptionsActivity.this, isChecked);
+            }
+        });
+
         CheckSwitchButton showNumberCheck = (CheckSwitchButton) findViewById(R.id.show_number);
         showNumberCheck.setChecked(AppPrefrence.getShowNumber(this));
         showNumberCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
