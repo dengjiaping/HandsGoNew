@@ -58,15 +58,19 @@ public class CloudObject {
         String data = gson.toJson(value);
         params.put("data", data);
         JsonObject json = CloudClient.post(CloudClient.REST_OBJECT, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (code == 0 && "success".equalsIgnoreCase(message)) {
-            return true;
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (code == 0 && "success".equalsIgnoreCase(message)) {
+                return true;
+            } else {
+                String errorMessage = "CloudService.save(" + key + "," + value + ") Error!Code: "
+                        + code + "  Message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudService.save(" + key + "," + value + ") Error!Code: "
-                    + code + "  Message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return false;
         }
     }
 
@@ -118,17 +122,21 @@ public class CloudObject {
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", key);
         JsonObject json = CloudClient.get(CloudClient.REST_OBJECT, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonElement data = json.get("data");
-            Gson gson = new Gson();
-            return gson.fromJson(data, clazz);
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                return gson.fromJson(data, clazz);
+            } else {
+                String errorMessage = "CloudService.get(" + key + "," + clazz + ") Error!Code: "
+                        + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudService.get(" + key + "," + clazz + ") Error!Code: " + code
-                    + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return null;
         }
     }
 
@@ -187,22 +195,26 @@ public class CloudObject {
         params.put("prefix", prefix);
         params.put("count", count + "");
         JsonObject json = CloudClient.get(CloudClient.REST_OBJECT, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonElement data = json.get("data");
-            Gson gson = new Gson();
-            Map<String, String> dataMap = gson.fromJson(data, Map.class);
-            Set<String> keys = dataMap.keySet();
-            for (String key : keys) {
-                ret.put(key, gson.fromJson(dataMap.get(key), clazz));
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                Map<String, String> dataMap = gson.fromJson(data, Map.class);
+                Set<String> keys = dataMap.keySet();
+                for (String key : keys) {
+                    ret.put(key, gson.fromJson(dataMap.get(key), clazz));
+                }
+                return ret;
+            } else {
+                String errorMessage = "CloudService.list(" + prefix + "," + count + "," + clazz
+                        + ") Error!Code: " + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
             }
-            return ret;
         } else {
-            String errorMessage = "CloudService.list(" + prefix + "," + count + "," + clazz
-                    + ") Error!Code: " + code + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return null;
         }
     }
 
@@ -258,17 +270,20 @@ public class CloudObject {
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", key);
         JsonObject json = CloudClient.delete(CloudClient.REST_OBJECT, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            return true;
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                return true;
+            } else {
+                String errorMessage = "CloudService.delete(" + key + ") Error!Code: " + code
+                        + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudService.delete(" + key + ") Error!Code: " + code
-                    + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return false;
         }
-
     }
 
     /**
@@ -284,5 +299,4 @@ public class CloudObject {
         params.put("key", key);
         CloudClient.delete(CloudClient.REST_OBJECT, params, callback);
     }
-
 }

@@ -15,29 +15,33 @@ import com.sina.sae.cloudservice.exception.CloudServiceException;
 
 public class CloudGetComments {
 
-	public static List<Map<String, String>> getComments(String sgfUrl) throws CloudServiceException {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("sgfurl", sgfUrl);
-		JsonObject json = CloudClient.get(CloudClient.REST_GET_COMMENTS, params, null);
-		int code = json.get("code").getAsInt();
-		String message = json.get("message").getAsString();
-		if (0 == code && "success".equalsIgnoreCase(message)) {
-			JsonElement data = json.get("data");
-			Gson gson = new Gson();
-			return gson.fromJson(data, new TypeToken<List<Map<String, String>>>() {
-			}.getType());
-		} else {
-			String errorMessage = "CloudComment.getComments(" + sgfUrl + ") Error!Code: " + code
-					+ " message:" + message;
-			Log.e("CloudService", errorMessage);
-			throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
-		}
-	}
+    public static List<Map<String, String>> getComments(String sgfUrl) throws CloudServiceException {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("sgfurl", sgfUrl);
+        JsonObject json = CloudClient.get(CloudClient.REST_GET_COMMENTS, params, null);
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                return gson.fromJson(data, new TypeToken<List<Map<String, String>>>() {
+                }.getType());
+            } else {
+                String errorMessage = "CloudComment.getComments(" + sgfUrl + ") Error!Code: "
+                        + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
+        } else {
+            return null;
+        }
+    }
 
-	public static <T> void getComments(String sgfUrl, QueryCallback callback)
-			throws CloudServiceException {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("sgfurl", sgfUrl);
-		CloudClient.get(CloudClient.REST_GET_COMMENTS, params, callback);
-	}
+    public static <T> void getComments(String sgfUrl, QueryCallback callback)
+            throws CloudServiceException {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("sgfurl", sgfUrl);
+        CloudClient.get(CloudClient.REST_GET_COMMENTS, params, callback);
+    }
 }

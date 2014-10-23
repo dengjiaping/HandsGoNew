@@ -60,15 +60,19 @@ public class CloudFile {
      */
     public static boolean upload(String localpath, String cloudpath) throws CloudServiceException {
         JsonObject json = CloudClient.upload(CloudClient.REST_FILE, localpath, cloudpath, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            return true;
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                return true;
+            } else {
+                String errorMessage = "CloudFile.upload(" + localpath + "," + cloudpath
+                        + ") Error!Code: " + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudFile.upload(" + localpath + "," + cloudpath
-                    + ") Error!Code: " + code + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return false;
         }
     }
 
@@ -98,15 +102,19 @@ public class CloudFile {
         Map<String, String> params = new HashMap<String, String>();
         params.put("path", cloudpath);
         JsonObject json = CloudClient.delete(CloudClient.REST_FILE, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            return true;
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                return true;
+            } else {
+                String errorMessage = "CloudFile.delete(" + cloudpath + ") Error!Code: " + code
+                        + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudFile.delete(" + cloudpath + ") Error!Code: " + code
-                    + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return false;
         }
     }
 
@@ -136,17 +144,21 @@ public class CloudFile {
         Map<String, String> params = new HashMap<String, String>();
         params.put("path", cloudpath);
         JsonObject json = CloudClient.get(CloudClient.REST_FILE, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonElement data = json.get("data");
-            Gson gson = new Gson();
-            return gson.fromJson(data, CloudFile.class);
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                return gson.fromJson(data, CloudFile.class);
+            } else {
+                String errorMessage = "CloudFile.fetch(" + cloudpath + ") Error!Code: " + code
+                        + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudFile.fetch(" + cloudpath + ") Error!Code: " + code
-                    + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return null;
         }
     }
 
@@ -190,18 +202,22 @@ public class CloudFile {
         params.put("prefix", prefix);
         params.put("count", count + "");
         JsonObject json = CloudClient.get(CloudClient.REST_FILE, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonElement data = json.get("data");
-            Gson gson = new Gson();
-            return gson.fromJson(data, new TypeToken<List<CloudFile>>() {
-            }.getType());
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                return gson.fromJson(data, new TypeToken<List<CloudFile>>() {
+                }.getType());
+            } else {
+                String errorMessage = "CloudFile.list(" + prefix + "," + count + ") Error!Code: "
+                        + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudFile.list(" + prefix + "," + count + ") Error!Code: "
-                    + code + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return null;
         }
     }
 
@@ -253,5 +269,4 @@ public class CloudFile {
     public String toString() {
         return "{\"filepath\":\"" + filepath + "\", \"url\"" + url + "\"}";
     }
-
 }

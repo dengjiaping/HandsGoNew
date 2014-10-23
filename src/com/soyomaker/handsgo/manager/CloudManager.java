@@ -100,10 +100,9 @@ public class CloudManager {
             } else {
                 mCommentMap.put(sgfUrl, comments);
             }
-            return getComments(sgfUrl);
         }
 
-        return null;
+        return getComments(sgfUrl);
     }
 
     public boolean sendComment(Context context, Comment comment) {

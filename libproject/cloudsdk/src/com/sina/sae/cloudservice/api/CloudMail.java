@@ -41,15 +41,19 @@ public class CloudMail {
         if (null == params)
             return false;
         JsonObject json = CloudClient.post(CloudClient.REST_MAIL, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            return true;
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                return true;
+            } else {
+                String errorMessage = "CloudMail.send() Error!Params:" + toString() + "  Code: "
+                        + code + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudMail.send() Error!Params:" + toString() + "  Code: " + code
-                    + " message:" + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return false;
         }
     }
 
@@ -211,5 +215,4 @@ public class CloudMail {
                 + ", contentType=" + contentType + ", smtpHost=" + smtpHost + ", chartset="
                 + chartset + ", tls=" + tls + "]";
     }
-
 }

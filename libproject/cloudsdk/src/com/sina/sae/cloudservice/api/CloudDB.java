@@ -36,18 +36,22 @@ public class CloudDB {
         Map<String, String> params = new HashMap<String, String>();
         params.put("sql", sql);
         JsonObject json = CloudClient.get(CloudClient.REST_DB, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonElement data = json.get("data");
-            Gson gson = new Gson();
-            return gson.fromJson(data, new TypeToken<List<Map<String, String>>>() {
-            }.getType());
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonElement data = json.get("data");
+                Gson gson = new Gson();
+                return gson.fromJson(data, new TypeToken<List<Map<String, String>>>() {
+                }.getType());
+            } else {
+                String errorMessage = "CloudDB.query(" + sql + ") Error!Code: " + code
+                        + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudDB.query(" + sql + ") Error!Code: " + code + " message:"
-                    + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return null;
         }
     }
 
@@ -78,16 +82,20 @@ public class CloudDB {
         Map<String, String> params = new HashMap<String, String>();
         params.put("sql", sql);
         JsonObject json = CloudClient.post(CloudClient.REST_DB, params, null);
-        int code = json.get("code").getAsInt();
-        String message = json.get("message").getAsString();
-        if (0 == code && "success".equalsIgnoreCase(message)) {
-            JsonObject data = json.get("data").getAsJsonObject();
-            return data.get("rows").getAsInt();
+        if (json != null) {
+            int code = json.get("code").getAsInt();
+            String message = json.get("message").getAsString();
+            if (0 == code && "success".equalsIgnoreCase(message)) {
+                JsonObject data = json.get("data").getAsJsonObject();
+                return data.get("rows").getAsInt();
+            } else {
+                String errorMessage = "CloudDB.execute(" + sql + ") Error!Code: " + code
+                        + " message:" + message;
+                Log.e("CloudService", errorMessage);
+                throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            }
         } else {
-            String errorMessage = "CloudDB.execute(" + sql + ") Error!Code: " + code + " message:"
-                    + message;
-            Log.e("CloudService", errorMessage);
-            throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+            return -1;
         }
     }
 
@@ -104,5 +112,4 @@ public class CloudDB {
         params.put("sql", sql);
         CloudClient.post(CloudClient.REST_DB, params, callback);
     }
-
 }
