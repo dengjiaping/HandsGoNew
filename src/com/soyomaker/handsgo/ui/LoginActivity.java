@@ -36,12 +36,12 @@ public class LoginActivity extends BaseActivity {
 
         mEdtName = (EditText) findViewById(R.id.edt_name);
         String name = AppPrefrence.getUserName(this);
-        if (TextUtils.isEmpty(name)) {
+        if (!TextUtils.isEmpty(name)) {
             mEdtName.setText(name);
         }
         mEdtPassword = (EditText) findViewById(R.id.edt_password);
         String password = AppPrefrence.getUserPassword(this);
-        if (TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(password)) {
             mEdtPassword.setText(password);
         }
         mLoginButton = (Button) findViewById(R.id.login_btn);

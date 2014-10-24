@@ -5,5 +5,5 @@
     android:layout_height="48dp"
     android:layout_margin="8dp"
     android:background="@drawable/selector_open_local_sgf"
-    android:text="@string/comment_btn"
+    android:text="@string/btn_comment"
     android:textSize="20sp" />

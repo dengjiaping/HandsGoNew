@@ -148,7 +148,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
         // 棋盘大小
         int boardSize = Math.min(dm.widthPixels, dm.heightPixels);
         // 棋子大小
-        int cubicSize = Math.round(boardSize / (size + 1));
+        int cubicSize = Math.round(boardSize * 1.0f / (size + 1));
 
         mBoardModel = new DefaultBoardModel(size);
         mGoBoard = new GoBoard(this, mBoardModel, cubicSize, cubicSize / 2, cubicSize / 2);
@@ -374,7 +374,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
     private void sendComment() {
         if (CloudManager.getInstance().hasLogin()) {
             final View view = LayoutInflater.from(ManualActivity.this).inflate(
-                    R.layout.vw_dialog_edittext, null);
+                    R.layout.dialog_comment_edt, null);
             final EditText editText = (EditText) view.findViewById(R.id.editText);
             new AlertDialog.Builder(ManualActivity.this).setTitle(R.string.comment_dialog_title)
                     .setIcon(R.drawable.ic_launcher).setView(view)

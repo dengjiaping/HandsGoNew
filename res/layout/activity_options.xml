@@ -6,7 +6,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" >
 
         <RelativeLayout
             android:id="@+id/layout_user_info"
@@ -15,14 +17,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
             android:orientation="vertical" >
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:layout_margin="8dp"
                 android:background="@drawable/selector_open_local_sgf"
                 android:text="@string/btn_login"
                 android:textSize="20sp"
@@ -30,31 +30,49 @@
 
             <TextView
                 android:id="@+id/txt_user_name"
-                android:layout_width="180dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/btn_signin"
+                android:gravity="left"
+                android:singleLine="true"
                 android:textColor="#ff000000"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:visibility="visible" />
 
             <TextView
                 android:id="@+id/txt_point"
-                android:layout_width="180dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_user_name"
+                android:layout_marginTop="12dp"
+                android:layout_toLeftOf="@+id/btn_signin"
+                android:gravity="left"
+                android:singleLine="true"
                 android:textColor="#ff303030"
                 android:textSize="16sp"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/btn_signin"
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:layout_alignTop="@id/txt_user_name"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@id/txt_user_name"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/selector_open_local_sgf"
                 android:text="@string/btn_signin"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_password"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/btn_signin"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/selector_open_local_sgf"
+                android:text="@string/btn_password"
+                android:textSize="16sp"
                 android:visibility="visible" />
         </RelativeLayout>
 

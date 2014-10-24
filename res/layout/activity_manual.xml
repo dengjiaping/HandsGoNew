@@ -157,7 +157,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1.0"
             android:background="@drawable/selector_open_local_sgf"
-            android:text="@string/comment_btn"
+            android:text="@string/btn_comment"
             android:textSize="16sp" />
 
         <Button
@@ -167,7 +167,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1.0"
             android:background="@drawable/selector_open_local_sgf"
-            android:text="@string/collect_btn"
+            android:text="@string/btn_collect"
             android:textSize="16sp" />
     </LinearLayout>
 

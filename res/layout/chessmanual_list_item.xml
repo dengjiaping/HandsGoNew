@@ -126,7 +126,7 @@
                 android:layout_weight="1.0"
                 android:background="@null"
                 android:padding="4dp"
-                android:text="@string/button_collect"
+                android:text="@string/btn_collect"
                 android:textColor="@drawable/selector_collect_text"
                 android:textSize="14sp" />
 
@@ -137,7 +137,7 @@
                 android:layout_weight="1.0"
                 android:background="@null"
                 android:padding="4dp"
-                android:text="@string/button_delete"
+                android:text="@string/btn_delete"
                 android:textColor="@drawable/selector_collect_text"
                 android:textSize="14sp" />
         </LinearLayout>

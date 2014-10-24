@@ -5,11 +5,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.soyomaker.handsgo.R;
@@ -32,6 +36,11 @@ import com.soyomaker.handsgo.util.DialogUtils.ItemSelectedListener;
 public class OptionsActivity extends BaseActivity {
 
     private ColorPickerDialog mChessBoardColorPickerDialog;
+    private TextView mUserNameTextView;
+    private TextView mUserPointTextView;
+    private Button mSigninButton;
+    private Button mPasswordButton;
+    private Button mLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,18 +148,23 @@ public class OptionsActivity extends BaseActivity {
                 return false;
             }
         });
+
+        mUserNameTextView = ((TextView) findViewById(R.id.txt_user_name));
+        mUserPointTextView = ((TextView) findViewById(R.id.txt_point));
+        mSigninButton = (Button) findViewById(R.id.btn_signin);
+        mPasswordButton = (Button) findViewById(R.id.btn_password);
+        mLoginButton = (Button) findViewById(R.id.btn_login);
     }
 
     private void updateLoginUI() {
         if (CloudManager.getInstance().hasLogin()) {
-            ((TextView) findViewById(R.id.txt_user_name)).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.txt_user_name)).setText(CloudManager.getInstance()
-                    .getLoginUser().getName());
-            ((TextView) findViewById(R.id.txt_point)).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.txt_point)).setText(String.format(
-                    getString(R.string.local_point), AppPrefrence.getPoints(this)));
-            findViewById(R.id.btn_signin).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_signin).setOnClickListener(new View.OnClickListener() {
+            mUserNameTextView.setVisibility(View.VISIBLE);
+            mUserNameTextView.setText(CloudManager.getInstance().getLoginUser().getName());
+            mUserPointTextView.setVisibility(View.VISIBLE);
+            mUserPointTextView.setText(String.format(getString(R.string.local_point),
+                    AppPrefrence.getPoints(this)));
+            mSigninButton.setVisibility(View.VISIBLE);
+            mSigninButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -158,13 +172,22 @@ public class OptionsActivity extends BaseActivity {
                     updateLoginUI();
                 }
             });
-            findViewById(R.id.btn_login).setVisibility(View.GONE);
+            mPasswordButton.setVisibility(View.VISIBLE);
+            mPasswordButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    showChangePasswordDialog();
+                }
+            });
+            mLoginButton.setVisibility(View.GONE);
         } else {
-            ((TextView) findViewById(R.id.txt_user_name)).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.txt_point)).setVisibility(View.GONE);
-            findViewById(R.id.btn_signin).setVisibility(View.GONE);
-            findViewById(R.id.btn_login).setVisibility(View.VISIBLE);
-            findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+            mUserNameTextView.setVisibility(View.GONE);
+            mUserPointTextView.setVisibility(View.GONE);
+            mSigninButton.setVisibility(View.GONE);
+            mPasswordButton.setVisibility(View.GONE);
+            mLoginButton.setVisibility(View.VISIBLE);
+            mLoginButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -178,6 +201,44 @@ public class OptionsActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         updateLoginUI();
+    }
+
+    private void showChangePasswordDialog() {
+        if (CloudManager.getInstance().hasLogin()) {
+            final View view = LayoutInflater.from(OptionsActivity.this).inflate(
+                    R.layout.dialog_reset_password_edt, null);
+            final EditText edtOldPassword = (EditText) view.findViewById(R.id.edt_password);
+            final EditText edtNewPassword = (EditText) view.findViewById(R.id.edt_new_password);
+            new AlertDialog.Builder(OptionsActivity.this)
+                    .setTitle(R.string.password_dialog_title)
+                    .setIcon(R.drawable.ic_launcher)
+                    .setView(view)
+                    .setPositiveButton(R.string.password_dialog_ok,
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String oldPassword = edtOldPassword.getText().toString();
+                                    String newPassword = edtNewPassword.getText().toString();
+                                    if (TextUtils.isEmpty(oldPassword)) {
+                                        // TODO toast
+                                        return;
+                                    }
+                                    if (TextUtils.isEmpty(newPassword)) {
+                                        // TODO toast
+                                        return;
+                                    }
+                                    if (oldPassword.equals(newPassword)) {
+                                        // TODO toast
+                                        return;
+                                    }
+                                    // TODO 调用接口
+                                }
+                            }).setNegativeButton(R.string.password_dialog_cancel, null).show();
+        } else {
+            Intent intent = new Intent(OptionsActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void showChooseChessPieceStyleDialog() {
