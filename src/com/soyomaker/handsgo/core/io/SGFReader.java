@@ -10,7 +10,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.soyomaker.handsgo.core.sgf.SGFTree;
-import com.soyomaker.handsgo.db.DBService;
+import com.soyomaker.handsgo.manager.HistoryManager;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.Match;
 import com.soyomaker.handsgo.model.MatchInfo;
@@ -85,7 +85,7 @@ public class SGFReader {
 			if (!TextUtils.isEmpty(match.getSgfSource())) {
 				chessManual.setSgfContent(match.getSgfSource());
 			}
-			DBService.saveHistoryChessManual(chessManual);
+			HistoryManager.getInstance().addHistory(chessManual);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

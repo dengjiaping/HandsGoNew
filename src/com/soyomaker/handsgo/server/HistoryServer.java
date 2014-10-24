@@ -15,10 +15,18 @@ public class HistoryServer implements IChessManualServer {
 	private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
 
 	public HistoryServer() {
+		getChessManuals();
 	}
 
 	public boolean isHistory(ChessManual chessManual) {
 		return mChessManuals.contains(chessManual);
+	}
+
+	public void addHistory(ChessManual chessManual) {
+		if (!mChessManuals.contains(chessManual)) {
+			DBService.saveHistoryChessManual(chessManual);
+			mChessManuals.add(chessManual);
+		}
 	}
 
 	@Override
