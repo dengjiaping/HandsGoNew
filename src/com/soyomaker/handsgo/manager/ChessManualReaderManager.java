@@ -16,88 +16,78 @@ import com.soyomaker.handsgo.server.IChessManualServer;
  */
 public class ChessManualReaderManager {
 
-    private static ChessManualReaderManager mInstance = new ChessManualReaderManager();
-    private Handler mMainHandler = new Handler(Looper.getMainLooper());
+	private static ChessManualReaderManager mInstance = new ChessManualReaderManager();
+	private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
-    private ChessManualReaderManager() {
-    }
+	private ChessManualReaderManager() {
+	}
 
-    public static ChessManualReaderManager getInstance() {
-        return mInstance;
-    }
+	public static ChessManualReaderManager getInstance() {
+		return mInstance;
+	}
 
-    public boolean isRefreshing() {
-        final IChessManualServer chessManualServer = ChessManualServerManager.getInstance()
-                .getChessManualServer();
-        return chessManualServer.isRefreshing();
-    }
+	public boolean isRefreshing(IChessManualServer server) {
+		return server.isRefreshing();
+	}
 
-    public boolean isLoadingMore() {
-        final IChessManualServer chessManualServer = ChessManualServerManager.getInstance()
-                .getChessManualServer();
-        return chessManualServer.isLoadingMore();
-    }
+	public boolean isLoadingMore(IChessManualServer server) {
+		return server.isLoadingMore();
+	}
 
-    public void refreshChessManuals(final IChessManualsReaderListener listener) {
-        final IChessManualServer chessManualServer = ChessManualServerManager.getInstance()
-                .getChessManualServer();
-        new Thread() {
+	public void refreshChessManuals(final IChessManualServer server,
+			final IChessManualsReaderListener listener) {
+		new Thread() {
 
-            public void run() {
-                boolean success = chessManualServer.refresh();
-                if (success) {
-                    mMainHandler.post(new Runnable() {
+			public void run() {
+				final boolean success = server.refresh();
+				mMainHandler.post(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            listener.readSuccess(chessManualServer.getChessManuals());
-                        }
-                    });
-                } else {
-                    mMainHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						if (success) {
+							if (listener != null) {
+								listener.readSuccess(server.getChessManuals());
+							}
+						} else {
+							if (listener != null) {
+								listener.readFail();
+							}
+						}
+					}
+				});
+			}
+		}.start();
+	}
 
-                        @Override
-                        public void run() {
-                            listener.readFail();
-                        }
-                    });
-                }
-            }
-        }.start();
-    }
+	public void loadMoreChessManuals(final IChessManualServer server,
+			final IChessManualsReaderListener listener) {
+		new Thread() {
 
-    public void loadMoreChessManuals(final IChessManualsReaderListener listener) {
-        final IChessManualServer chessManualServer = ChessManualServerManager.getInstance()
-                .getChessManualServer();
-        new Thread() {
+			public void run() {
+				final boolean success = server.loadMore();
+				mMainHandler.post(new Runnable() {
 
-            public void run() {
-                boolean success = chessManualServer.loadMore();
-                if (success) {
-                    mMainHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						if (success) {
+							if (listener != null) {
+								listener.readSuccess(server.getChessManuals());
+							}
+						} else {
+							if (listener != null) {
+								listener.readFail();
+							}
+						}
+					}
+				});
+			}
+		}.start();
+	}
 
-                        @Override
-                        public void run() {
-                            listener.readSuccess(chessManualServer.getChessManuals());
-                        }
-                    });
-                } else {
-                    mMainHandler.post(new Runnable() {
+	public interface IChessManualsReaderListener {
 
-                        @Override
-                        public void run() {
-                            listener.readFail();
-                        }
-                    });
-                }
-            }
-        }.start();
-    }
+		public void readSuccess(ArrayList<ChessManual> chessManuals);
 
-    public interface IChessManualsReaderListener {
-
-        public void readSuccess(ArrayList<ChessManual> chessManuals);
-
-        public void readFail();
-    }
+		public void readFail();
+	}
 }

@@ -1,5 +1,6 @@
 package com.soyomaker.handsgo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,41 +9,65 @@ import java.util.ArrayList;
  * @author like
  * 
  */
-public class Group {
+public class Group implements Serializable {
 
-    public static final int DEFAULT_GROUP = 1;
+	private static final long serialVersionUID = 1L;
 
-    private int mId = -1;
+	public static final int DEFAULT_GROUP = 1;
 
-    private String mName;
+	private int mId = -1;
 
-    private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
+	private String mName;
 
-    public int getId() {
-        return mId;
-    }
+	private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
 
-    public void setId(int mId) {
-        this.mId = mId;
-    }
+	public int getId() {
+		return mId;
+	}
 
-    public String getName() {
-        return mName;
-    }
+	public void setId(int mId) {
+		this.mId = mId;
+	}
 
-    public void setName(String mName) {
-        this.mName = mName;
-    }
+	public String getName() {
+		return mName;
+	}
 
-    public ArrayList<ChessManual> getChessManuals() {
-        return mChessManuals;
-    }
+	public void setName(String mName) {
+		this.mName = mName;
+	}
 
-    public void setChessManuals(ArrayList<ChessManual> mChessManuals) {
-        this.mChessManuals = mChessManuals;
-    }
+	public ArrayList<ChessManual> getChessManuals() {
+		return mChessManuals;
+	}
 
-    public String toString() {
-        return mName + "[" + mChessManuals.size() + "]";
-    }
+	public void setChessManuals(ArrayList<ChessManual> mChessManuals) {
+		this.mChessManuals = mChessManuals;
+	}
+
+	public String toString() {
+		return mName + "[" + mChessManuals.size() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + mId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Group other = (Group) obj;
+		if (mId != other.mId)
+			return false;
+		return true;
+	}
 }

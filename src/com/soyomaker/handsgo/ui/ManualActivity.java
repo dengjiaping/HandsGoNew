@@ -4,31 +4,40 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
-import ad.soyomaker.handsgo.adp.HandsgoCustomEventPlatformEnum;
-import ad.soyomaker.handsgo.av.HandsgoLayout;
-import ad.soyomaker.handsgo.controller.listener.HandsgoListener;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewListener;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
+import com.soyomaker.handsgo.adapter.CommentListViewAdapter;
 import com.soyomaker.handsgo.core.DefaultBoardModel;
 import com.soyomaker.handsgo.core.GoBoard;
 import com.soyomaker.handsgo.core.GoController;
@@ -37,9 +46,14 @@ import com.soyomaker.handsgo.core.IGridListener;
 import com.soyomaker.handsgo.core.io.SGFReader;
 import com.soyomaker.handsgo.core.sgf.SGFTree;
 import com.soyomaker.handsgo.db.DBService;
+import com.soyomaker.handsgo.manager.CloudManager;
+import com.soyomaker.handsgo.manager.CollectManager;
 import com.soyomaker.handsgo.model.ChessManual;
+import com.soyomaker.handsgo.model.Comment;
 import com.soyomaker.handsgo.model.Match;
 import com.soyomaker.handsgo.model.MatchInfo;
+import com.soyomaker.handsgo.model.User;
+import com.soyomaker.handsgo.ui.view.ListViewForScrollView;
 import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
 import com.soyomaker.handsgo.util.LogUtil;
@@ -53,18 +67,25 @@ import com.umeng.analytics.MobclickAgent;
  * @author like
  * 
  */
-public class ManualActivity extends BaseActivity implements IGridListener, HandsgoListener {
+public class ManualActivity extends BaseActivity implements IGridListener {
 
 	public static final String EXTRA_CHESSMANUAL = "extra_chessmanual";
 
 	private static final String TAG = "ManualActivity";
 
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private CommentListViewAdapter mCommentListAdapter;
+	private ListViewForScrollView mCommentListView;
 	private RelativeLayout mBoardLayout;
 	private LinearLayout mAdLayout;
-	private HandsgoLayout mHandsgoLayout;
+
 	private LinearLayout mCommentLayout;
+	private LinearLayout mToolBarLayout;
 	private TextView mCommentTextView;
 	private TextView mStatusTextView;
+
+	private Button mCommentButton;
+	private Button mCollectButton;
 
 	private ChessManual mChessManual;
 	private Match mMatch;
@@ -132,7 +153,7 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 		// 棋盘大小
 		int boardSize = Math.min(dm.widthPixels, dm.heightPixels);
 		// 棋子大小
-		int cubicSize = Math.round(boardSize / (size + 1));
+		int cubicSize = Math.round(boardSize * 1.0f / (size + 1));
 
 		mBoardModel = new DefaultBoardModel(size);
 		mGoBoard = new GoBoard(this, mBoardModel, cubicSize, cubicSize / 2, cubicSize / 2);
@@ -160,6 +181,7 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 		mBoardLayout.addView(mGoBoard, layoutParams);
 
 		mCommentLayout.setVisibility(View.VISIBLE);
+		mToolBarLayout.setVisibility(View.VISIBLE);
 
 		mGoController.setBoardModel(mBoardModel);
 		mGoController.setBoardSize(size);
@@ -178,6 +200,40 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 		return true;
 	}
 
+	private OnRefreshListener mOnRefreshListener = new OnRefreshListener() {
+
+		@Override
+		public void onRefresh() {
+			refreshComments();
+		}
+	};
+
+	private void refreshComments() {
+		mSwipeRefreshLayout.setRefreshing(true);
+		if (CloudManager.getInstance().isRefreshingComment(mChessManual.getSgfUrl())) {
+			return;
+		}
+		new Thread() {
+
+			public void run() {
+				final ArrayList<Comment> comments = CloudManager.getInstance().requestComments(
+						ManualActivity.this, mChessManual.getSgfUrl());
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						mSwipeRefreshLayout.setRefreshing(false);
+						if (comments != null) {
+							mCommentListAdapter.updateComments(comments);
+						} else {
+							// TODO toast
+						}
+					}
+				});
+			}
+		}.start();
+	}
+
 	private void initView() {
 		if (mChessManual == null) {
 			return;
@@ -187,20 +243,47 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(mChessManual.getMatchName());
 
+		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light, android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+
+		mCommentListView = (ListViewForScrollView) findViewById(R.id.listview_comment);
+		mCommentListAdapter = new CommentListViewAdapter(this, CloudManager.getInstance()
+				.getComments(mChessManual.getSgfUrl()));
+		mCommentListView.setAdapter(mCommentListAdapter);
+
 		mAdLayout = (LinearLayout) this.findViewById(R.id.ad_layout);
-		mHandsgoLayout = (HandsgoLayout) this.findViewById(R.id.adsMogoView);
-		mHandsgoLayout.setHandsgoListener(this);
-		mHandsgoLayout.downloadIsShowDialog = true;
+		AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+		adView.setAdListener(new AdViewListener() {
+
+			@Override
+			public void onSwitchedAd(AdView arg0) {
+				LogUtil.e(TAG, "onSwitchedAd");
+			}
+
+			@Override
+			public void onReceivedAd(AdView arg0) {
+				LogUtil.e(TAG, "onReceivedAd");
+			}
+
+			@Override
+			public void onFailedToReceivedAd(AdView arg0) {
+				LogUtil.e(TAG, "onFailedToReceivedAd");
+			}
+		});
+		mAdLayout.addView(adView);
 
 		// 根据在线参数决定是否棋谱加载出来后继续显示广告条
 		String adon = MobclickAgent.getConfigParams(this, AppConstants.AD_ON_STRING);
-		// if ("false".equals(adon) || AppPrefrence.getAdOff(this)) {
-		if (AppPrefrence.getAdOff(this)) {
+		if ("false".equals(adon) || AppPrefrence.getAdOff(this) || AppConstants.DEBUG) {
 			mAdLayout.setVisibility(View.GONE);
 		}
 
 		mBoardLayout = (RelativeLayout) this.findViewById(R.id.board_layout);
 		mCommentLayout = (LinearLayout) this.findViewById(R.id.comment_container);
+		mToolBarLayout = (LinearLayout) this.findViewById(R.id.tool_bar);
 		mCommentTextView = (TextView) this.findViewById(R.id.text_comment);
 		mStatusTextView = (TextView) this.findViewById(R.id.load_status);
 		findViewById(R.id.next_step).setOnClickListener(new View.OnClickListener() {
@@ -252,19 +335,23 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 				mGoController.changeVar();
 			}
 		});
-		if (mChessManual.getType() == ChessManual.ONLINE_CHESS_MANUAL) {
-			Button comments = (Button) findViewById(R.id.btn_comments);
-			comments.setVisibility(View.VISIBLE);
-			comments.setOnClickListener(new View.OnClickListener() {
+		mCommentButton = (Button) findViewById(R.id.comment_btn);
+		mCollectButton = (Button) findViewById(R.id.collect_btn);
+		mCommentButton.setOnClickListener(new View.OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(ManualActivity.this, CommentsActivity.class);
-					intent.putExtra(CommentsActivity.EXTRA_CHESSMANUAL, mChessManual);
-					startActivity(intent);
-				}
-			});
-		}
+			@Override
+			public void onClick(View v) {
+				sendComment();
+			}
+		});
+		mCollectButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				collectChessManual();
+			}
+		});
+		((ScrollView) findViewById(R.id.scroll_manual)).scrollTo(0, 0);
 
 		mStatusTextView.setText(R.string.status_loading);
 		new Thread() {
@@ -287,6 +374,83 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 				});
 			}
 		}.start();
+
+		updateCollectBtn();
+
+		refreshComments();
+	}
+
+	private void updateCollectBtn() {
+		if (CollectManager.getInstance().isCollect(mChessManual)) {
+			mCollectButton.setText(R.string.btn_uncollect);
+		} else {
+			mCollectButton.setText(R.string.btn_collect);
+		}
+	}
+
+	private void sendComment() {
+		if (CloudManager.getInstance().hasLogin()) {
+			final View view = LayoutInflater.from(ManualActivity.this).inflate(
+					R.layout.dialog_comment_edt, null);
+			final EditText editText = (EditText) view.findViewById(R.id.editText);
+			new AlertDialog.Builder(ManualActivity.this).setTitle(R.string.comment_dialog_title)
+					.setIcon(R.drawable.ic_launcher).setView(view)
+					.setPositiveButton(R.string.comment_dialog_ok, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							LogUtil.e(TAG, "发表评论");
+							new Thread() {
+								public void run() {
+									User user = CloudManager.getInstance().getLoginUser();
+									Comment comment = new Comment();
+									comment.setComment(editText.getText().toString());
+									comment.setCommentSgf(mChessManual.getSgfUrl());
+									comment.setUserId(user.getId());
+									comment.setUserName(user.getName());
+									boolean success = CloudManager.getInstance().sendComment(
+											ManualActivity.this, comment);
+									if (success) {
+										runOnUiThread(new Runnable() {
+
+											@Override
+											public void run() {
+												Toast.makeText(ManualActivity.this,
+														R.string.toast_comment_success,
+														Toast.LENGTH_LONG).show();
+												refreshComments();
+											}
+										});
+									} else {
+										runOnUiThread(new Runnable() {
+
+											@Override
+											public void run() {
+												Toast.makeText(ManualActivity.this,
+														R.string.toast_comment_fail,
+														Toast.LENGTH_LONG).show();
+											}
+										});
+									}
+								}
+							}.start();
+						}
+					}).setNegativeButton(R.string.comment_dialog_cancel, null).show();
+		} else {
+			Intent intent = new Intent(ManualActivity.this, LoginActivity.class);
+			startActivity(intent);
+		}
+	}
+
+	private void collectChessManual() {
+		if (CollectManager.getInstance().isCollect(mChessManual)) {
+			CollectManager.getInstance().cancelCollect(mChessManual);
+		} else {
+			CollectManager.getInstance().collect(mChessManual);
+			Toast.makeText(ManualActivity.this, R.string.toast_collect_success, Toast.LENGTH_LONG)
+					.show();
+		}
+		updateCollectBtn();
 	}
 
 	@Override
@@ -303,7 +467,7 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 				intent.putExtra(ManualInfoActivity.EXTRA_MATCH_INFO, mMatch.getMatchInfo());
 				startActivity(intent);
 			} else {
-				// TODO 弹框提示
+				// TODO toast
 			}
 		}
 			break;
@@ -312,19 +476,7 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 			startActivity(intent);
 		}
 			break;
-		case R.id.action_manual_collect: {
-			LogUtil.e(TAG, "收藏棋谱");
-			if (mMatch != null && mMatch.getMatchInfo() != null) {
-				DBService.saveFavoriteChessManual(mChessManual);
-				Toast.makeText(ManualActivity.this, R.string.toast_collect_success,
-						Toast.LENGTH_LONG).show();
-			} else {
-				// TODO 弹框提示
-			}
-		}
-			break;
 		case R.id.action_manual_share: {
-			LogUtil.e(TAG, "分享棋谱");
 			if (mMatch != null && mMatch.getMatchInfo() != null) {
 				mGoBoard.destroyDrawingCache();
 				mGoBoard.setDrawingCacheEnabled(true);
@@ -358,7 +510,7 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 						+ "( @掌中围棋，与您分享精彩棋谱！http://www.appchina.com/app/com.soyomaker.handsgo/ )");
 				startActivity(Intent.createChooser(intent, getTitle()));
 			} else {
-				// TODO 弹框提示
+				// TODO toast
 			}
 		}
 			break;
@@ -396,54 +548,5 @@ public class ManualActivity extends BaseActivity implements IGridListener, Hands
 	@Override
 	public String getPageName() {
 		return "棋谱展示界面";
-	}
-
-	// 芒果广告监听
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Class getCustomEvemtPlatformAdapterClass(HandsgoCustomEventPlatformEnum arg0) {
-		return null;
-	}
-
-	@Override
-	public void onClickAd(String arg0) {
-		LogUtil.e(TAG, "onClickAd");
-	}
-
-	@Override
-	public boolean onCloseAd() {
-		LogUtil.e(TAG, "onCloseAd");
-		return false;
-	}
-
-	@Override
-	public void onCloseMogoDialog() {
-		LogUtil.e(TAG, "onCloseMogoDialog");
-	}
-
-	@Override
-	public void onFailedReceiveAd() {
-		LogUtil.e(TAG, "onFailedReceiveAd");
-	}
-
-	@Override
-	public void onInitFinish() {
-		LogUtil.e(TAG, "onInitFinish");
-	}
-
-	@Override
-	public void onRealClickAd() {
-		LogUtil.e(TAG, "onRealClickAd");
-	}
-
-	@Override
-	public void onReceiveAd(ViewGroup arg0, String arg1) {
-		LogUtil.e(TAG, "onReceiveAd：" + arg1);
-	}
-
-	@Override
-	public void onRequestAd(String arg0) {
-		LogUtil.e(TAG, "onRequestAd：" + arg0);
 	}
 }

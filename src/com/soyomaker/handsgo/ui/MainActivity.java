@@ -1,6 +1,9 @@
 package com.soyomaker.handsgo.ui;
 
-import ad.soyomaker.handsgo.util.L;
+import net.youmi.android.AdManager;
+import net.youmi.android.offers.OffersManager;
+import net.youmi.android.offers.PointsChangeNotify;
+import net.youmi.android.offers.PointsManager;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -14,10 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.adsmogo.offers.MogoOffer;
-import com.adsmogo.offers.MogoOfferPointCallBack;
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.soyomaker.handsgo.R;
+import com.soyomaker.handsgo.manager.ChessManualServerManager;
 import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
 import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
@@ -33,7 +35,7 @@ import com.umeng.update.UmengUpdateAgent;
  * 
  */
 public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener,
-		MogoOfferPointCallBack {
+		PointsChangeNotify {
 
 	private static final String TAG = "MainActivity";
 
@@ -52,21 +54,21 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
 		initView();
 
-		// 芒果日志开启
-		L.debug = AppConstants.DEBUG;
+		// 有米广告初始化
+		AdManager.getInstance(this).init(AppConstants.YOUMI_APP_ID, AppConstants.YOUMI_APP_SECRET,
+				false);
 
-		// 芒果积分墙初始化
-		MogoOffer.init(this, AppConstants.MOGO_ID);
-
-		MogoOffer.addPointCallBack(this);
-
-		MogoOffer.setMogoOfferScoreVisible(false);
+		OffersManager.getInstance(this).onAppLaunch();
+		PointsManager.getInstance(this).registerNotify(this);
+		PointsManager.setEnableEarnPointsToastTips(false);
 
 		// 友盟意见反馈初始化
 		mFeedbackAgent = new FeedbackAgent(MainActivity.this);
 
 		// 首先检测网络是否通畅
 		if (CloudClient.checkNetwork(MainActivity.this)) {
+			// 查询积分
+			updatePoint(PointsManager.getInstance(this).queryPoints());
 
 			// 获取意见反馈数据
 			mFeedbackAgent.sync();
@@ -99,13 +101,9 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		return super.onKeyDown(keyCode, event);
 	}
 
-	public void onResume() {
-		MogoOffer.RefreshPoints(this);
-		super.onResume();
-	}
-
 	public void onDestory() {
-		MogoOffer.clear(this);
+		PointsManager.getInstance(this).unRegisterNotify(this);
+		OffersManager.getInstance(this).onAppExit();
 		super.onDestroy();
 	}
 
@@ -155,6 +153,11 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 			startActivity(intent);
 		}
 			break;
+		case R.id.action_search: {
+			Intent intent = new Intent(this, SearchActivity.class);
+			startActivity(intent);
+		}
+			break;
 		case R.id.action_settings: {
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
@@ -165,7 +168,7 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		}
 			break;
 		case R.id.action_recommend: {
-			MogoOffer.showOffer(this);
+			OffersManager.getInstance(this).showOffersWall();
 		}
 			break;
 		}
@@ -187,8 +190,9 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		static final int INDEX_GAME = 0;
-		static final int INDEX_SEARCH = 1;
+		static final int INDEX_SINA = 0;
+		static final int INDEX_XGOO = 1;
+		static final int INDEX_TOM = 2;
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -198,11 +202,14 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 			switch (position) {
-			case INDEX_GAME:
-				fragment = new GameFragment();
+			case INDEX_SINA:
+				fragment = new GameFragment(ChessManualServerManager.getSinaServer());
 				break;
-			case INDEX_SEARCH:
-				fragment = new SearchFragment();
+			case INDEX_XGOO:
+				fragment = new GameFragment(ChessManualServerManager.getXgooServer());
+				break;
+			case INDEX_TOM:
+				fragment = new GameFragment(ChessManualServerManager.getTomServer());
 				break;
 			}
 			return fragment;
@@ -210,16 +217,18 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
-			case INDEX_GAME:
+			case INDEX_SINA:
 				return getString(R.string.title_section1);
-			case INDEX_SEARCH:
+			case INDEX_XGOO:
 				return getString(R.string.title_section2);
+			case INDEX_TOM:
+				return getString(R.string.title_section3);
 			}
 			return null;
 		}
@@ -230,12 +239,16 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		return "主界面";
 	}
 
+	private void updatePoint(final int point) {
+		LogUtil.e(TAG, "savePoints 当前积分余额：" + point);
+		AppPrefrence.savePoints(MainActivity.this, point);
+	}
+
 	@Override
-	public void updatePoint(final long arg0) {
+	public void onPointBalanceChange(final int arg0) {
 		new Thread() {
 			public void run() {
-				LogUtil.e(TAG, "updatePoint 当前积分余额：" + arg0);
-				AppPrefrence.savePoints(MainActivity.this, arg0);
+				updatePoint(arg0);
 			}
 		}.start();
 	}

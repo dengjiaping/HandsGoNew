@@ -36,7 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+        <ListView
             android:id="@+id/listview_game"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

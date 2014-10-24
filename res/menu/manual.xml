@@ -12,13 +12,8 @@
         android:showAsAction="never"
         android:title="@string/action_manual_settings"/>
     <item
-        android:id="@+id/action_manual_collect"
-        android:orderInCategory="102"
-        android:showAsAction="never"
-        android:title="@string/action_manual_collect"/>
-    <item
         android:id="@+id/action_manual_share"
-        android:orderInCategory="103"
+        android:orderInCategory="102"
         android:showAsAction="never"
         android:title="@string/action_manual_share"/>
 

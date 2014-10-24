@@ -1,34 +1,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_collect"
+        android:id="@+id/action_local"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="always"
+        android:title="@string/action_local"/>
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:title="@string/action_search"/>
+    <item
+        android:id="@+id/action_collect"
+        android:orderInCategory="102"
+        android:showAsAction="ifRoom"
         android:title="@string/action_collect"/>
     <item
         android:id="@+id/action_history"
-        android:orderInCategory="101"
-        android:showAsAction="never"
+        android:orderInCategory="103"
+        android:showAsAction="ifRoom"
         android:title="@string/action_history"/>
     <item
-        android:id="@+id/action_local"
-        android:orderInCategory="102"
-        android:showAsAction="never"
-        android:title="@string/action_local"/>
-    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="103"
-        android:showAsAction="never"
+        android:orderInCategory="104"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_feedback"
-        android:orderInCategory="104"
-        android:showAsAction="never"
+        android:orderInCategory="105"
+        android:showAsAction="ifRoom"
         android:title="@string/action_feedback"/>
     <item
         android:id="@+id/action_recommend"
-        android:orderInCategory="105"
-        android:showAsAction="never"
+        android:orderInCategory="106"
+        android:showAsAction="ifRoom"
         android:title="@string/action_recommend"/>
 
 </menu>

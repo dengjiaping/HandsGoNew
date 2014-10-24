@@ -1,78 +1,49 @@
 package com.soyomaker.handsgo.manager;
 
-import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.server.CollectServer;
 import com.soyomaker.handsgo.server.HistoryServer;
-import com.soyomaker.handsgo.server.IChessManualServer;
 import com.soyomaker.handsgo.server.SinaServer;
 import com.soyomaker.handsgo.server.TOMServer;
 import com.soyomaker.handsgo.server.XGOOServer;
-import com.soyomaker.handsgo.util.AppConstants;
-import com.soyomaker.handsgo.util.AppPrefrence;
 
 /**
  * 棋谱服务器管理器
- * 
- * 负责设置棋谱服务器
  * 
  * @author like
  * 
  */
 public class ChessManualServerManager {
 
-    private static ChessManualServerManager mInstance = new ChessManualServerManager();
+	private static SinaServer mSinaServer = new SinaServer();
 
-    private IChessManualServer mChessManualServer;
+	private static XGOOServer mXgooServer = new XGOOServer();
 
-    private SinaServer mSinaServer = new SinaServer();
+	private static TOMServer mTomServer = new TOMServer();
 
-    private XGOOServer mXgooServer = new XGOOServer();
+	private static HistoryServer mHistoryServer = new HistoryServer();
 
-    private TOMServer mTomServer = new TOMServer();
+	private static CollectServer mCollectServer = new CollectServer();
 
-    private HistoryServer mHistoryServer = new HistoryServer();
+	private ChessManualServerManager() {
+	}
 
-    private CollectServer mCollectServer = new CollectServer();
+	public static SinaServer getSinaServer() {
+		return mSinaServer;
+	}
 
-    private ChessManualServerManager() {
-        updateChessManualServer();
-    }
+	public static TOMServer getTomServer() {
+		return mTomServer;
+	}
 
-    /**
-     * 根据AppPrefrence.getChessSource选择对应的棋谱服务器
-     */
-    public void updateChessManualServer() {
-        mChessManualServer = new SinaServer();
-        switch (AppPrefrence.getChessSource(HandsGoApplication.getAppContext())) {
-        case AppConstants.SINA:
-            mChessManualServer = mSinaServer;
-            break;
-        case AppConstants.XGOO:
-            mChessManualServer = mXgooServer;
-            break;
-        case AppConstants.TOM:
-            mChessManualServer = mTomServer;
-            break;
-        }
-    }
+	public static XGOOServer getXgooServer() {
+		return mXgooServer;
+	}
 
-    public static ChessManualServerManager getInstance() {
-        return mInstance;
-    }
+	public static HistoryServer getHistoryServer() {
+		return mHistoryServer;
+	}
 
-    public IChessManualServer getChessManualServer() {
-        return mChessManualServer;
-    }
-
-    public void setChessManualServer(IChessManualServer chessManualServer) {
-        this.mChessManualServer = chessManualServer;
-    }
-
-    public HistoryServer getHistoryServer() {
-        return mHistoryServer;
-    }
-
-    public CollectServer getCollectServer() {
-        return mCollectServer;
-    }
+	public static CollectServer getCollectServer() {
+		return mCollectServer;
+	}
 }

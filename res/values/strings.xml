@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- 应用新型 -->
     <string name="app_name">掌中围棋</string>
     <string name="app_info">做最好用的掌中围棋软件!</string>
     <string name="app_version">3.0</string>
     <string name="qq_group">棋友交流QQ群：278743263</string>
     <string name="qq">开发者QQ：397093109</string>
+
+    <!-- 棋型搜索 -->
     <string name="btn_add_black">+黑子</string>
     <string name="btn_add_white">+白子</string>
     <string name="btn_add_black_or_white">+黑白</string>
     <string name="btn_delete_stone">删除</string>
     <string name="btn_reset">重置</string>
+
+    <!-- 菜单 -->
     <string name="action_collect">我的收藏</string>
     <string name="action_local">本地棋谱</string>
+    <string name="action_search">搜索棋谱</string>
     <string name="action_history">历史记录</string>
     <string name="action_settings">应用设置</string>
     <string name="action_feedback">意见反馈</string>
     <string name="action_recommend">赚取积分</string>
+    <string name="action_collect_create_group">创建分组</string>
     <string name="action_manual_match_info">棋谱信息</string>
     <string name="action_manual_settings">应用设置</string>
     <string name="action_manual_collect">收藏棋谱</string>
     <string name="action_manual_share">分享棋谱</string>
+
+    <!-- 棋谱显示界面 -->
     <string name="manual_button_first">开局</string>
     <string name="manual_button_next">前进</string>
     <string name="manual_button_prev">后退</string>
     <string name="manual_button_fast_next">快进</string>
     <string name="manual_button_fast_prev">快退</string>
     <string name="manual_button_last">终局</string>
-    <string name="title_section1">精彩时局</string>
-    <string name="title_section2">棋谱搜索</string>
-    <string name="title_section3">学习讲解</string>
+
+    <!-- 标题 -->
+    <string name="title_section1">Sina</string>
+    <string name="title_section2">Xgoo</string>
+    <string name="title_section3">Tom</string>
     <string name="title_settings">应用设置</string>
     <string name="title_local_fight">单机对弈</string>
     <string name="title_about">关于软件</string>
@@ -39,50 +50,77 @@
     <string name="title_comments">评论列表</string>
     <string name="title_collect">我的收藏</string>
     <string name="title_history">历史记录</string>
+    <string name="title_search">搜索棋谱</string>
     <string name="title_search_result">搜索结果</string>
     <string name="title_manual_info">棋谱信息</string>
+
+    <!-- 关键字搜索 -->
     <string name="search_hint">搜索棋手，赛事，时间等</string>
     <string name="searching">正在搜索，请稍候&#8230;</string>
     <string name="keywords_search">关键字搜索</string>
     <string name="shape_search">棋型搜索</string>
-    <string name="btn_login">登录账号</string>
+
+    <!-- 按钮文字 -->
+    <string name="btn_login">登录</string>
+    <string name="btn_logining">正在登录</string>
     <string name="btn_signin">退出</string>
-    <string name="btn_register">注册账号</string>
+    <string name="btn_register">注册</string>
+    <string name="btn_registering">正在注册</string>
     <string name="btn_upload">上传服务器备份</string>
-    <string name="btn_comments">进入评论列表</string>
-    <string name="open_local_sgf">本地棋谱浏览</string>
+    <string name="btn_delete">删除棋谱</string>
+    <string name="btn_password">修改密码</string>
+    <string name="btn_comment">发表评论</string>
+    <string name="btn_collect">收藏棋谱</string>
+    <string name="btn_uncollect">取消收藏</string>
+
+    <!-- 单机对弈 -->
     <string name="fighting_with_gnugo">单机对弈</string>
-    <string name="button_collect">收藏棋谱</string>
-    <string name="button_delete">删除棋谱</string>
+    <string name="gnugo_name">围棋AI</string>
+    <string name="gnugo_description">一款智商超高的围棋AI，赶紧安装挑战吧！</string>
+    <string name="gnugo_start_download">围棋AI开始下载</string>
+    <string name="dialog_download_gnugo_title">提示</string>
+    <string name="dialog_download_gnugo_content">未检测到可用的围棋AI插件，是否自动下载安装？</string>
+    <string name="dialog_download_gnugo_ok">开始安装</string>
+    <string name="dialog_download_gnugo_cancel">取消</string>
+
+    <!-- 服务器名称 -->
     <string name="xgoo_server">XGOO棋谱服务器</string>
     <string name="sina_server">SINA棋谱服务器</string>
     <string name="tom_server">TOM棋谱服务器</string>
+
+    <!-- 自动打谱间隔 -->
     <string name="auto_play_off">关闭自动打谱</string>
     <string name="auto_play_on_1">间隔1s</string>
     <string name="auto_play_on_2">间隔2s</string>
     <string name="auto_play_on_3">间隔4s</string>
     <string name="auto_play_on_4">间隔8s</string>
     <string name="auto_play_on_5">间隔16s</string>
+
+    <!-- 注册界面 -->
     <string name="register_name">昵称</string>
     <string name="register_password">密码</string>
     <string name="register_re_enter_password">确认密码</string>
     <string name="register_email">邮箱</string>
     <string name="register_gender">性别</string>
-    <string name="register_btn">立即注册</string>
-    <string name="login_btn">立即登录</string>
     <string name="register_female">女</string>
     <string name="register_male">男</string>
-    <string name="comment_btn">立即评论</string>
-    <string name="comment_dialog_title">发表评论</string>
-    <string name="comment_dialog_ok">发送</string>
-    <string name="comment_dialog_cancel">取消</string>
+
+    <!-- 修改密码 -->
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码</string>
+
+    <!-- 棋盘样式 -->
     <string name="chess_board_style_color">彩色棋盘</string>
     <string name="chess_board_style_3d_1">木纹棋盘1</string>
     <string name="chess_board_style_3d_2">木纹棋盘2</string>
     <string name="chess_board_style_3d_3">木纹棋盘3</string>
+
+    <!-- 棋子样式 -->
     <string name="chess_piece_style_2d">2d棋子</string>
     <string name="chess_piece_style_3d_1">3d棋子（云子）</string>
     <string name="chess_piece_style_3d_2">3d棋子（蛤碁石）</string>
+
+    <!-- 设置界面 -->
     <string name="options_ad_off">彻底关闭广告</string>
     <string name="options_show_number">显示棋子手数</string>
     <string name="options_show_location">显示棋盘坐标</string>
@@ -92,11 +130,38 @@
     <string name="options_auto_play">自动打谱设置</string>
     <string name="options_chess_source">棋谱来源设置</string>
     <string name="options_about_app">关于掌中围棋</string>
-    <string name="local_point">本机积分：%s</string>
+    <string name="local_point">积分：%s</string>
+
+    <!-- 对话框 -->
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
-    <string name="menu_item_search">搜索</string>
-    <string name="operation_create_folder">新建文件夹</string>
+    <string name="chess_board_color_picker_dialog_title">棋盘颜色设置</string>
+    <string name="chess_piece_style_choose_dialog_title">棋子样式设置</string>
+    <string name="chess_board_style_choose_dialog_title">棋盘样式设置</string>
+    <string name="comment_dialog_title">评论内容</string>
+    <string name="comment_dialog_ok">发送</string>
+    <string name="comment_dialog_cancel">取消</string>
+    <string name="password_dialog_title">修改密码</string>
+    <string name="password_dialog_ok">确定</string>
+    <string name="password_dialog_cancel">取消</string>
+    <string name="create_group_dialog_title">新建分组</string>
+    <string name="create_group_dialog_default_name">新分组</string>
+    <string name="create_group_dialog_ok">确定</string>
+    <string name="create_group_dialog_cancel">取消</string>
+    <string name="edit_group_dialog_title">编辑分组</string>
+    <string name="edit_group_dialog_ok">确定</string>
+    <string name="edit_group_dialog_cancel">取消</string>
+    <string name="delete_group_dialog_title">删除分组</string>
+    <string name="delete_group_dialog_msg">确定要删除该分组及分组中的棋谱吗？</string>
+    <string name="delete_group_dialog_ok">确定</string>
+    <string name="delete_group_dialog_cancel">取消</string>
+    <string name="cancel_collect_dialog_title">取消收藏</string>
+    <string name="cancel_collect_dialog_msg">确定要取消收藏该棋谱吗？</string>
+    <string name="cancel_collect_dialog_ok">确定</string>
+    <string name="cancel_collect_dialog_cancel">取消</string>
+    <string name="collect_dialog_title">选择分组</string>
+
+    <!-- SD卡浏览 -->
     <string name="menu_item_sort">排序</string>
     <string name="menu_item_sort_name">名称</string>
     <string name="menu_item_sort_size">大小</string>
@@ -122,10 +187,16 @@
     <string name="dialog_type_audio">音频</string>
     <string name="dialog_type_video">视频</string>
     <string name="dialog_type_image">图像</string>
+
+    <!-- 列表 -->
     <string name="list_load_more">更多</string>
     <string name="list_loading">加载中&#8230;</string>
+
+    <!-- 加载状态 -->
     <string name="status_loading">正在努力的加载中&#8230;</string>
     <string name="status_fail">加载失败</string>
+
+    <!-- toast提示 -->
     <string name="toast_refreshing">正在刷新，请稍候&#8230;</string>
     <string name="toast_loading">正在加载中，请稍候&#8230;</string>
     <string name="toast_downloading">正在下载中，请稍候&#8230;</string>
@@ -144,13 +215,8 @@
     <string name="toast_user_re_enter_password_null">请再输入一次密码</string>
     <string name="toast_user_password_not_equal">两次密码输入结果不一致</string>
     <string name="toast_re_press_to_exit">再按一次退出程序</string>
-    <string name="gnugo_name">围棋AI</string>
-    <string name="gnugo_description">一款智商超高的围棋AI，赶紧安装挑战吧！</string>
-    <string name="gnugo_start_download">围棋AI开始下载</string>
-    <string name="dialog_download_gnugo_title">提示</string>
-    <string name="dialog_download_gnugo_content">未检测到可用的围棋AI插件，是否自动下载安装？</string>
-    <string name="dialog_download_gnugo_ok">开始安装</string>
-    <string name="dialog_download_gnugo_cancel">取消</string>
+
+    <!-- 棋谱信息界面 -->
     <string name="info_game_name">对局名称：%s</string>
     <string name="info_game_comment">对局评论：%s</string>
     <string name="info_board_size">棋盘大小：%s</string>
@@ -168,8 +234,5 @@
     <string name="info_black_team">黑棋队伍：%s</string>
     <string name="info_black_rank">黑棋段位：%s</string>
     <string name="info_source">棋谱来源：%s</string>
-    <string name="chess_board_color_picker_dialog_title">棋盘颜色设置</string>
-    <string name="chess_piece_style_choose_dialog_title">棋子样式设置</string>
-    <string name="chess_board_style_choose_dialog_title">棋盘样式设置</string>
 
 </resources>

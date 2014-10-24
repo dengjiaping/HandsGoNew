@@ -73,20 +73,21 @@
             <Button
                 android:id="@+id/register_btn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1.0"
                 android:background="@drawable/selector_open_local_sgf"
-                android:text="@string/register_btn"
+                android:text="@string/btn_register"
                 android:textSize="16sp" />
-            <Button
+
+            <Button
                 android:id="@+id/login_btn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1.0"
                 android:background="@drawable/selector_open_local_sgf"
-                android:text="@string/login_btn"
+                android:text="@string/btn_login"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>

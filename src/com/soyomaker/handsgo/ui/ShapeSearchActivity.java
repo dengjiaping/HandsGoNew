@@ -115,7 +115,7 @@ public class ShapeSearchActivity extends BaseActivity implements IGridListener {
         // 棋盘大小
         int boardSize = Math.min(dm.widthPixels, dm.heightPixels);
         // 棋子大小
-        int cubicSize = Math.round(boardSize / (size + 1));
+        int cubicSize = Math.round(boardSize * 1.0f / (size + 1));
 
         mBoardModel = new DefaultBoardModel(size);
         mBoardModel.setShowHighlight(false);

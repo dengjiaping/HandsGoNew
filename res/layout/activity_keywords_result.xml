@@ -5,7 +5,7 @@
     android:background="@color/common_bg"
     android:orientation="vertical" >
 
-    <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+    <ListView
         android:id="@+id/listview_keywords_result"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

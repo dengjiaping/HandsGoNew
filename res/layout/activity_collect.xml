@@ -22,7 +22,7 @@
         android:background="#ff808080"
         android:visibility="gone" />
 
-    <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+    <ExpandableListView
         android:id="@+id/listview_collect"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
