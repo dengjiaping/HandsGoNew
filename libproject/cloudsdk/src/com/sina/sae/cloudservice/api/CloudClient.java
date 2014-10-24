@@ -75,6 +75,7 @@ public class CloudClient {
 	public static String REST_REGISTER;
 	public static String REST_GET_COMMENTS;
 	public static String REST_COMMENT;
+	public static String REST_CHANGE_PASSWORD;
 
 	/**
 	 * 以下为SAE应用相关信息
@@ -127,6 +128,7 @@ public class CloudClient {
 		REST_REGISTER = "http://" + appname + ".sinaapp.com/api/register";
 		REST_GET_COMMENTS = "http://" + appname + ".sinaapp.com/api/getComments";
 		REST_COMMENT = "http://" + appname + ".sinaapp.com/api/comment";
+		REST_CHANGE_PASSWORD = "http://" + appname + ".sinaapp.com/api/resetPassword";
 
 		// 初始化context
 		CloudClient.context = context;
@@ -444,5 +446,4 @@ public class CloudClient {
 		Log.e("CloudService", errorMessage);
 		throw new CloudServiceException(errorMessage, CloudServiceException.CLIENT_ERROR);
 	}
-
 }
