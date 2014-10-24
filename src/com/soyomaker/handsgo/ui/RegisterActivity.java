@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.util.AppUtil;
 
 public class RegisterActivity extends BaseActivity {
+
+    private Button mRegisterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,8 @@ public class RegisterActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(R.string.title_register);
 
-        findViewById(R.id.register_btn).setOnClickListener(new View.OnClickListener() {
+        mRegisterButton = (Button) findViewById(R.id.register_btn);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -69,33 +73,29 @@ public class RegisterActivity extends BaseActivity {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
+                mRegisterButton.setText(R.string.btn_registering);
                 new Thread() {
 
                     public void run() {
-                        boolean success = CloudManager.getInstance().register(
+                        final boolean success = CloudManager.getInstance().register(
                                 RegisterActivity.this, name, password,
                                 AppUtil.getDeviceId(RegisterActivity.this), email, gender);
-                        if (success) {
-                            runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
 
-                                @Override
-                                public void run() {
+                            @Override
+                            public void run() {
+                                mRegisterButton.setText(R.string.btn_register);
+                                if (success) {
                                     Toast.makeText(RegisterActivity.this,
                                             R.string.toast_register_success, Toast.LENGTH_LONG)
                                             .show();
                                     finish();
-                                }
-                            });
-                        } else {
-                            runOnUiThread(new Runnable() {
-
-                                @Override
-                                public void run() {
+                                } else {
                                     Toast.makeText(RegisterActivity.this,
                                             R.string.toast_register_fail, Toast.LENGTH_LONG).show();
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }.start();
             }

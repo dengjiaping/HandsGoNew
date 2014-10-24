@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class LoginActivity extends BaseActivity {
 
     private EditText mEdtName;
     private EditText mEdtPassword;
+    private Button mLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,8 @@ public class LoginActivity extends BaseActivity {
         if (TextUtils.isEmpty(password)) {
             mEdtPassword.setText(password);
         }
-        findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+        mLoginButton = (Button) findViewById(R.id.login_btn);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -58,31 +61,27 @@ public class LoginActivity extends BaseActivity {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
+                mLoginButton.setText(R.string.btn_logining);
                 new Thread() {
 
                     public void run() {
                         final User user = CloudManager.getInstance().login(LoginActivity.this,
                                 name, password);
-                        if (user != null) {
-                            runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
 
-                                @Override
-                                public void run() {
+                            @Override
+                            public void run() {
+                                mLoginButton.setText(R.string.btn_login);
+                                if (user != null) {
                                     Toast.makeText(LoginActivity.this,
                                             R.string.toast_login_success, Toast.LENGTH_LONG).show();
                                     finish();
-                                }
-                            });
-                        } else {
-                            runOnUiThread(new Runnable() {
-
-                                @Override
-                                public void run() {
+                                } else {
                                     Toast.makeText(LoginActivity.this, R.string.toast_login_fail,
                                             Toast.LENGTH_LONG).show();
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 }.start();
             }

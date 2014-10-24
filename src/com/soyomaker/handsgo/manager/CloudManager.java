@@ -24,6 +24,7 @@ public class CloudManager {
     private static CloudManager mInstance = new CloudManager();
 
     private boolean mInitSuccess;
+    private boolean mIsRefreshingComment;
     private User mLoginUser;
     private Map<String, ArrayList<Comment>> mCommentMap = new HashMap<String, ArrayList<Comment>>();
 
@@ -56,6 +57,10 @@ public class CloudManager {
         return mLoginUser != null;
     }
 
+    public boolean isRefreshingComment() {
+        return mIsRefreshingComment;
+    }
+
     public ArrayList<Comment> getComments(String sgfUrl) {
         ArrayList<Comment> comments = mCommentMap.get(sgfUrl);
         if (comments == null) {
@@ -66,6 +71,7 @@ public class CloudManager {
     }
 
     public ArrayList<Comment> requestComments(Context context, String sgfUrl) {
+        mIsRefreshingComment = true;
         init(context);
 
         List<Map<String, String>> lists = null;
@@ -101,7 +107,7 @@ public class CloudManager {
                 mCommentMap.put(sgfUrl, comments);
             }
         }
-
+        mIsRefreshingComment = false;
         return getComments(sgfUrl);
     }
 

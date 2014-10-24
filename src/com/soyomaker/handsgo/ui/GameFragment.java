@@ -76,7 +76,6 @@ public class GameFragment extends BaseFragment {
             mAdapter.updateChessManualServer(mCurrentServer);
 
             if (mCurrentServer.getChessManuals().isEmpty()) {
-                mSwipeRefreshLayout.setRefreshing(true);
                 refreshChessManuals();
             }
         }
@@ -129,37 +128,42 @@ public class GameFragment extends BaseFragment {
     }
 
     private void refreshChessManuals() {
-        ChessManualReaderManager.getInstance().refreshChessManuals(
-                new IChessManualsReaderListener() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        if (!mCurrentServer.isRefreshing()) {
+            ChessManualReaderManager.getInstance().refreshChessManuals(
+                    new IChessManualsReaderListener() {
 
-                    @Override
-                    public void readSuccess(ArrayList<ChessManual> chessManuals) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        mAdapter.notifyDataSetChanged();
-                    }
+                        @Override
+                        public void readSuccess(ArrayList<ChessManual> chessManuals) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            mAdapter.notifyDataSetChanged();
+                        }
 
-                    @Override
-                    public void readFail() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+                        @Override
+                        public void readFail() {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+        }
     }
 
     private void loadMoreChessManuals() {
-        ChessManualReaderManager.getInstance().loadMoreChessManuals(
-                new IChessManualsReaderListener() {
+        if (!mCurrentServer.isLoadingMore()) {
+            ChessManualReaderManager.getInstance().loadMoreChessManuals(
+                    new IChessManualsReaderListener() {
 
-                    @Override
-                    public void readSuccess(ArrayList<ChessManual> chessManuals) {
-                        mAdapter.notifyDataSetChanged();
-                    }
+                        @Override
+                        public void readSuccess(ArrayList<ChessManual> chessManuals) {
+                            mAdapter.notifyDataSetChanged();
+                        }
 
-                    @Override
-                    public void readFail() {
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+                        @Override
+                        public void readFail() {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+        }
         mAdapter.notifyDataSetChanged();
     }
 

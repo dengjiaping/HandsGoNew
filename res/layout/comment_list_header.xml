@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_comment"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/selector_open_local_sgf"
+    android:text="@string/comment_btn"
+    android:textSize="20sp" />
