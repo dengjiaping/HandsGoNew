@@ -84,7 +84,7 @@ public class CollectActivity extends BaseActivity {
 			editText.setText(R.string.create_group_dialog_default_name);
 			new AlertDialog.Builder(CollectActivity.this)
 					.setTitle(R.string.create_group_dialog_title).setIcon(R.drawable.ic_launcher)
-					.setView(editText)
+					.setView(view)
 					.setPositiveButton(R.string.create_group_dialog_ok, new OnClickListener() {
 
 						@Override

@@ -24,7 +24,6 @@ import com.soyomaker.handsgo.manager.CollectManager;
 import com.soyomaker.handsgo.manager.HistoryManager;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.Group;
-import com.soyomaker.handsgo.ui.CollectActivity;
 import com.soyomaker.handsgo.ui.ManualActivity;
 
 public class GroupExpandableListViewAdapter extends BaseExpandableListAdapter {
@@ -109,7 +108,7 @@ public class GroupExpandableListViewAdapter extends BaseExpandableListAdapter {
 					new AlertDialog.Builder(mContext)
 							.setTitle(R.string.edit_group_dialog_title)
 							.setIcon(R.drawable.ic_launcher)
-							.setView(editText)
+							.setView(view)
 							.setPositiveButton(R.string.edit_group_dialog_ok,
 									new OnClickListener() {
 

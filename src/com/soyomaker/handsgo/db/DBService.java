@@ -4,6 +4,7 @@
 package com.soyomaker.handsgo.db;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -29,11 +30,51 @@ public class DBService {
 
 	private static boolean shouldUpdateGroupCache = true;
 
-	// TODO 加锁
+	private static ReentrantReadWriteLock sReadWriteLock = new ReentrantReadWriteLock();
+
+	/**
+	 * 获取可读的数据库.
+	 * 
+	 * @return the readable database
+	 */
+	public static SQLiteDatabase getReadableDatabase() {
+		sReadWriteLock.readLock().lock();
+		return mDbOpenHelper.getReadableDatabase();
+	}
+
+	/**
+	 * 获取可写的数据库.
+	 * 
+	 * @return the writable database
+	 */
+	public static SQLiteDatabase getWritableDatabase() {
+		sReadWriteLock.writeLock().lock();
+		return mDbOpenHelper.getWritableDatabase();
+	}
+
+	/**
+	 * 关闭数据库.
+	 * 
+	 * @param db
+	 */
+	public static void closeDatabase(SQLiteDatabase db) {
+		if (sReadWriteLock.isWriteLocked()) {
+			if (db != null && db.isOpen()) {
+				db.close();
+			}
+			sReadWriteLock.writeLock().unlock();
+		} else {
+			if (sReadWriteLock.getReadLockCount() <= 1) {
+				if (db != null && db.isOpen()) {
+					db.close();
+				}
+			}
+			sReadWriteLock.readLock().unlock();
+		}
+	}
 
 	public synchronized static void init(Context context) {
 		mDbOpenHelper = new DBOpenHelper(context);
-		mDbOpenHelper.getWritableDatabase();
 	}
 
 	public static ArrayList<ChessManual> getHistoryChessManualCaches() {
@@ -86,15 +127,16 @@ public class DBService {
 		return false;
 	}
 
-	public synchronized static ArrayList<Group> getAllGroup() {
+	public static ArrayList<Group> getAllGroup() {
 		ArrayList<Group> groups = new ArrayList<Group>();
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.GROUP_TABLE_NAME;
 		if (db == null) {
 			return groups;
 		}
 		try {
+			db.beginTransaction();
 			cursor = db.rawQuery(sql, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
@@ -105,23 +147,23 @@ public class DBService {
 					groups.add(group);
 				} while (cursor.moveToNext());
 			}
+			db.setTransactionSuccessful();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		return groups;
 	}
 
-	public synchronized static ArrayList<ChessManual> getAllHistoryChessManual() {
+	public static ArrayList<ChessManual> getAllHistoryChessManual() {
 		ArrayList<ChessManual> chessManuals = new ArrayList<ChessManual>();
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.HISTORY_TABLE_NAME;
 		if (db == null) {
 			return chessManuals;
@@ -151,17 +193,15 @@ public class DBService {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			closeDatabase(db);
 		}
 		return chessManuals;
 	}
 
-	public synchronized static ArrayList<ChessManual> getAllFavoriteChessManual() {
+	public static ArrayList<ChessManual> getAllFavoriteChessManual() {
 		ArrayList<ChessManual> chessManuals = new ArrayList<ChessManual>();
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.FAVORITE_TABLE_NAME;
 		if (db == null) {
 			return chessManuals;
@@ -191,17 +231,15 @@ public class DBService {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			closeDatabase(db);
 		}
 		return chessManuals;
 	}
 
-	public synchronized static ArrayList<ChessManual> getFavoriteChessManualsByGroupId(int groudId) {
+	public static ArrayList<ChessManual> getFavoriteChessManualsByGroupId(int groudId) {
 		ArrayList<ChessManual> chessManuals = new ArrayList<ChessManual>();
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.FAVORITE_TABLE_NAME + " where groupId = ?";
 		if (db == null) {
 			return chessManuals;
@@ -231,19 +269,17 @@ public class DBService {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			closeDatabase(db);
 		}
 		return chessManuals;
 	}
 
-	public synchronized static ChessManual getHistoryChessManual(ChessManual chessManual) {
+	public static ChessManual getHistoryChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return null;
 		}
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.HISTORY_TABLE_NAME + " where sgfUrl = ?";
 		if (db == null) {
 			return null;
@@ -272,19 +308,17 @@ public class DBService {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			closeDatabase(db);
 		}
 		return newChessManual;
 	}
 
-	public synchronized static ChessManual getFavoriteChessManual(ChessManual chessManual) {
+	public static ChessManual getFavoriteChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return null;
 		}
 		Cursor cursor = null;
-		SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+		SQLiteDatabase db = getReadableDatabase();
 		String sql = "select * from " + DBOpenHelper.FAVORITE_TABLE_NAME + " where sgfUrl = ?";
 		if (db == null) {
 			return null;
@@ -313,18 +347,16 @@ public class DBService {
 			if (cursor != null) {
 				cursor.close();
 			}
-			if (db != null) {
-				db.close();
-			}
+			closeDatabase(db);
 		}
 		return newChessManual;
 	}
 
-	public synchronized static boolean saveGroup(Group group) {
+	public static boolean saveGroup(Group group) {
 		if (TextUtils.isEmpty(group.getName())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
@@ -350,27 +382,26 @@ public class DBService {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateGroupCache = true;
 		return true;
 	}
 
-	public synchronized static boolean saveHistoryChessManual(ChessManual chessManual) {
+	public static boolean saveHistoryChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
+		Cursor cursor = null;
 		try {
 			String sql = "select * from " + DBOpenHelper.HISTORY_TABLE_NAME + " where sgfUrl = ?";
 			db.beginTransaction();
-			Cursor cursor = db.rawQuery(sql, new String[] { chessManual.getSgfUrl() });
+			cursor = db.rawQuery(sql, new String[] { chessManual.getSgfUrl() });
 			if (cursor != null && cursor.getCount() > 0) {
 				db.execSQL(
 						"update "
@@ -394,35 +425,35 @@ public class DBService {
 								chessManual.getCharset(), chessManual.getSgfContent(),
 								chessManual.getType(), chessManual.getGroupId() });
 			}
-			if (cursor != null) {
-				cursor.close();
-			}
+
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
+			if (cursor != null) {
+				cursor.close();
 			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateHistoryCache = true;
 		return true;
 	}
 
-	public synchronized static boolean saveFavoriteChessManual(ChessManual chessManual) {
+	public static boolean saveFavoriteChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
+		Cursor cursor = null;
 		try {
 			String sql = "select * from " + DBOpenHelper.FAVORITE_TABLE_NAME + " where sgfUrl = ?";
 			db.beginTransaction();
-			Cursor cursor = db.rawQuery(sql, new String[] { chessManual.getSgfUrl() });
+			cursor = db.rawQuery(sql, new String[] { chessManual.getSgfUrl() });
 			if (cursor != null && cursor.getCount() > 0) {
 				db.execSQL(
 						"update "
@@ -446,36 +477,34 @@ public class DBService {
 								chessManual.getCharset(), chessManual.getSgfContent(),
 								chessManual.getType(), chessManual.getGroupId() });
 			}
-			if (cursor != null) {
-				cursor.close();
-			}
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
+			if (cursor != null) {
+				cursor.close();
 			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateGroupCache = true;
 		shouldUpdateFavoriteCache = true;
 		return true;
 	}
 
-	public synchronized static boolean deleteGroup(Group group) {
+	public static boolean deleteGroup(Group group) {
 		if (TextUtils.isEmpty(group.getName())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
 
 		try {
 			db.beginTransaction();
-			deleteFavoriteChessManuals(group.getChessManuals());
+			deleteFavoriteChessManuals(db, group.getChessManuals());
 			db.execSQL("delete from " + DBOpenHelper.GROUP_TABLE_NAME + " where _id = ?",
 					new String[] { "" + group.getId() });
 			group.setId(-1);
@@ -484,20 +513,18 @@ public class DBService {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateGroupCache = true;
 		return true;
 	}
 
-	public synchronized static boolean deleteHistoryChessManual(ChessManual chessManual) {
+	public static boolean deleteHistoryChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
@@ -512,47 +539,28 @@ public class DBService {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateHistoryCache = true;
 		return true;
 	}
 
-	public synchronized static boolean deleteHistoryChessManuals(ArrayList<ChessManual> chessManuals) {
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-		if (db == null) {
-			return false;
-		}
-
-		try {
-			db.beginTransaction();
-			for (ChessManual chessManual : chessManuals) {
-				db.execSQL("delete from " + DBOpenHelper.HISTORY_TABLE_NAME + " where sgfUrl = ?",
-						new String[] { chessManual.getSgfUrl() });
-				chessManual.setId(-1);
-			}
-			db.setTransactionSuccessful();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
+	private static void deleteHistoryChessManuals(SQLiteDatabase db,
+			ArrayList<ChessManual> chessManuals) {
+		for (ChessManual chessManual : chessManuals) {
+			db.execSQL("delete from " + DBOpenHelper.HISTORY_TABLE_NAME + " where sgfUrl = ?",
+					new String[] { chessManual.getSgfUrl() });
+			chessManual.setId(-1);
 		}
 		shouldUpdateHistoryCache = true;
-		return true;
 	}
 
-	public synchronized static boolean deleteFavoriteChessManual(ChessManual chessManual) {
+	public static boolean deleteFavoriteChessManual(ChessManual chessManual) {
 		if (TextUtils.isEmpty(chessManual.getSgfUrl())) {
 			return false;
 		}
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		if (db == null) {
 			return false;
 		}
@@ -567,42 +575,21 @@ public class DBService {
 			e.printStackTrace();
 			return false;
 		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
+			db.endTransaction();
+			closeDatabase(db);
 		}
 		shouldUpdateGroupCache = true;
 		shouldUpdateFavoriteCache = true;
 		return true;
 	}
 
-	public synchronized static boolean deleteFavoriteChessManuals(
+	private static void deleteFavoriteChessManuals(SQLiteDatabase db,
 			ArrayList<ChessManual> chessManuals) {
-		SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-		if (db == null) {
-			return false;
+		for (ChessManual chessManual : chessManuals) {
+			db.execSQL("delete from " + DBOpenHelper.FAVORITE_TABLE_NAME + " where sgfUrl = ?",
+					new String[] { chessManual.getSgfUrl() });
+			chessManual.setId(-1);
 		}
-
-		try {
-			db.beginTransaction();
-			for (ChessManual chessManual : chessManuals) {
-				db.execSQL("delete from " + DBOpenHelper.FAVORITE_TABLE_NAME + " where sgfUrl = ?",
-						new String[] { chessManual.getSgfUrl() });
-				chessManual.setId(-1);
-			}
-			db.setTransactionSuccessful();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			if (db != null) {
-				db.endTransaction();
-				db.close();
-			}
-		}
-		shouldUpdateGroupCache = true;
 		shouldUpdateFavoriteCache = true;
-		return true;
 	}
 }

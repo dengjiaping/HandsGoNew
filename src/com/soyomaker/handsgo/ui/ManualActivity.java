@@ -408,30 +408,24 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 									comment.setCommentSgf(mChessManual.getSgfUrl());
 									comment.setUserId(user.getId());
 									comment.setUserName(user.getName());
-									boolean success = CloudManager.getInstance().sendComment(
+									final boolean success = CloudManager.getInstance().sendComment(
 											ManualActivity.this, comment);
-									if (success) {
-										runOnUiThread(new Runnable() {
+									runOnUiThread(new Runnable() {
 
-											@Override
-											public void run() {
+										@Override
+										public void run() {
+											if (success) {
 												Toast.makeText(ManualActivity.this,
 														R.string.toast_comment_success,
 														Toast.LENGTH_LONG).show();
 												refreshComments();
-											}
-										});
-									} else {
-										runOnUiThread(new Runnable() {
-
-											@Override
-											public void run() {
+											} else {
 												Toast.makeText(ManualActivity.this,
 														R.string.toast_comment_fail,
 														Toast.LENGTH_LONG).show();
 											}
-										});
-									}
+										}
+									});
 								}
 							}.start();
 						}

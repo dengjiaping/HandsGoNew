@@ -19,7 +19,6 @@ import com.soyomaker.handsgo.manager.ChessManualReaderManager;
 import com.soyomaker.handsgo.manager.ChessManualReaderManager.IChessManualsReaderListener;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.server.IChessManualServer;
-import com.soyomaker.handsgo.util.LogUtil;
 
 /**
  * 精彩时局界面

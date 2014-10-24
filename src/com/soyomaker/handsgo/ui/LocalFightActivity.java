@@ -18,66 +18,66 @@ import com.soyomaker.handsgo.util.AppConstants;
  * 单机对弈界面
  * 
  * @author like
- *
+ * 
  */
 public class LocalFightActivity extends BaseActivity {
 
-    private static final String TAG = "LocalFightActivity";
+	private static final String TAG = "LocalFightActivity";
 
-    private IGnuGoService mGnuGoService;
-    private ServiceConnection mGnugoConnection;
+	private IGnuGoService mGnuGoService;
+	private ServiceConnection mGnugoConnection;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_fight);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_local_fight);
 
-        initView();
+		initView();
 
-        mGnugoConnection = new ServiceConnection() {
+		mGnugoConnection = new ServiceConnection() {
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-            }
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+			}
 
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mGnuGoService = IGnuGoService.Stub.asInterface(service);
-            }
-        };
-        getApplication().bindService(new Intent(AppConstants.INTENT_GNUGO_ACTION),
-                mGnugoConnection, Context.BIND_AUTO_CREATE);
-    }
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				mGnuGoService = IGnuGoService.Stub.asInterface(service);
+			}
+		};
+		getApplication().bindService(new Intent(AppConstants.INTENT_GNUGO_ACTION),
+				mGnugoConnection, Context.BIND_AUTO_CREATE);
+	}
 
-    public void onDestroy() {
-        super.onDestroy();
-        if (mGnuGoService != null) {
-            try {
-                getApplication().unbindService(mGnugoConnection);
-                getApplication().stopService(new Intent(AppConstants.INTENT_GNUGO_ACTION));
-            } catch (Exception e) {
-            }
-        }
-    }
+	public void onDestroy() {
+		super.onDestroy();
+		if (mGnuGoService != null) {
+			try {
+				getApplication().unbindService(mGnugoConnection);
+				getApplication().stopService(new Intent(AppConstants.INTENT_GNUGO_ACTION));
+			} catch (Exception e) {
+			}
+		}
+	}
 
-    private void initView() {
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.title_local_fight);
-    }
+	private void initView() {
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.title_local_fight);
+	}
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            finish();
-            break;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 
-    @Override
-    public String getPageName() {
-        return "单机对弈界面";
-    }
+	@Override
+	public String getPageName() {
+		return "单机对弈界面";
+	}
 }

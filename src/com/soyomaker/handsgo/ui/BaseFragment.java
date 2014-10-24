@@ -6,15 +6,15 @@ import com.umeng.analytics.MobclickAgent;
 
 public abstract class BaseFragment extends Fragment implements IPageName {
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(this.getPageName());
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart(this.getPageName());
+	}
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(this.getPageName());
-    }
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(this.getPageName());
+	}
 }

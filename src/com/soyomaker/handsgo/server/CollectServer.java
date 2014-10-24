@@ -35,6 +35,12 @@ public class CollectServer implements IChessManualServer {
 		if (mChessManuals.contains(chessManual)) {
 			DBService.deleteFavoriteChessManual(chessManual);
 			mChessManuals.remove(chessManual);
+			// 删除棋谱后删除group中的该棋谱
+			for (Group group : mGroups) {
+				if (group.getId() == chessManual.getGroupId()) {
+					group.getChessManuals().remove(chessManual);
+				}
+			}
 		}
 	}
 
@@ -47,7 +53,7 @@ public class CollectServer implements IChessManualServer {
 
 	public void updateGroup(Group group) {
 		int index = mGroups.indexOf(group);
-		if (index > 0) {
+		if (index >= 0) {
 			DBService.saveGroup(group);
 			mGroups.set(index, group);
 		}
@@ -55,6 +61,8 @@ public class CollectServer implements IChessManualServer {
 
 	public void deleteGroup(Group group) {
 		if (mGroups.contains(group)) {
+			// 删除group前先删除group中的棋谱列表
+			mChessManuals.removeAll(group.getChessManuals());
 			DBService.deleteGroup(group);
 			mGroups.remove(group);
 		}

@@ -2,26 +2,26 @@ package com.soyomaker.handsgo.ui.fileexplorer;
 
 public class Settings {
 
-    // whether show system and cache images, default not
-    private boolean mShowDotAndHiddenFiles;
-    private static Settings mInstance;
+	// whether show system and cache images, default not
+	private boolean mShowDotAndHiddenFiles;
+	private static Settings mInstance;
 
-    private Settings() {
+	private Settings() {
 
-    }
+	}
 
-    public static Settings instance() {
-        if (mInstance == null) {
-            mInstance = new Settings();
-        }
-        return mInstance;
-    }
+	public static Settings instance() {
+		if (mInstance == null) {
+			mInstance = new Settings();
+		}
+		return mInstance;
+	}
 
-    public boolean getShowDotAndHiddenFiles() {
-        return mShowDotAndHiddenFiles;
-    }
+	public boolean getShowDotAndHiddenFiles() {
+		return mShowDotAndHiddenFiles;
+	}
 
-    public void setShowDotAndHiddenFiles(boolean s) {
-        mShowDotAndHiddenFiles = s;
-    }
+	public void setShowDotAndHiddenFiles(boolean s) {
+		mShowDotAndHiddenFiles = s;
+	}
 }
