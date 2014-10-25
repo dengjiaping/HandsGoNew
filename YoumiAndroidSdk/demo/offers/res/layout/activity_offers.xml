@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/offersTestItems"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5a5a5a" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/pointsBalance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="当前积分：0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#87CEFA" />
+
+        <Button
+            android:id="@+id/btn_show_offerswall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/showOffersWall" />
+        
+        <Button
+            android:id="@+id/btn_show_offerswall_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/showOffersWallDialog" />
+
+        <Button
+            android:id="@+id/btn_award_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/awardPoints" />
+
+        <Button
+            android:id="@+id/btn_spend_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/spendPoints" />
+        
+        <Button
+            android:id="@+id/btn_get_online_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/getOnlineConfig" />
+        
+        <Button
+            android:id="@+id/btn_check_ad_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttonbg"
+            android:text="@string/checkAdConfig" />
+    </LinearLayout>
+
+</ScrollView>

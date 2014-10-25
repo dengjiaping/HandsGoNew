@@ -30,6 +30,11 @@ public class HistoryActivity extends BaseActivity {
 		initView();
 	}
 
+	public void onResume() {
+		super.onResume();
+		mAdapter.updateChessManuals();
+	}
+
 	private void initView() {
 		final ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);

@@ -5,33 +5,46 @@
     android:background="@color/common_bg" >
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/zhang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/zhang" />
 
-    <TextView
-        android:id="@+id/app_name"
+    <ImageView
+        android:id="@+id/zhong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_toRightOf="@id/icon"
-        android:text="@string/app_name"
-        android:textColor="#ff000000"
-        android:textSize="32sp" />
+        android:layout_below="@id/zhang"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/zhong" />
+
+    <ImageView
+        android:id="@+id/wei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/zhong"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/wei" />
+
+    <ImageView
+        android:id="@+id/qi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wei"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/qi" />
 
     <TextView
         android:id="@+id/app_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="40dp"
-        android:layout_toRightOf="@id/app_name"
-        android:text="@string/app_version"
+        android:layout_below="@+id/qi"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/v_app_version"
         android:textColor="#ff000000"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
 </RelativeLayout>

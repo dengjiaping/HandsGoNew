@@ -30,10 +30,5 @@
         android:orderInCategory="105"
         android:showAsAction="ifRoom"
         android:title="@string/action_feedback"/>
-    <item
-        android:id="@+id/action_recommend"
-        android:orderInCategory="106"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_recommend"/>
 
 </menu>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.GroupExpandableListViewAdapter;
@@ -42,6 +43,11 @@ public class CollectActivity extends BaseActivity {
 		setContentView(R.layout.activity_collect);
 
 		initView();
+	}
+
+	public void onResume() {
+		super.onResume();
+		mAdapter.notifyDataSetChanged();
 	}
 
 	private void initView() {
@@ -96,7 +102,8 @@ public class CollectActivity extends BaseActivity {
 
 								mAdapter.notifyDataSetChanged();
 							} else {
-								// TODO toast
+								Toast.makeText(CollectActivity.this,
+										R.string.toast_group_name_null, Toast.LENGTH_LONG).show();
 							}
 						}
 					}).setNegativeButton(R.string.create_group_dialog_cancel, null).show();

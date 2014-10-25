@@ -5,6 +5,7 @@
     <string name="app_name">掌中围棋</string>
     <string name="app_info">做最好用的掌中围棋软件!</string>
     <string name="app_version">3.0</string>
+    <string name="v_app_version">V 3.0</string>
     <string name="qq_group">棋友交流QQ群：278743263</string>
     <string name="qq">开发者QQ：397093109</string>
 
@@ -44,6 +45,7 @@
     <string name="title_settings">应用设置</string>
     <string name="title_local_fight">单机对弈</string>
     <string name="title_about">关于软件</string>
+    <string name="title_local">本地棋谱</string>
     <string name="title_laboratory">实验室</string>
     <string name="title_login">登录账号</string>
     <string name="title_register">注册账号</string>
@@ -209,6 +211,12 @@
     <string name="toast_login_fail">登录失败！</string>
     <string name="toast_comment_success">评论成功！</string>
     <string name="toast_comment_fail">评论失败！</string>
+    <string name="toast_change_password_success">修改密码成功！</string>
+    <string name="toast_change_password_fail">修改密码失败！</string>
+    <string name="toast_old_password_null">旧密码不能为空！</string>
+    <string name="toast_new_password_null">新密码不能为空！</string>
+    <string name="toast_group_name_null">分组名不能为空！</string>
+    <string name="toast_old_new_password_equal">新旧密码不能相同</string>
     <string name="toast_user_name_null">昵称不能为空！</string>
     <string name="toast_user_password_null">密码不能为空！</string>
     <string name="toast_user_email_null">邮箱不能为空！</string>

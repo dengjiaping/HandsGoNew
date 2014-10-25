@@ -76,12 +76,12 @@ public class KeywordsResultActivity extends BaseActivity {
 
 					@Override
 					public void run() {
-						mAdapter.notifyDataSetChanged();
+						mAdapter.updateChessManuals();
 					}
 				});
 			}
 		}.start();
-		mAdapter.notifyDataSetChanged();
+		mAdapter.updateChessManuals();
 	}
 
 	@Override

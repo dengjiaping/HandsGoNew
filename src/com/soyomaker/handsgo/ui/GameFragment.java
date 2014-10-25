@@ -2,6 +2,9 @@ package com.soyomaker.handsgo.ui;
 
 import java.util.ArrayList;
 
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewListener;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +23,10 @@ import com.soyomaker.handsgo.manager.ChessManualReaderManager;
 import com.soyomaker.handsgo.manager.ChessManualReaderManager.IChessManualsReaderListener;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.server.IChessManualServer;
+import com.soyomaker.handsgo.util.AppConstants;
+import com.soyomaker.handsgo.util.AppPrefrence;
+import com.soyomaker.handsgo.util.LogUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 精彩时局界面
@@ -28,6 +36,7 @@ import com.soyomaker.handsgo.server.IChessManualServer;
  */
 public class GameFragment extends BaseFragment {
 
+	private static final String TAG = "GameFragment";
 	private ChessManualListViewAdapter mAdapter;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private ListView mChessManualListView;
@@ -66,7 +75,7 @@ public class GameFragment extends BaseFragment {
 
 	public void onResume() {
 		super.onResume();
-		mAdapter.notifyDataSetChanged();
+		mAdapter.updateChessManuals();
 		if (mCurrentServer.getChessManuals().isEmpty()) {
 			refreshChessManuals();
 		}
@@ -98,6 +107,36 @@ public class GameFragment extends BaseFragment {
 				android.R.color.holo_red_light);
 		mChessManualListView = (ListView) rootView.findViewById(R.id.listview_game);
 		mChessManualListView.setOnItemClickListener(mOnItemClickListener);
+		LinearLayout adLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(
+				R.layout.ad_layout, null);
+		LinearLayout adContainer = (LinearLayout) adLayout.findViewById(R.id.ad_container);
+		AdView adView = new AdView(getActivity(), AdSize.FIT_SCREEN);
+		adView.setAdListener(new AdViewListener() {
+
+			@Override
+			public void onSwitchedAd(AdView arg0) {
+				LogUtil.e(TAG, "onSwitchedAd");
+			}
+
+			@Override
+			public void onReceivedAd(AdView arg0) {
+				LogUtil.e(TAG, "onReceivedAd");
+			}
+
+			@Override
+			public void onFailedToReceivedAd(AdView arg0) {
+				LogUtil.e(TAG, "onFailedToReceivedAd");
+			}
+		});
+		adContainer.addView(adView);
+
+		mChessManualListView.addHeaderView(adLayout);
+
+		// 根据在线参数等决定是否显示广告条
+		String adon = MobclickAgent.getConfigParams(getActivity(), AppConstants.AD_ON_STRING);
+		if ("false".equals(adon) || AppPrefrence.getAdOff(getActivity()) || AppConstants.DEBUG) {
+			adContainer.setVisibility(View.GONE);
+		}
 
 		mAdapter = new ChessManualListViewAdapter(getActivity(), mCurrentServer);
 		mChessManualListView.setAdapter(mAdapter);
@@ -112,13 +151,13 @@ public class GameFragment extends BaseFragment {
 						@Override
 						public void readSuccess(ArrayList<ChessManual> chessManuals) {
 							mSwipeRefreshLayout.setRefreshing(false);
-							mAdapter.notifyDataSetChanged();
+							mAdapter.updateChessManuals();
 						}
 
 						@Override
 						public void readFail() {
 							mSwipeRefreshLayout.setRefreshing(false);
-							mAdapter.notifyDataSetChanged();
+							mAdapter.updateChessManuals();
 						}
 					});
 		}
@@ -131,16 +170,16 @@ public class GameFragment extends BaseFragment {
 
 						@Override
 						public void readSuccess(ArrayList<ChessManual> chessManuals) {
-							mAdapter.notifyDataSetChanged();
+							mAdapter.updateChessManuals();
 						}
 
 						@Override
 						public void readFail() {
-							mAdapter.notifyDataSetChanged();
+							mAdapter.updateChessManuals();
 						}
 					});
 		}
-		mAdapter.notifyDataSetChanged();
+		mAdapter.updateChessManuals();
 	}
 
 	@Override

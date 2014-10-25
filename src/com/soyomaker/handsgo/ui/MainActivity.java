@@ -1,9 +1,6 @@
 package com.soyomaker.handsgo.ui;
 
 import net.youmi.android.AdManager;
-import net.youmi.android.offers.OffersManager;
-import net.youmi.android.offers.PointsChangeNotify;
-import net.youmi.android.offers.PointsManager;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -22,8 +19,6 @@ import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
 import com.soyomaker.handsgo.ui.fileexplorer.FileExplorerActivity;
 import com.soyomaker.handsgo.util.AppConstants;
-import com.soyomaker.handsgo.util.AppPrefrence;
-import com.soyomaker.handsgo.util.LogUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -34,9 +29,9 @@ import com.umeng.update.UmengUpdateAgent;
  * @author like
  * 
  */
-public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener,
-		PointsChangeNotify {
-
+public class MainActivity extends BaseFragmentActivity implements ActionBar.TabListener
+// ,PointsChangeNotify
+{
 	private static final String TAG = "MainActivity";
 
 	private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -58,17 +53,17 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		AdManager.getInstance(this).init(AppConstants.YOUMI_APP_ID, AppConstants.YOUMI_APP_SECRET,
 				false);
 
-		OffersManager.getInstance(this).onAppLaunch();
-		PointsManager.getInstance(this).registerNotify(this);
-		PointsManager.setEnableEarnPointsToastTips(false);
+		// OffersManager.getInstance(this).onAppLaunch();
+		// PointsManager.getInstance(this).registerNotify(this);
+		// PointsManager.setEnableEarnPointsToastTips(false);
 
 		// 友盟意见反馈初始化
 		mFeedbackAgent = new FeedbackAgent(MainActivity.this);
 
 		// 首先检测网络是否通畅
 		if (CloudClient.checkNetwork(MainActivity.this)) {
-			// 查询积分
-			updatePoint(PointsManager.getInstance(this).queryPoints());
+			// // 查询积分
+			// updatePoint(PointsManager.getInstance(this).queryPoints());
 
 			// 获取意见反馈数据
 			mFeedbackAgent.sync();
@@ -85,6 +80,12 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		}
 	}
 
+	public void onDestory() {
+		// PointsManager.getInstance(this).unRegisterNotify(this);
+		// OffersManager.getInstance(this).onAppExit();
+		super.onDestroy();
+	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -99,12 +100,6 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 			return true; // 返回true表示执行结束不需继续执行父类按键响应
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-
-	public void onDestory() {
-		PointsManager.getInstance(this).unRegisterNotify(this);
-		OffersManager.getInstance(this).onAppExit();
-		super.onDestroy();
 	}
 
 	private void initView() {
@@ -167,10 +162,10 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 			mFeedbackAgent.startFeedbackActivity();
 		}
 			break;
-		case R.id.action_recommend: {
-			OffersManager.getInstance(this).showOffersWall();
-		}
-			break;
+		// case R.id.action_recommend: {
+		// OffersManager.getInstance(this).showOffersWall();
+		// }
+		// break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -239,17 +234,17 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		return "主界面";
 	}
 
-	private void updatePoint(final int point) {
-		LogUtil.e(TAG, "savePoints 当前积分余额：" + point);
-		AppPrefrence.savePoints(MainActivity.this, point);
-	}
-
-	@Override
-	public void onPointBalanceChange(final int arg0) {
-		new Thread() {
-			public void run() {
-				updatePoint(arg0);
-			}
-		}.start();
-	}
+	// private void updatePoint(final int point) {
+	// LogUtil.e(TAG, "savePoints 当前积分余额：" + point);
+	// AppPrefrence.savePoints(MainActivity.this, point);
+	// }
+	//
+	// @Override
+	// public void onPointBalanceChange(final int arg0) {
+	// new Thread() {
+	// public void run() {
+	// updatePoint(arg0);
+	// }
+	// }.start();
+	// }
 }

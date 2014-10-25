@@ -1,0 +1,93 @@
+/** @preserve Copyright 2010-2014 Youmi.net. All Rights Reserved. */
+/**
+ *  Android SDK Document CSS
+ *  ------------------------
+ */
+/* =layout
+ ---------------------------------------- */
+body { font-family: \5fae\8f6f\96c5\9ed1,helvetica,tahoma,arial,\5b8b\4f53; }
+.footer {
+    margin-top: 48px;
+    color: #999;
+}
+
+/* =type
+ ---------------------------------------- */
+h1 { padding-top: 32px; }
+h2 { margin-top: 36px; color: #003366; }
+h3 { margin-top: 32px; }
+h4 { margin-top: 24px; }
+h5 { margin-top: 24px; font-weight: 700; }
+h6 { margin-top: 16px; font-size: 12.73px; font-weight: 700; }
+
+a { color: #ff7830; }
+a:hover { color: #ef5b0c; }
+
+.hdh3 h3 { display: none; }
+
+/* =components
+ ---------------------------------------- */
+/* =nav */
+.navbar-brand { padding-top: 11px; }
+.navbar-brand img { margin-right: 6px; }
+.navbar-inverse { background: #222; }
+
+
+/* =code */
+.highlight pre {
+    padding-right: 16px;
+    padding-left: 16px;
+    color: #fff;
+    background-color: #292929;
+    border-color: #1b1d1e;
+}
+.highlight .cm, .highlight .c1, .highlight .c { font-style: normal; color: #455354; }
+
+/* java */
+.highlight-java .o, .highlight-java .na,
+.highlight-java .nc, .highlight-java .nf,
+.highlight-java .nn { color: #fff; }
+.highlight-java .k, .highlight-java .kt { color: #66d9ef; }
+.highlight-java .s { color: #e6db74; }
+.highlight-java .kc, .highlight-java .mi { color: #ae81ff; }
+.highlight-java .kd { color: #fd971f; }
+.highlight-java .kn, .highlight-java .nd { color: #a6e22e; }
+
+/* xml */
+.highlight-xml .nt { color: #a6e22e; }
+.highlight-xml .na { color: #66d9ef; }
+.highlight-xml .s { color: #e6db74; }
+
+
+/* notice */
+.alert.admonition {
+    padding-right: 12px;
+    padding-left: 12px;
+}
+.alert.alert-info {
+    background: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+.alert.alert-warning {
+    background: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+.alert.alert-error {
+    background: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+.admonition.tip .first,
+.admonition.caution .first,
+.admonition.danger .first { display: none; }
+.admonition.tip .last,
+.admonition.caution .last,
+.admonition.danger .last { margin-top: 0; }

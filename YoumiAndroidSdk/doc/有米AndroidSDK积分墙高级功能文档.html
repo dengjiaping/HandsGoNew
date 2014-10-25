@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>积分墙高级功能 &mdash; Youmi Android SDK Document 4.10 文档</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.1.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.1.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/youmi.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '4.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Youmi Android SDK Document 4.10 文档" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="_static/logo.png">
+          有米广告 Android SDK 文档</a>
+        <span class="navbar-text navbar-version pull-left"><b>v4.10</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+                <li><a href="有米AndroidSDK实用工具.html">SDK 实用工具</a></li>
+                <li><a href="有米AndroidSDK常见问题.html">常见问题</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">积分墙高级功能</a><ul>
+<li><a class="reference internal" href="#chap-1">一、积分余额变动通知</a></li>
+<li><a class="reference internal" href="#sdk">二、客户端 SDK 获取积分订单</a><ul>
+<li><a class="reference internal" href="#receiver">1) 通过Receiver来获取</a></li>
+<li><a class="reference internal" href="#id5">2) 通过实现接口来获取</a></li>
+<li><a class="reference internal" href="#id6">3) 积分订单类定义</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#chap-3">三、通过服务器获取积分订单</a></li>
+<li><a class="reference internal" href="#chap-4">四、验证积分墙配置是否正确</a></li>
+<li><a class="reference internal" href="#chap-5">五、配置积分墙SDK的积分到账提醒</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="col-md-9">
+      
+  <div class="section" id="id1">
+<h1>积分墙高级功能<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+<div class="section" id="chap-1">
+<span id="id3"></span><h2>一、积分余额变动通知<a class="headerlink" href="#chap-1" title="永久链接至标题">¶</a></h2>
+<hr class="docutils" />
+<p>如果您在 UI 上显示用户的积分账户余额，用户的积分余额可能会因为各种可能的原因导致余额变动(增减)，这时候您需要刷新 UI 上的显示值，可以通过以下方法实现积分余额在 UI 上的自动刷新。</p>
+<ol class="arabic simple">
+<li>让 UI 相关的类（可以是 Activity 或 View 相关的类）实现 <tt class="docutils literal"><span class="pre">PointsChangeNotify</span></tt> 接口</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">net</span><span class="o">.</span><span class="na">youmi</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">offers</span><span class="o">;</span>
+<span class="cm">/**</span>
+<span class="cm"> *  积分余额增减变动监听器</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PointsChangeNotify</span> <span class="o">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     *  积分余额增减变动通知,该回调在 UI 线程中进行，可直接与 UI 进行交互</span>
+<span class="cm">     *  @param pointsBalance 当前积分余额</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPointBalanceChange</span><span class="o">(</span><span class="kt">int</span> <span class="n">pointsBalance</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>在 UI 初始化后调用下面方法以注册第一步中实现的接口：</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsManager</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">).</span><span class="na">registerNotify</span><span class="o">(</span><span class="k">new</span> <span class="n">PointsChangeNotify</span><span class="o">());</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>在 UI 销毁前调用以下代码释放接口的引用，以防止造成内存漏洞：</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsManager</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">).</span><span class="na">unRegisterNotify</span><span class="o">(</span><span class="k">new</span> <span class="n">PointsChangeNotify</span><span class="o">());</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+</div>
+<div class="section" id="sdk">
+<span id="chap-2"></span><h2>二、客户端 SDK 获取积分订单<a class="headerlink" href="#sdk" title="永久链接至标题">¶</a></h2>
+<hr class="docutils" />
+<p>用户完成了一次积分任务并在有米服务器成功结算后，可以通过以下方法让 SDK 回调通知应用用户所完成的订单。</p>
+<div class="section" id="receiver">
+<h3>1) 通过Receiver来获取<a class="headerlink" href="#receiver" title="永久链接至标题">¶</a></h3>
+<p>第一步，您需要定义一个 MyPointsReceiver 类（名字可以随意），它必须继承自 <tt class="docutils literal"><span class="pre">net.youmi.android.offers.PointsReceiver</span></tt> ：</p>
+<p><strong>示例代码</strong> ：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.youmi.android.offers.EarnPointsOrderList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsReceiver</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyPointsReceiver</span> <span class="kd">extends</span> <span class="n">PointsReceiver</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onEarnPoints</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">EarnPointsOrderList</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 当 SDK 获取到用户赚取积分的订单时，会第一时间调用该方法通知您。</span>
+        <span class="c1">// 参数 EarnPointsOrderList 是一个积分订单列表，您可以在这里处理积分详细订单。</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onViewPoints</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 这里是个有趣的小功能，当用户赚取积分之后，积分墙 SDK 会在通知栏上显示一条获取积分的提示，如果用户点击了这个通知，该函数会被调用。</span>
+        <span class="c1">// 这时候您可以在这里实现一个跳转，让用户跳转到您设计好的一个积分账户余额页面（如&quot;我的账户&quot;之类的 Activity）。</span>
+        <span class="c1">// 该操作是可选的，如果需要关闭通知栏积分提示，请调用PointsManager.setEnableEarnPointsNotification(false);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>第二步，您需要在 <tt class="docutils literal"><span class="pre">AndroidManifest.xml</span></tt> 上配置刚刚定义的 MyPointsReceiver：</p>
+<p><em>示例代码</em> ：</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;receiver</span>
+    <span class="na">android:name=</span><span class="s">&quot;MyPointsReceiver&quot;</span>
+    <span class="na">android:exported=</span><span class="s">&quot;false&quot;</span> <span class="nt">&gt;</span>
+    <span class="nt">&lt;intent-filter&gt;</span>
+        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">&quot;ep_请替换为您的AppID&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">&quot;vp_请替换为您的AppID&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/intent-filter&gt;</span>
+<span class="nt">&lt;/receiver&gt;</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">小技巧</p>
+<p><strong>注意：</strong></p>
+<p class="last">这里有一个很关键的细节，您必须为 MyPointsReceiver 配置两个 Action，Action 的名字分别是以 <strong>“ep_”</strong> 和 <strong>“vp_”</strong> 开头，以您的应用的 AppID 结尾的字符串。（AppID 是从有米主站上申请的应用ID，16个字符，所以 Action 的总长度应该是19个字符）</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>2) 通过实现接口来获取<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="admonition tip">
+<p class="first admonition-title">小技巧</p>
+<p class="last"><strong>注意：</strong> 本接口为Android SDK v4.10新增接口</p>
+</div>
+<p>第一步：让 UI 相关的类（可以是 Activity 或 View 相关的类）实现 <tt class="docutils literal"><span class="pre">PointsEarnNotify</span></tt> 接口</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">net</span><span class="o">.</span><span class="na">youmi</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">offers</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PointsEarnNotify</span> <span class="o">{</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * 指定应用的积分订单赚取通知，执行在UI线程中</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPointEarn</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">EarnPointsOrderList</span> <span class="n">list</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>第二步：在 UI 初始化后调用下面方法以注册第一步中实现的接口：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsManager</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">).</span><span class="na">registerPointsEarnNotify</span><span class="o">(</span><span class="k">new</span> <span class="n">PointsEarnNotify</span><span class="o">());</span>
+</pre></div>
+</div>
+<p>第三步：在 UI 销毁前调用以下代码释放接口的引用，以防止造成内存漏洞：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsManager</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">).</span><span class="na">unRegisterPointsEarnNotify</span><span class="o">(</span><span class="k">new</span> <span class="n">PointsEarnNotify</span><span class="o">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>3) 积分订单类定义<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="section" id="earnpointsorderlist">
+<h4>积分订单列表 EarnPointsOrderList：<a class="headerlink" href="#earnpointsorderlist" title="永久链接至标题">¶</a></h4>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">net</span><span class="o">.</span><span class="na">youmi</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">offers</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EarnPointsOrderList</span> <span class="o">{</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  获取服务器上设置积分单位名称</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getCurrencyName</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  根据 index 获取订单详情（EarnPointsOrderInfo）</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">EarnPointsOrderInfo</span> <span class="nf">get</span><span class="o">(</span><span class="kt">int</span> <span class="n">index</span><span class="o">);</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  判断列表是否为空</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEmpty</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * 获取列表项数量</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="earnpointsorderinfo">
+<h4>积分订单 EarnPointsOrderInfo：<a class="headerlink" href="#earnpointsorderinfo" title="永久链接至标题">¶</a></h4>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">net</span><span class="o">.</span><span class="na">youmi</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">offers</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">EarnPointsOrderInfo</span> <span class="o">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     *  获取订单号(具有唯一性)</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getOrderID</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  获取渠道号，这里指在 AndroidManifest.xml 上配置的有米渠道号，详见文档</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getChannelId</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  获取开发者自定义用户唯一标识，该值通过 OffersManager 设置</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getCustomUserID</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  获取积分订单的状态：</span>
+<span class="cm">     *      1. 表示开发者获得了收入并且用户获得了积分。</span>
+<span class="cm">     *      2. 表示开发者没有获得收入但用户获得了积分（未通过审核以及测试模式下结算无效等情况）。</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getStatus</span><span class="o">()</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  本次获取积分的描述语，如“成功安装《--》获取了100金币”</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMessage</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  本次获得的积分</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getPoints</span><span class="o">();</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     *  本次获得积分的结算时间</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getSettlingTime</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="chap-3">
+<span id="id8"></span><h2>三、通过服务器获取积分订单<a class="headerlink" href="#chap-3" title="永久链接至标题">¶</a></h2>
+<hr class="docutils" />
+<div class="admonition caution">
+<p class="first admonition-title">警告</p>
+<p class="last"><strong>注意：</strong> 如果您使用服务器回调，请登录有米后台，进入到 <a class="reference external" href="https://www.youmi.net/apps/setting">广告设置</a> - 积分广告基本设置 - 余额显示设置，关闭该功能！</p>
+</div>
+<p><strong>务必在调用</strong> <a class="reference external" href="有米AndroidSDK积分墙开发者文档.html#chap-ow-cn-2">积分墙的任意接口</a> <strong>之前</strong> 调用以下接口设置用户的标识，该标识最终通过订单回调到您的服务器：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.OffersManager</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="n">OffersManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">setCustomUserId</span><span class="o">(</span><span class="s">&quot;your_userid&quot;</span><span class="o">);</span>
+
+<span class="c1">// 有米Android SDK v4.10之后的sdk还需要配置下面代码，以告诉sdk使用了服务器回调</span>
+<span class="n">OffersManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">setUsingServerCallBack</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">用户完成了一次积分任务并在有米服务器成功结算后，也可以通过服务器通讯的方式，由有米服务器向您的服务器回调用户完成的订单，</div>
+<div class="line">详情请查看 <a class="reference external" href="http://wiki.youmi.net/Youmi_android_offers_order_callback_protocol">有米 Android 积分墙积分订单服务器回调协议</a> 。</div>
+</div>
+<div class="admonition error">
+<p class="first admonition-title">错误</p>
+<p class="last">如果使用了服务器订单回调，则上文所述的 <a class="reference external" href="#chap-2">客户端SDK获取积分订单</a> 将不可用，即 SDK 将不会通知客户端应用订单到账，因此 <a class="reference external" href="有米AndroidSDK积分墙开发者文档.html#chap-ow-cn-2-4">SDK 原有的积分管理功能</a> 也将被禁用，所有积分流程只能通过服务器实现，可以极大地提高积分 <strong>安全性</strong> 。</p>
+</div>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+</div>
+<div class="section" id="chap-4">
+<span id="id14"></span><h2>四、验证积分墙配置是否正确<a class="headerlink" href="#chap-4" title="永久链接至标题">¶</a></h2>
+<hr class="docutils" />
+<p>嵌入 SDK 时如果配置有误有可能会导致没有收入或者获取不到积分，在完成文档中的配置之后可以通过调用以下接口查看配置是否正确：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.OffersManager</span><span class="o">;</span>
+<span class="o">...</span>
+
+<span class="c1">// 积分墙配置检查（没有使用“通过 Receiver来获取积分订单”功能）：</span>
+<span class="kt">boolean</span> <span class="n">isSuccess</span> <span class="o">=</span> <span class="n">OffersManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">checkOffersAdConfig</span><span class="o">();</span>
+
+<span class="c1">// 积分墙配置检查（使用“通过Receiver来获取积分订单”功能）：</span>
+<span class="kt">boolean</span> <span class="n">isSuccess</span> <span class="o">=</span> <span class="n">OffersManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">).</span><span class="na">checkOffersAdConfig</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">小技巧</p>
+<p><strong>注意：</strong></p>
+<p class="last">该接口调用的结果如果返回 true，则说明配置正确，可以删掉该调用。如果返回 false，则需要查看 <strong>LogCat</strong> 的输出 <tt class="docutils literal"><span class="pre">tag:YoumiSdk</span></tt> ，里面有指出对应的的配置错误内容。</p>
+</div>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+</div>
+<div class="section" id="chap-5">
+<span id="id16"></span><h2>五、配置积分墙SDK的积分到账提醒<a class="headerlink" href="#chap-5" title="永久链接至标题">¶</a></h2>
+<hr class="docutils" />
+<p>为了让用户更加清楚获知积分的赚取情况，SDK使用了悬浮提示框以及通知栏提示来提醒用户积分到账情况。此功能是默认开启的，但您可以通过积分管理器 <tt class="docutils literal"><span class="pre">PointsManager</span></tt> 的相关接口来关闭提醒功能：</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">net.youmi.android.offers.PointsManager.</span>
+<span class="o">...</span>
+
+<span class="c1">//关闭积分到账通知栏提示功能</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">setEnableEarnPointsNotification</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+<span class="c1">//关闭积分到账悬浮框提示功能</span>
+<span class="n">PointsManager</span><span class="o">.</span><span class="na">setEnableEarnPointsToastTips</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="javascript:history.back();">返回上一层</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+    <footer class="footer">
+        <div class="container">
+            <p class="pull-right"><a href="#">返回顶端</a></p>
+            <p>© Copyright 2014, Youmi.net</p>
+        </div>
+    </footer>
+    <script>
+        $("#dLabelLocalToc").html('导航 <b class="caret"></b>');
+        $(".admonition-title").html('注意：');
+    </script>
+
+  </body>
+</html>

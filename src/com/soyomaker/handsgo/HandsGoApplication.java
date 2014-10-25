@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.soyomaker.handsgo.db.DBService;
+import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.Group;
 import com.soyomaker.handsgo.util.CrashHandler;
 import com.soyomaker.handsgo.util.StorageUtil;
@@ -13,6 +14,7 @@ import com.weibo.image.SinaImageLoader;
 public class HandsGoApplication extends Application {
 
 	private static Context sContext;
+	private static ChessManual sChessManual;
 
 	@Override
 	public void onCreate() {
@@ -41,5 +43,13 @@ public class HandsGoApplication extends Application {
 
 	public static Context getAppContext() {
 		return sContext;
+	}
+
+	public static ChessManual getChessManual() {
+		return sChessManual;
+	}
+
+	public static void setChessManual(ChessManual chessManual) {
+		sChessManual = chessManual;
 	}
 }

@@ -36,6 +36,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.adapter.CommentListViewAdapter;
 import com.soyomaker.handsgo.core.DefaultBoardModel;
@@ -68,8 +69,6 @@ import com.umeng.analytics.MobclickAgent;
  * 
  */
 public class ManualActivity extends BaseActivity implements IGridListener {
-
-	public static final String EXTRA_CHESSMANUAL = "extra_chessmanual";
 
 	private static final String TAG = "ManualActivity";
 
@@ -118,11 +117,19 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 		mGoController.pauseAutoNext();
 	}
 
+	public void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		if (intent != null) {
+			Uri uri = intent.getData();
+			if (uri != null) {
+				LogUtil.e(TAG, "onNewIntent:" + uri.getPath());
+			}
+		}
+	}
+
 	private void initData() {
 		Intent intent = getIntent();
-		mChessManual = (ChessManual) intent.getSerializableExtra(EXTRA_CHESSMANUAL);
-		if (mChessManual == null) {
-			// 如果传入的棋谱是空的，多半是本地sgf文件打开请求，这里统一封装为一个mChessManual，进行读取
+		if (intent != null) {
 			Uri uri = intent.getData();
 			if (uri != null && !TextUtils.isEmpty(uri.getPath())) {
 				File file = new File(uri.getPath());
@@ -131,13 +138,16 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 				mChessManual.setSgfUrl(file.getAbsolutePath());
 				mChessManual.setMatchName(file.getName());
 				mChessManual.setCharset(StringUtil.getCharset(file));
+			} else {
+				mChessManual = HandsGoApplication.getChessManual();
 			}
 		}
+		// 解决已加载过的棋谱还要重新加载的问题
 		if (mChessManual != null && TextUtils.isEmpty(mChessManual.getSgfContent())) {
-			if (DBService.isFavoriteChessManual(mChessManual)) {
-				mChessManual = DBService.getFavoriteChessManual(mChessManual);
-			} else if (DBService.isHistoryChessManual(mChessManual)) {
+			if (DBService.isHistoryChessManual(mChessManual)) {
 				mChessManual = DBService.getHistoryChessManual(mChessManual);
+			} else if (DBService.isFavoriteChessManual(mChessManual)) {
+				mChessManual = DBService.getFavoriteChessManual(mChessManual);
 			}
 		}
 	}
@@ -209,6 +219,11 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 	};
 
 	private void refreshComments() {
+		// 本地棋谱不进行刷新
+		if (mChessManual.getType() == ChessManual.LOCAL_CHESS_MANUAL) {
+			mSwipeRefreshLayout.setRefreshing(false);
+			return;
+		}
 		mSwipeRefreshLayout.setRefreshing(true);
 		if (CloudManager.getInstance().isRefreshingComment(mChessManual.getSgfUrl())) {
 			return;
@@ -275,7 +290,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 		});
 		mAdLayout.addView(adView);
 
-		// 根据在线参数决定是否棋谱加载出来后继续显示广告条
+		// 根据在线参数等决定是否显示广告条
 		String adon = MobclickAgent.getConfigParams(this, AppConstants.AD_ON_STRING);
 		if ("false".equals(adon) || AppPrefrence.getAdOff(this) || AppConstants.DEBUG) {
 			mAdLayout.setVisibility(View.GONE);
@@ -376,6 +391,11 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 		}.start();
 
 		updateCollectBtn();
+
+		// 本地棋谱不显示评论按钮
+		if (mChessManual.getType() == ChessManual.LOCAL_CHESS_MANUAL) {
+			mCommentButton.setVisibility(View.GONE);
+		}
 
 		refreshComments();
 	}

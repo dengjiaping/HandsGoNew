@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.CollectManager;
 import com.soyomaker.handsgo.manager.HistoryManager;
@@ -121,7 +123,9 @@ public class GroupExpandableListViewAdapter extends BaseExpandableListAdapter {
 
 												notifyDataSetChanged();
 											} else {
-												// TODO toast
+												Toast.makeText(mContext,
+														R.string.toast_group_name_null,
+														Toast.LENGTH_LONG).show();
 											}
 										}
 									}).setNegativeButton(R.string.edit_group_dialog_cancel, null)
@@ -192,8 +196,8 @@ public class GroupExpandableListViewAdapter extends BaseExpandableListAdapter {
 
 				@Override
 				public void onClick(View arg0) {
+					HandsGoApplication.setChessManual(chessManual);
 					Intent intent = new Intent(mContext, ManualActivity.class);
-					intent.putExtra(ManualActivity.EXTRA_CHESSMANUAL, chessManual);
 					mContext.startActivity(intent);
 				}
 			});

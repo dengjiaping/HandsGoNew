@@ -16,16 +16,20 @@ public class FileExplorerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_file_explorer);
-
-		final ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		if (savedInstanceState == null) {
 			mFileViewActivity = new FileListFragment();
 			getFragmentManager().beginTransaction().add(R.id.container, mFileViewActivity).commit();
 		}
+
+		initView();
+	}
+
+	private void initView() {
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.title_local);
 	}
 
 	@Override

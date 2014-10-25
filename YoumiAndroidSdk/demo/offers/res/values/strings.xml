@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">YoumiOfferDemo</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="showOffersWall">展示积分墙(全屏)</string>
+    <string name="showOffersWallDialog">展示积分墙(对话框)</string>
+    <string name="awardPoints">奖励10积分</string>
+    <string name="spendPoints">消费20积分</string>
+    <string name="getOnlineConfig">获取在线参数</string>
+    <string name="checkAdConfig">检查广告配置</string>
+    
+</resources>

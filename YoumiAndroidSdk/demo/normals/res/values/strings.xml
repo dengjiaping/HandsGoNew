@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">有米无积分广告Demo</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="showSpot">展示插播广告</string>
+    <string name="showSmartBanner">展示SmartBanner</string>
+    <string name="diy">自定义广告</string>
+</resources>

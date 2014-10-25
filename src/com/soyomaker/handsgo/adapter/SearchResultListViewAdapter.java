@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.model.ChessManual;
 import com.soyomaker.handsgo.model.SearchResult;
@@ -115,8 +116,8 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 
 								@Override
 								public void run() {
+									HandsGoApplication.setChessManual(chessManual);
 									Intent intent = new Intent(mContext, ManualActivity.class);
-									intent.putExtra(ManualActivity.EXTRA_CHESSMANUAL, chessManual);
 									mContext.startActivity(intent);
 								}
 							});
@@ -146,8 +147,8 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 
 								@Override
 								public void run() {
+									HandsGoApplication.setChessManual(chessManual);
 									Intent intent = new Intent(mContext, ManualActivity.class);
-									intent.putExtra(ManualActivity.EXTRA_CHESSMANUAL, chessManual);
 									mContext.startActivity(intent);
 								}
 							});

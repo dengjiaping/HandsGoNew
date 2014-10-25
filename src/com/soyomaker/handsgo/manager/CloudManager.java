@@ -8,12 +8,16 @@ import java.util.Map;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.sina.sae.cloudservice.api.CloudChangePassword;
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.sina.sae.cloudservice.api.CloudComment;
 import com.sina.sae.cloudservice.api.CloudGetComments;
 import com.sina.sae.cloudservice.api.CloudLogin;
 import com.sina.sae.cloudservice.api.CloudRegister;
+import com.sina.sae.cloudservice.api.CommonParams;
 import com.sina.sae.cloudservice.exception.CloudServiceException;
+import com.soyomaker.handsgo.HandsGoApplication;
+import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.model.Comment;
 import com.soyomaker.handsgo.model.User;
 import com.soyomaker.handsgo.util.AppConstants;
@@ -27,8 +31,13 @@ public class CloudManager {
 	private User mLoginUser;
 	private Map<String, ArrayList<Comment>> mCommentMap = new HashMap<String, ArrayList<Comment>>();
 	private Map<String, Boolean> mCommentRefreshingMap = new HashMap<String, Boolean>();
+	private Map<String, String> mCommonParams = new HashMap<String, String>();
 
 	private CloudManager() {
+		mCommonParams.put("version",
+				HandsGoApplication.getAppContext().getString(R.string.app_version));
+		mCommonParams.put("platform", "android");
+		CommonParams.setCommonParams(mCommonParams);
 	}
 
 	public static CloudManager getInstance() {
@@ -69,6 +78,29 @@ public class CloudManager {
 			mCommentMap.put(sgfUrl, comments);
 		}
 		return comments;
+	}
+
+	/**
+	 * 修改密码
+	 * 
+	 * @param context
+	 * @param name
+	 * @param oldpassword
+	 * @param newpassword
+	 * @return
+	 */
+	public boolean changePassword(Context context, String name, String oldpassword,
+			String newpassword) {
+		init(context);
+
+		int rows = -1;
+		try {
+			rows = CloudChangePassword.changePassword(name, oldpassword, newpassword);
+		} catch (CloudServiceException e) {
+			e.printStackTrace();
+		}
+
+		return rows > 0;
 	}
 
 	/**
@@ -173,6 +205,8 @@ public class CloudManager {
 
 		AppPrefrence.saveUserName(context, "");
 		AppPrefrence.saveUserPassword(context, "");
+
+		mCommonParams.remove("userid");
 	}
 
 	/**
@@ -221,6 +255,9 @@ public class CloudManager {
 			}
 			AppPrefrence.saveUserName(context, name);
 			AppPrefrence.saveUserPassword(context, password);
+
+			mCommonParams.put("userid", userid);
+
 			return mLoginUser;
 		} else {
 			return null;

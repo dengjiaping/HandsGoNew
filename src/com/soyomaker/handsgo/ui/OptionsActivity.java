@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.CloudManager;
+import com.soyomaker.handsgo.model.User;
 import com.soyomaker.handsgo.ui.view.CheckSwitchButton;
 import com.soyomaker.handsgo.ui.view.ColorPickerDialog;
 import com.soyomaker.handsgo.ui.view.ColorPickerDialog.OnColorChangedListener;
@@ -35,7 +37,7 @@ public class OptionsActivity extends BaseActivity {
 
 	private ColorPickerDialog mChessBoardColorPickerDialog;
 	private TextView mUserNameTextView;
-	private TextView mUserPointTextView;
+	// private TextView mUserPointTextView;
 	private Button mSigninButton;
 	private Button mPasswordButton;
 	private Button mLoginButton;
@@ -53,15 +55,17 @@ public class OptionsActivity extends BaseActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(R.string.title_settings);
 
-		CheckSwitchButton adCheck = (CheckSwitchButton) findViewById(R.id.ad_off);
-		adCheck.setChecked(AppPrefrence.getAdOff(this));
-		adCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				AppPrefrence.saveAdOff(OptionsActivity.this, isChecked);
-			}
-		});
+		// CheckSwitchButton adCheck = (CheckSwitchButton)
+		// findViewById(R.id.ad_off);
+		// adCheck.setChecked(AppPrefrence.getAdOff(this));
+		// adCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		//
+		// @Override
+		// public void onCheckedChanged(CompoundButton buttonView, boolean
+		// isChecked) {
+		// AppPrefrence.saveAdOff(OptionsActivity.this, isChecked);
+		// }
+		// });
 
 		CheckSwitchButton showNumberCheck = (CheckSwitchButton) findViewById(R.id.show_number);
 		showNumberCheck.setChecked(AppPrefrence.getShowNumber(this));
@@ -140,7 +144,7 @@ public class OptionsActivity extends BaseActivity {
 		});
 
 		mUserNameTextView = ((TextView) findViewById(R.id.txt_user_name));
-		mUserPointTextView = ((TextView) findViewById(R.id.txt_point));
+		// mUserPointTextView = ((TextView) findViewById(R.id.txt_point));
 		mSigninButton = (Button) findViewById(R.id.btn_signin);
 		mPasswordButton = (Button) findViewById(R.id.btn_password);
 		mLoginButton = (Button) findViewById(R.id.btn_login);
@@ -150,9 +154,9 @@ public class OptionsActivity extends BaseActivity {
 		if (CloudManager.getInstance().hasLogin()) {
 			mUserNameTextView.setVisibility(View.VISIBLE);
 			mUserNameTextView.setText(CloudManager.getInstance().getLoginUser().getName());
-			mUserPointTextView.setVisibility(View.VISIBLE);
-			mUserPointTextView.setText(String.format(getString(R.string.local_point),
-					AppPrefrence.getPoints(this)));
+			// mUserPointTextView.setVisibility(View.VISIBLE);
+			// mUserPointTextView.setText(String.format(getString(R.string.local_point),
+			// AppPrefrence.getPoints(this)));
 			mSigninButton.setVisibility(View.VISIBLE);
 			mSigninButton.setOnClickListener(new View.OnClickListener() {
 
@@ -173,7 +177,7 @@ public class OptionsActivity extends BaseActivity {
 			mLoginButton.setVisibility(View.GONE);
 		} else {
 			mUserNameTextView.setVisibility(View.GONE);
-			mUserPointTextView.setVisibility(View.GONE);
+			// mUserPointTextView.setVisibility(View.GONE);
 			mSigninButton.setVisibility(View.GONE);
 			mPasswordButton.setVisibility(View.GONE);
 			mLoginButton.setVisibility(View.VISIBLE);
@@ -208,21 +212,52 @@ public class OptionsActivity extends BaseActivity {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									String oldPassword = edtOldPassword.getText().toString();
-									String newPassword = edtNewPassword.getText().toString();
+									final String oldPassword = edtOldPassword.getText().toString();
+									final String newPassword = edtNewPassword.getText().toString();
 									if (TextUtils.isEmpty(oldPassword)) {
-										// TODO toast
+										Toast.makeText(OptionsActivity.this,
+												R.string.toast_old_password_null, Toast.LENGTH_LONG)
+												.show();
 										return;
 									}
 									if (TextUtils.isEmpty(newPassword)) {
-										// TODO toast
+										Toast.makeText(OptionsActivity.this,
+												R.string.toast_new_password_null, Toast.LENGTH_LONG)
+												.show();
 										return;
 									}
 									if (oldPassword.equals(newPassword)) {
-										// TODO toast
+										Toast.makeText(OptionsActivity.this,
+												R.string.toast_old_new_password_equal,
+												Toast.LENGTH_LONG).show();
 										return;
 									}
-									// TODO 调用接口
+									new Thread() {
+										public void run() {
+											User user = CloudManager.getInstance().getLoginUser();
+											final boolean success = CloudManager.getInstance()
+													.changePassword(OptionsActivity.this,
+															user.getName(), oldPassword,
+															newPassword);
+											runOnUiThread(new Runnable() {
+
+												@Override
+												public void run() {
+													if (success) {
+														Toast.makeText(
+																OptionsActivity.this,
+																R.string.toast_change_password_success,
+																Toast.LENGTH_LONG).show();
+													} else {
+														Toast.makeText(
+																OptionsActivity.this,
+																R.string.toast_change_password_fail,
+																Toast.LENGTH_LONG).show();
+													}
+												}
+											});
+										}
+									}.start();
 								}
 							}).setNegativeButton(R.string.password_dialog_cancel, null).show();
 		} else {

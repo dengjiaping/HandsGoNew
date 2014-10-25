@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soyomaker.handsgo.HandsGoApplication;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.db.DBService;
 import com.soyomaker.handsgo.manager.CollectManager;
@@ -38,7 +39,7 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	private Context mContext;
-	private ArrayList<ChessManual> mChessManuals;
+	private ArrayList<ChessManual> mChessManuals = new ArrayList<ChessManual>();
 	private IChessManualServer mChessManualServer;
 	private TextView mFooterTxt;
 	private View mFooterView;
@@ -46,14 +47,14 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 	public ChessManualListViewAdapter(Context ctx, IChessManualServer chessManualServer) {
 		this.mContext = ctx;
 		this.mChessManualServer = chessManualServer;
-		this.mChessManuals = chessManualServer.getChessManuals();
 		this.mInflater = LayoutInflater.from(ctx);
 		initLoadMoreView();
+		updateChessManuals();
 	}
 
-	public void updateChessManualServer(IChessManualServer chessManualServer) {
-		this.mChessManualServer = chessManualServer;
-		this.mChessManuals = chessManualServer.getChessManuals();
+	public void updateChessManuals() {
+		this.mChessManuals.clear();
+		this.mChessManuals.addAll(this.mChessManualServer.getChessManuals());
 		notifyDataSetChanged();
 	}
 
@@ -135,8 +136,8 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 
 					@Override
 					public void onClick(View arg0) {
+						HandsGoApplication.setChessManual(chessManual);
 						Intent intent = new Intent(mContext, ManualActivity.class);
-						intent.putExtra(ManualActivity.EXTRA_CHESSMANUAL, chessManual);
 						mContext.startActivity(intent);
 					}
 				});
@@ -147,7 +148,7 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 						@Override
 						public void onClick(View v) {
 							mChessManualServer.delete(chessManual);
-							notifyDataSetChanged();
+							updateChessManuals();
 						}
 					});
 				} else {
@@ -173,7 +174,7 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 														CollectManager.getInstance().cancelCollect(
 																chessManual);
 
-														notifyDataSetChanged();
+														updateChessManuals();
 													}
 												})
 										.setNegativeButton(R.string.cancel_collect_dialog_ok, null)
@@ -197,7 +198,7 @@ public class ChessManualListViewAdapter extends BaseAdapter {
 														R.string.toast_collect_success,
 														Toast.LENGTH_LONG).show();
 
-												notifyDataSetChanged();
+												updateChessManuals();
 											}
 										});
 

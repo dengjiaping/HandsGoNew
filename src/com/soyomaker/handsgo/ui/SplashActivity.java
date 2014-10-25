@@ -18,10 +18,7 @@ public class SplashActivity extends BaseActivity {
 
 	private static final int MIN_DELAY_TIME = 2000;
 
-	private static final int MAX_DELAY_TIME = 2000;
-
 	private Handler mMainHandler = new Handler();
-	private long mWaitTime = 0;
 
 	private boolean mMainHasLaunch = false;
 
@@ -29,7 +26,7 @@ public class SplashActivity extends BaseActivity {
 
 		@Override
 		public void run() {
-			waitToMain();
+			launchMainActivity();
 		}
 	};
 
@@ -40,10 +37,9 @@ public class SplashActivity extends BaseActivity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 不显示系统的标题栏
 		setContentView(R.layout.activity_splash);
 
-		mWaitTime = System.currentTimeMillis();
 		initData();
-		// 启动页面+广告显示 最多 MAX_DELAY_TIME 时间
-		mMainHandler.postDelayed(mToMainRunnable, MAX_DELAY_TIME);
+
+		mMainHandler.postDelayed(mToMainRunnable, MIN_DELAY_TIME);
 	}
 
 	@Override
@@ -52,18 +48,6 @@ public class SplashActivity extends BaseActivity {
 			return true; // 返回true表示执行结束不需继续执行父类按键响应
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-
-	private void waitToMain() {
-		// 启动界面+广告显示 最少2s钟
-		long useTime = System.currentTimeMillis() - mWaitTime;
-		if (useTime < MIN_DELAY_TIME) {
-			mMainHandler.removeCallbacks(mToMainRunnable);
-			mMainHandler.postDelayed(mToMainRunnable, MIN_DELAY_TIME - useTime);
-		} else {
-			mMainHandler.removeCallbacks(mToMainRunnable);
-			launchMainActivity();
-		}
 	}
 
 	/**
@@ -76,7 +60,7 @@ public class SplashActivity extends BaseActivity {
 			addShortcut();
 		}
 
-		// 闪屏广告
+		// 异步加载耗时操作
 		// TODO
 	}
 
