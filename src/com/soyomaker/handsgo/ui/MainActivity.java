@@ -53,6 +53,8 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 		AdManager.getInstance(this).init(AppConstants.YOUMI_APP_ID, AppConstants.YOUMI_APP_SECRET,
 				false);
 
+		AdManager.getInstance(this).setEnableDebugLog(AppConstants.DEBUG);
+
 		// OffersManager.getInstance(this).onAppLaunch();
 		// PointsManager.getInstance(this).registerNotify(this);
 		// PointsManager.setEnableEarnPointsToastTips(false);

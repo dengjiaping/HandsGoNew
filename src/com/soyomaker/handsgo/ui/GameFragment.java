@@ -2,6 +2,8 @@ package com.soyomaker.handsgo.ui;
 
 import java.util.ArrayList;
 
+import u.aly.ad;
+
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
 import net.youmi.android.banner.AdViewListener;
@@ -134,8 +136,8 @@ public class GameFragment extends BaseFragment {
 
 		// 根据在线参数等决定是否显示广告条
 		String adon = MobclickAgent.getConfigParams(getActivity(), AppConstants.AD_ON_STRING);
-		if ("false".equals(adon) || AppPrefrence.getAdOff(getActivity()) || AppConstants.DEBUG) {
-			adContainer.setVisibility(View.GONE);
+		if ("true".equals(adon) && !AppPrefrence.getAdOff(getActivity()) && !AppConstants.DEBUG) {
+			adContainer.setVisibility(View.VISIBLE);
 		}
 
 		mAdapter = new ChessManualListViewAdapter(getActivity(), mCurrentServer);

@@ -292,8 +292,8 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 
 		// 根据在线参数等决定是否显示广告条
 		String adon = MobclickAgent.getConfigParams(this, AppConstants.AD_ON_STRING);
-		if ("false".equals(adon) || AppPrefrence.getAdOff(this) || AppConstants.DEBUG) {
-			mAdLayout.setVisibility(View.GONE);
+		if ("true".equals(adon) && !AppPrefrence.getAdOff(this) && !AppConstants.DEBUG) {
+			mAdLayout.setVisibility(View.VISIBLE);
 		}
 
 		mBoardLayout = (RelativeLayout) this.findViewById(R.id.board_layout);
