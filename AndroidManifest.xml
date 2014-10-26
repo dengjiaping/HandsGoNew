@@ -166,11 +166,6 @@
             android:name="net.youmi.android.spot.SpotAdContentProvider"
             android:authorities="com.soyomaker.handsgo" />
 
-        <meta-data
-            android:name="YOUMI_CHANNEL"
-            android:value="10050" >
-        </meta-data>
-
         <!-- 友盟 - 更新，反馈及统计组件 -->
         <activity
             android:name="com.umeng.fb.ConversationActivity"

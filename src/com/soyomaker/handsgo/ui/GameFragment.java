@@ -87,7 +87,6 @@ public class GameFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LogUtil.e(TAG, "onCreateView:" + savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_main_game, container, false);
         initView(rootView);
         return rootView;
@@ -112,35 +111,41 @@ public class GameFragment extends BaseFragment {
                 android.R.color.holo_red_light);
         mChessManualListView = (ListView) rootView.findViewById(R.id.listview_game);
         mChessManualListView.setOnItemClickListener(mOnItemClickListener);
-        LinearLayout adLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(
-                R.layout.ad_layout, null);
-        LinearLayout adContainer = (LinearLayout) adLayout.findViewById(R.id.ad_container);
-        AdView adView = new AdView(getActivity(), AdSize.FIT_SCREEN);
-        adView.setAdListener(new AdViewListener() {
 
-            @Override
-            public void onSwitchedAd(AdView arg0) {
-                LogUtil.e(TAG, "onSwitchedAd");
+        // 解决有米 sdk 自己出现的异常问题
+        try {
+            LinearLayout adLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(
+                    R.layout.ad_layout, null);
+            LinearLayout adContainer = (LinearLayout) adLayout.findViewById(R.id.ad_container);
+            AdView adView = new AdView(getActivity(), AdSize.FIT_SCREEN);
+            adView.setAdListener(new AdViewListener() {
+
+                @Override
+                public void onSwitchedAd(AdView arg0) {
+                    LogUtil.e(TAG, "onSwitchedAd");
+                }
+
+                @Override
+                public void onReceivedAd(AdView arg0) {
+                    LogUtil.e(TAG, "onReceivedAd");
+                }
+
+                @Override
+                public void onFailedToReceivedAd(AdView arg0) {
+                    LogUtil.e(TAG, "onFailedToReceivedAd");
+                }
+            });
+            adContainer.addView(adView);
+
+            mChessManualListView.addHeaderView(adLayout);
+
+            // 根据在线参数等决定是否显示广告条
+            String adon = MobclickAgent.getConfigParams(getActivity(),
+                    AppConstants.MAIN_AD_ON_STRING);
+            if ("true".equals(adon) && !AppPrefrence.getAdOff(getActivity()) && !AppConstants.DEBUG) {
+                adContainer.setVisibility(View.VISIBLE);
             }
-
-            @Override
-            public void onReceivedAd(AdView arg0) {
-                LogUtil.e(TAG, "onReceivedAd");
-            }
-
-            @Override
-            public void onFailedToReceivedAd(AdView arg0) {
-                LogUtil.e(TAG, "onFailedToReceivedAd");
-            }
-        });
-        adContainer.addView(adView);
-
-        mChessManualListView.addHeaderView(adLayout);
-
-        // 根据在线参数等决定是否显示广告条
-        String adon = MobclickAgent.getConfigParams(getActivity(), AppConstants.AD_ON_STRING);
-        if ("true".equals(adon) && !AppPrefrence.getAdOff(getActivity()) && !AppConstants.DEBUG) {
-            adContainer.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
         }
 
         mAdapter = new ChessManualListViewAdapter(getActivity(), mCurrentServer);
