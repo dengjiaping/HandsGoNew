@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soyomaker.handsgo"
     android:versionCode="15"
-    android:versionName="@string/app_version" >
+    android:versionName="3.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -166,11 +166,6 @@
             android:name="net.youmi.android.spot.SpotAdContentProvider"
             android:authorities="com.soyomaker.handsgo" />
 
-        <meta-data
-            android:name="YOUMI_CHANNEL"
-            android:value="10050" >
-        </meta-data>
-
         <!-- 友盟 - 更新，反馈及统计组件 -->
         <activity
             android:name="com.umeng.fb.ConversationActivity"
@@ -196,7 +191,7 @@
             android:value="509530f35270154580000053" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="appchina" />
+            android:value="umeng" />
     </application>
 
 </manifest>
