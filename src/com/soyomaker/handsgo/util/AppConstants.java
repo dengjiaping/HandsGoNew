@@ -2,7 +2,7 @@ package com.soyomaker.handsgo.util;
 
 public final class AppConstants {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 
 	public static final int COLLECT = -2;
 
