@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.model.User;
@@ -26,6 +27,7 @@ import com.soyomaker.handsgo.util.AppConstants;
 import com.soyomaker.handsgo.util.AppPrefrence;
 import com.soyomaker.handsgo.util.DialogUtils;
 import com.soyomaker.handsgo.util.DialogUtils.ItemSelectedListener;
+import com.soyomaker.handsgo.util.LogUtil;
 
 /**
  * 应用设置界面
@@ -37,7 +39,6 @@ public class OptionsActivity extends BaseActivity {
 
 	private ColorPickerDialog mChessBoardColorPickerDialog;
 	private TextView mUserNameTextView;
-	// private TextView mUserPointTextView;
 	private Button mSigninButton;
 	private Button mPasswordButton;
 	private Button mLoginButton;
@@ -54,18 +55,6 @@ public class OptionsActivity extends BaseActivity {
 		final ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(R.string.title_settings);
-
-		// CheckSwitchButton adCheck = (CheckSwitchButton)
-		// findViewById(R.id.ad_off);
-		// adCheck.setChecked(AppPrefrence.getAdOff(this));
-		// adCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-		//
-		// @Override
-		// public void onCheckedChanged(CompoundButton buttonView, boolean
-		// isChecked) {
-		// AppPrefrence.saveAdOff(OptionsActivity.this, isChecked);
-		// }
-		// });
 
 		CheckSwitchButton showNumberCheck = (CheckSwitchButton) findViewById(R.id.show_number);
 		showNumberCheck.setChecked(AppPrefrence.getShowNumber(this));
@@ -235,7 +224,7 @@ public class OptionsActivity extends BaseActivity {
 									new Thread() {
 										public void run() {
 											User user = CloudManager.getInstance().getLoginUser();
-											final boolean success = CloudManager.getInstance()
+											final int code = CloudManager.getInstance()
 													.changePassword(OptionsActivity.this,
 															user.getName(), oldPassword,
 															newPassword);
@@ -243,10 +232,16 @@ public class OptionsActivity extends BaseActivity {
 
 												@Override
 												public void run() {
-													if (success) {
+													LogUtil.e("OptionsActivity", "code:" + code);
+													if (code == CloudServiceException.CODE_SUCCESS) {
 														Toast.makeText(
 																OptionsActivity.this,
 																R.string.toast_change_password_success,
+																Toast.LENGTH_LONG).show();
+													} else if (code == CloudServiceException.CODE_USERNAME_NOT_EXISTS) {
+														Toast.makeText(
+																OptionsActivity.this,
+																R.string.toast_change_password_user_name_not_exists,
 																Toast.LENGTH_LONG).show();
 													} else {
 														Toast.makeText(

@@ -622,6 +622,9 @@ public class GoController {
 	}
 
 	private void goForward() {
+		if (mTreeNode == null) {
+			return;
+		}
 		if (!mTreeNode.hasChildren()) {
 			return;
 		}
@@ -631,6 +634,9 @@ public class GoController {
 	}
 
 	private void goBack() {
+		if (mTreeNode == null) {
+			return;
+		}
 		if (mTreeNode.getParentPos() == null) {
 			return;
 		}

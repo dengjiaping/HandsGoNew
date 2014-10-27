@@ -67,7 +67,7 @@ public class CloudObject {
 				String errorMessage = "CloudService.save(" + key + "," + value + ") Error!Code: "
 						+ code + "  Message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return false;
@@ -133,7 +133,7 @@ public class CloudObject {
 				String errorMessage = "CloudService.get(" + key + "," + clazz + ") Error!Code: "
 						+ code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;
@@ -211,7 +211,7 @@ public class CloudObject {
 				String errorMessage = "CloudService.list(" + prefix + "," + count + "," + clazz
 						+ ") Error!Code: " + code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;
@@ -279,7 +279,7 @@ public class CloudObject {
 				String errorMessage = "CloudService.delete(" + key + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return false;

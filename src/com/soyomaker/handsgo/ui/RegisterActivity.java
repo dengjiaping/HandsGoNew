@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.sina.sae.cloudservice.exception.CloudServiceException;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.CloudManager;
 import com.soyomaker.handsgo.util.AppUtil;
+import com.soyomaker.handsgo.util.LogUtil;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -77,19 +79,24 @@ public class RegisterActivity extends BaseActivity {
 				new Thread() {
 
 					public void run() {
-						final boolean success = CloudManager.getInstance().register(
-								RegisterActivity.this, name, password,
-								AppUtil.getDeviceId(RegisterActivity.this), email, gender);
+						final int code = CloudManager.getInstance().register(RegisterActivity.this,
+								name, password, AppUtil.getDeviceId(RegisterActivity.this), email,
+								gender);
 						runOnUiThread(new Runnable() {
 
 							@Override
 							public void run() {
 								mRegisterButton.setText(R.string.btn_register);
-								if (success) {
+								LogUtil.e("RegisterActivity", "code:" + code);
+								if (code == CloudServiceException.CODE_SUCCESS) {
 									Toast.makeText(RegisterActivity.this,
 											R.string.toast_register_success, Toast.LENGTH_LONG)
 											.show();
 									finish();
+								} else if (code == CloudServiceException.CODE_USERNAME_ALREADY_EXISTS) {
+									Toast.makeText(RegisterActivity.this,
+											R.string.toast_register_fail_user_name_exists,
+											Toast.LENGTH_LONG).show();
 								} else {
 									Toast.makeText(RegisterActivity.this,
 											R.string.toast_register_fail, Toast.LENGTH_LONG).show();

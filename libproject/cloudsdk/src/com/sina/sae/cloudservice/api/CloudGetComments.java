@@ -33,7 +33,7 @@ public class CloudGetComments {
 				String errorMessage = "CloudComment.getComments(" + sgfUrl + ") Error!Code: "
 						+ code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;

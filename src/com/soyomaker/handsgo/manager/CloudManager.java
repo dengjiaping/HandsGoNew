@@ -89,18 +89,18 @@ public class CloudManager {
 	 * @param newpassword
 	 * @return
 	 */
-	public boolean changePassword(Context context, String name, String oldpassword,
-			String newpassword) {
+	public int changePassword(Context context, String name, String oldpassword, String newpassword) {
 		init(context);
 
-		int rows = -1;
+		int code = -1;
 		try {
-			rows = CloudChangePassword.changePassword(name, oldpassword, newpassword);
+			code = CloudChangePassword.changePassword(name, oldpassword, newpassword);
 		} catch (CloudServiceException e) {
+			code = e.getCode();
 			e.printStackTrace();
 		}
 
-		return rows > 0;
+		return code;
 	}
 
 	/**
@@ -161,15 +161,16 @@ public class CloudManager {
 	public boolean sendComment(Context context, Comment comment) {
 		init(context);
 
-		int rows = -1;
+		int code = -1;
 		try {
-			rows = CloudComment.sendComment("" + comment.getUserId(), comment.getUserName(),
+			code = CloudComment.sendComment("" + comment.getUserId(), comment.getUserName(),
 					comment.getCommentSgf(), comment.getComment());
 		} catch (CloudServiceException e) {
+			code = e.getCode();
 			e.printStackTrace();
 		}
 
-		return rows > 0;
+		return code == 0;
 	}
 
 	/**
@@ -183,18 +184,19 @@ public class CloudManager {
 	 * @param gender
 	 * @return
 	 */
-	public boolean register(Context context, String name, String password, String deviceId,
+	public int register(Context context, String name, String password, String deviceId,
 			String email, String gender) {
 		init(context);
 
-		int rows = -1;
+		int code = -1;
 		try {
-			rows = CloudRegister.register(name, password, deviceId, email, gender);
+			code = CloudRegister.register(name, password, deviceId, email, gender);
 		} catch (CloudServiceException e) {
+			code = e.getCode();
 			e.printStackTrace();
 		}
 
-		return rows > 0;
+		return code;
 	}
 
 	/**

@@ -48,7 +48,7 @@ public class CloudDB {
 				String errorMessage = "CloudDB.query(" + sql + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;
@@ -92,7 +92,7 @@ public class CloudDB {
 				String errorMessage = "CloudDB.execute(" + sql + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return -1;

@@ -26,14 +26,13 @@ public class CloudRegister {
 			int code = json.get("code").getAsInt();
 			String message = json.get("message").getAsString();
 			if (0 == code && "success".equalsIgnoreCase(message)) {
-				JsonObject data = json.get("data").getAsJsonObject();
-				return data.get("rows").getAsInt();
+				return code;
 			} else {
 				String errorMessage = "CloudRegister.register(" + name + "," + password + ","
 						+ deviceId + "," + email + "," + gender + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return -1;

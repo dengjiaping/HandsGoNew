@@ -50,7 +50,7 @@ public class CloudMail {
 				String errorMessage = "CloudMail.send() Error!Params:" + toString() + "  Code: "
 						+ code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return false;

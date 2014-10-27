@@ -4,8 +4,8 @@
     <!-- 应用新型 -->
     <string name="app_name">掌中围棋</string>
     <string name="app_info">做最好用的掌中围棋软件!</string>
-    <string name="app_version">3.0</string>
-    <string name="v_app_version">V 3.0</string>
+    <string name="app_version">3.1</string>
+    <string name="v_app_version">V 3.1</string>
     <string name="qq_group">棋友交流QQ群：278743263</string>
     <string name="qq">开发者QQ：397093109</string>
 
@@ -207,12 +207,14 @@
     <string name="toast_invalid_keywords_search">搜索关键字不能为空</string>
     <string name="toast_register_success">注册成功！</string>
     <string name="toast_register_fail">注册失败！</string>
+    <string name="toast_register_fail_user_name_exists">注册失败，用户名已存在！</string>
     <string name="toast_login_success">登录成功！</string>
     <string name="toast_login_fail">登录失败！</string>
     <string name="toast_comment_success">评论成功！</string>
     <string name="toast_comment_fail">评论失败！</string>
     <string name="toast_change_password_success">修改密码成功！</string>
     <string name="toast_change_password_fail">修改密码失败！</string>
+    <string name="toast_change_password_user_name_not_exists">修改密码失败，用户名不存在！</string>
     <string name="toast_old_password_null">旧密码不能为空！</string>
     <string name="toast_new_password_null">新密码不能为空！</string>
     <string name="toast_group_name_null">分组名不能为空！</string>

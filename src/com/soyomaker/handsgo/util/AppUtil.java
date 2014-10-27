@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import com.soyomaker.handsgo.HandsGoApplication;
 
@@ -26,7 +27,7 @@ public class AppUtil {
 					.getDeviceId();
 		} catch (Throwable e) {
 		}
-		return imei == null ? Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)
-				: imei;
+		return TextUtils.isEmpty(imei) ? Secure.getString(context.getContentResolver(),
+				Secure.ANDROID_ID) : imei;
 	}
 }

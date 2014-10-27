@@ -40,61 +40,65 @@ public class XGOOReader implements IChessManualReader {
 		ChessManual chessManual = null;
 		while (mt2.find()) {
 			String str = mt2.group();
-			if (str.startsWith("<td align=center>") && str.endsWith("</td>")) {
-				String string = str.substring("<td align=center>".length(),
-						str.length() - "</td>".length());
-				string = string.replaceAll("&nbsp;", " ");
-				switch (index) {
-				case 0:
-					chessManual = new ChessManual();
-					chessManual.setMatchTime(string.trim());
-					index++;
-					break;
-				case 1:
-					if (chessManual != null) {
-						chessManual.setBlackName(string.trim());
+			try {
+				if (str.startsWith("<td align=center>") && str.endsWith("</td>")) {
+					String string = str.substring("<td align=center>".length(), str.length()
+							- "</td>".length());
+					string = string.replaceAll("&nbsp;", " ");
+					switch (index) {
+					case 0:
+						chessManual = new ChessManual();
+						chessManual.setMatchTime(string.trim());
 						index++;
+						break;
+					case 1:
+						if (chessManual != null) {
+							chessManual.setBlackName(string.trim());
+							index++;
+						}
+						break;
+					case 2:
+						if (chessManual != null) {
+							chessManual.setWhiteName(string.trim());
+							index++;
+						}
+						break;
+					case 3:
+						if (chessManual != null) {
+							String name = string.substring(string.indexOf(">") + 1,
+									string.lastIndexOf("<"));
+							chessManual.setMatchName(name.trim());
+							index++;
+						}
+						break;
+					case 4:
+						if (chessManual != null) {
+							chessManual.setMatchResult(string.trim());
+							index++;
+						}
+						break;
 					}
-					break;
-				case 2:
-					if (chessManual != null) {
-						chessManual.setWhiteName(string.trim());
-						index++;
-					}
-					break;
-				case 3:
-					if (chessManual != null) {
-						String name = string.substring(string.indexOf(">") + 1,
-								string.lastIndexOf("<"));
-						chessManual.setMatchName(name.trim());
-						index++;
-					}
-					break;
-				case 4:
-					if (chessManual != null) {
-						chessManual.setMatchResult(string.trim());
-						index++;
-					}
-					break;
-				}
-				if (index == 5) {
-					chessManual.setCharset("utf-8");
-					chessManuals.add(chessManual);
-					index = 0;
-				}
-			}
-			if (str.startsWith("<td align=left>") && str.endsWith("</td>")) {
-				String time = str.substring("<td align=left>".length(),
-						str.length() - "</td>".length());
-				String regex = "http://www\\.xgoo\\.org/qipu/.*?\\.sgf";
-				final Pattern pt = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-				final Matcher mt = pt.matcher(time);
-				while (mt.find()) {
-					String sgfUrl = mt.group();
-					if (chessManual != null && index == 0) {
-						chessManual.setSgfUrl(sgfUrl.trim());
+					if (index == 5) {
+						chessManual.setCharset("utf-8");
+						chessManuals.add(chessManual);
+						index = 0;
 					}
 				}
+				if (str.startsWith("<td align=left>") && str.endsWith("</td>")) {
+					String time = str.substring("<td align=left>".length(),
+							str.length() - "</td>".length());
+					String regex = "http://www\\.xgoo\\.org/qipu/.*?\\.sgf";
+					final Pattern pt = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+					final Matcher mt = pt.matcher(time);
+					while (mt.find()) {
+						String sgfUrl = mt.group();
+						if (chessManual != null && index == 0) {
+							chessManual.setSgfUrl(sgfUrl.trim());
+						}
+					}
+				}
+			} catch (Exception e) {
+				continue;
 			}
 		}
 		return chessManuals;

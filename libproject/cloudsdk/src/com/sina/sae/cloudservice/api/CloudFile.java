@@ -69,7 +69,7 @@ public class CloudFile {
 				String errorMessage = "CloudFile.upload(" + localpath + "," + cloudpath
 						+ ") Error!Code: " + code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return false;
@@ -111,7 +111,7 @@ public class CloudFile {
 				String errorMessage = "CloudFile.delete(" + cloudpath + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return false;
@@ -155,7 +155,7 @@ public class CloudFile {
 				String errorMessage = "CloudFile.fetch(" + cloudpath + ") Error!Code: " + code
 						+ " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;
@@ -214,7 +214,7 @@ public class CloudFile {
 				String errorMessage = "CloudFile.list(" + prefix + "," + count + ") Error!Code: "
 						+ code + " message:" + message;
 				Log.e("CloudService", errorMessage);
-				throw new CloudServiceException(errorMessage, CloudServiceException.SERVER_ERROR);
+				throw new CloudServiceException(errorMessage, code);
 			}
 		} else {
 			return null;
