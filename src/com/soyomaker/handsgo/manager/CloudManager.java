@@ -32,23 +32,26 @@ public class CloudManager {
     private Map<String, ArrayList<Comment>> mCommentMap = new HashMap<String, ArrayList<Comment>>();
     private Map<String, Boolean> mCommentRefreshingMap = new HashMap<String, Boolean>();
     private Map<String, String> mCommonParams = new HashMap<String, String>();
+    private Context mContext;
 
     private CloudManager() {
         mCommonParams.put("version",
                 HandsGoApplication.getAppContext().getString(R.string.app_version));
         mCommonParams.put("platform", "android");
         CommonParams.setCommonParams(mCommonParams);
+
+        mContext = HandsGoApplication.getAppContext();
     }
 
     public static CloudManager getInstance() {
         return mInstance;
     }
 
-    private void init(Context context) {
-        if (CloudClient.checkNetwork(context) && !mInitSuccess) {
+    private void init() {
+        if (CloudClient.checkNetwork(mContext) && !mInitSuccess) {
             // 初始化CloudClient
             try {
-                CloudClient.init(context, AppConstants.CLOUD_APP_NAME,
+                CloudClient.init(mContext, AppConstants.CLOUD_APP_NAME,
                         AppConstants.CLOUD_APP_ACCESS_KEY, AppConstants.CLOUD_APP_SECRET_KEY);
                 mInitSuccess = true;
             } catch (CloudServiceException e) {
@@ -89,8 +92,8 @@ public class CloudManager {
      * @param newpassword
      * @return
      */
-    public int changePassword(Context context, String name, String oldpassword, String newpassword) {
-        init(context);
+    public int changePassword(String name, String oldpassword, String newpassword) {
+        init();
 
         int code = -1;
         try {
@@ -110,9 +113,9 @@ public class CloudManager {
      * @param sgfUrl
      * @return
      */
-    public ArrayList<Comment> requestComments(Context context, String sgfUrl) {
+    public ArrayList<Comment> requestComments(String sgfUrl) {
         mCommentRefreshingMap.put(sgfUrl, true);
-        init(context);
+        init();
 
         List<Map<String, String>> lists = null;
         try {
@@ -158,8 +161,8 @@ public class CloudManager {
      * @param comment
      * @return
      */
-    public boolean sendComment(Context context, Comment comment) {
-        init(context);
+    public boolean sendComment(Comment comment) {
+        init();
 
         int code = -1;
         try {
@@ -184,9 +187,8 @@ public class CloudManager {
      * @param gender
      * @return
      */
-    public int register(Context context, String name, String password, String deviceId,
-            String email, String gender) {
-        init(context);
+    public int register(String name, String password, String deviceId, String email, String gender) {
+        init();
 
         int code = -1;
         try {
@@ -202,11 +204,11 @@ public class CloudManager {
     /**
      * 退出登录
      */
-    public void signin(Context context) {
+    public void signin() {
         mLoginUser = null;
 
-        AppPrefrence.saveUserName(context, "");
-        AppPrefrence.saveUserPassword(context, "");
+        AppPrefrence.saveUserName(mContext, "");
+        AppPrefrence.saveUserPassword(mContext, "");
 
         mCommonParams.remove("userid");
     }
@@ -219,8 +221,8 @@ public class CloudManager {
      * @param password
      * @return
      */
-    public User login(Context context, String name, String password) {
-        init(context);
+    public User login(String name, String password) {
+        init();
 
         List<Map<String, String>> lists = null;
         try {
@@ -255,8 +257,8 @@ public class CloudManager {
             if (!TextUtils.isEmpty(gender) && TextUtils.isDigitsOnly(gender)) {
                 mLoginUser.setGender(Integer.valueOf(gender));
             }
-            AppPrefrence.saveUserName(context, name);
-            AppPrefrence.saveUserPassword(context, password);
+            AppPrefrence.saveUserName(mContext, name);
+            AppPrefrence.saveUserPassword(mContext, password);
 
             mCommonParams.put("userid", userid);
 

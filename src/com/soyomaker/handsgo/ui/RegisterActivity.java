@@ -78,9 +78,8 @@ public class RegisterActivity extends BaseActivity {
                 new Thread() {
 
                     public void run() {
-                        final int code = CloudManager.getInstance().register(RegisterActivity.this,
-                                name, password, AppUtil.getDeviceId(RegisterActivity.this), email,
-                                gender);
+                        final int code = CloudManager.getInstance().register(name, password,
+                                AppUtil.getDeviceId(RegisterActivity.this), email, gender);
                         runOnUiThread(new Runnable() {
 
                             @Override

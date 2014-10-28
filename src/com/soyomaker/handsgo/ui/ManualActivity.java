@@ -213,7 +213,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 
     private void refreshComments() {
         // 本地棋谱不进行刷新
-        if (canComment()) {
+        if (cannotComment()) {
             mSwipeRefreshLayout.setRefreshing(false);
             return;
         }
@@ -225,7 +225,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
 
             public void run() {
                 final ArrayList<Comment> comments = CloudManager.getInstance().requestComments(
-                        ManualActivity.this, mChessManual.getSgfUrl());
+                        mChessManual.getSgfUrl());
                 runOnUiThread(new Runnable() {
 
                     @Override
@@ -358,14 +358,14 @@ public class ManualActivity extends BaseActivity implements IGridListener {
         updateCollectBtn();
 
         // 本地棋谱不显示评论按钮
-        if (canComment()) {
+        if (cannotComment()) {
             mCommentButton.setVisibility(View.GONE);
         }
 
         refreshComments();
     }
 
-    private boolean canComment() {
+    private boolean cannotComment() {
         return mChessManual.getType() == ChessManual.LOCAL_CHESS_MANUAL
                 || TextUtils.isEmpty(mChessManual.getSgfUrl());
     }
@@ -399,7 +399,7 @@ public class ManualActivity extends BaseActivity implements IGridListener {
                                     comment.setUserId(user.getId());
                                     comment.setUserName(user.getName());
                                     final boolean success = CloudManager.getInstance().sendComment(
-                                            ManualActivity.this, comment);
+                                            comment);
                                     runOnUiThread(new Runnable() {
 
                                         @Override

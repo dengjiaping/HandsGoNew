@@ -64,8 +64,7 @@ public class LoginActivity extends BaseActivity {
                 new Thread() {
 
                     public void run() {
-                        final User user = CloudManager.getInstance().login(LoginActivity.this,
-                                name, password);
+                        final User user = CloudManager.getInstance().login(name, password);
                         runOnUiThread(new Runnable() {
 
                             @Override

@@ -149,7 +149,7 @@ public class OptionsActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View v) {
-                    CloudManager.getInstance().signin(OptionsActivity.this);
+                    CloudManager.getInstance().signin();
                     updateLoginUI();
                 }
             });
@@ -223,8 +223,7 @@ public class OptionsActivity extends BaseActivity {
                                         public void run() {
                                             User user = CloudManager.getInstance().getLoginUser();
                                             final int code = CloudManager.getInstance()
-                                                    .changePassword(OptionsActivity.this,
-                                                            user.getName(), oldPassword,
+                                                    .changePassword(user.getName(), oldPassword,
                                                             newPassword);
                                             runOnUiThread(new Runnable() {
 

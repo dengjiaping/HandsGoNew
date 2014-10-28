@@ -134,6 +134,9 @@ public class GoController {
      * 下一步
      */
     public void next() {
+        if (mTreeNode == null) {
+            return;
+        }
         goForward();
         updateComment();
 
@@ -151,6 +154,9 @@ public class GoController {
      * 上一步
      */
     public void prev() {
+        if (mTreeNode == null) {
+            return;
+        }
         goBack();
         updateComment();
 
@@ -163,6 +169,9 @@ public class GoController {
      * 快进
      */
     public void fastNext() {
+        if (mTreeNode == null) {
+            return;
+        }
         for (int i = 0; i < 10; i++) {
             goForward();
         }
@@ -182,6 +191,9 @@ public class GoController {
      * 快退
      */
     public void fastPrev() {
+        if (mTreeNode == null) {
+            return;
+        }
         for (int i = 0; i < 10; i++) {
             goBack();
         }
@@ -196,6 +208,9 @@ public class GoController {
      * 后退到开局
      */
     public void first() {
+        if (mTreeNode == null) {
+            return;
+        }
         while (mTreeNode.getParentPos() != null) {
             goBack();
         }
@@ -210,6 +225,9 @@ public class GoController {
      * 快进到终局
      */
     public void last() {
+        if (mTreeNode == null) {
+            return;
+        }
         while (mTreeNode.hasChildren()) {
             goForward();
         }
@@ -622,9 +640,6 @@ public class GoController {
     }
 
     private void goForward() {
-        if (mTreeNode == null) {
-            return;
-        }
         if (!mTreeNode.hasChildren()) {
             return;
         }
@@ -634,9 +649,6 @@ public class GoController {
     }
 
     private void goBack() {
-        if (mTreeNode == null) {
-            return;
-        }
         if (mTreeNode.getParentPos() == null) {
             return;
         }
