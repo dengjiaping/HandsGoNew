@@ -25,78 +25,78 @@ import com.soyomaker.handsgo.util.WebUtil;
  */
 public class SGFReader {
 
-	public static Match read(Context context, ChessManual chessManual) {
-		Match match = new Match();
-		BufferedReader br = null;
-		try {
-			String sgf = null;
-			if (TextUtils.isEmpty(chessManual.getSgfContent())) {
-				int type = chessManual.getType();
-				switch (type) {
-				case ChessManual.ONLINE_CHESS_MANUAL: {
-					sgf = WebUtil.getHttpGet(context, chessManual.getSgfUrl(),
-							chessManual.getCharset());
-				}
-					break;
-				case ChessManual.LOCAL_CHESS_MANUAL: {
-					sgf = StringUtil.inputStream2String(
-							new FileInputStream(chessManual.getSgfUrl()), chessManual.getCharset());
-				}
-					break;
-				}
-			} else {
-				sgf = chessManual.getSgfContent();
-			}
-			br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(sgf.getBytes())));
-			match.setSGFTrees(SGFTree.load(br));
-			match.setSgfSource(sgf);
-			MatchInfo matchInfo = match.getMatchInfo();
-			if (TextUtils.isEmpty(matchInfo.getBlackName())) {
-				matchInfo.setBlackName(chessManual.getBlackName());
-			}
-			if (TextUtils.isEmpty(matchInfo.getWhiteName())) {
-				matchInfo.setWhiteName(chessManual.getWhiteName());
-			}
-			if (TextUtils.isEmpty(matchInfo.getResult())) {
-				matchInfo.setResult(chessManual.getMatchResult());
-			}
-			if (TextUtils.isEmpty(matchInfo.getDate())) {
-				matchInfo.setDate(chessManual.getMatchTime());
-			}
-			if (TextUtils.isEmpty(matchInfo.getMatchName())) {
-				matchInfo.setMatchName(chessManual.getMatchName());
-			}
+    public static Match read(Context context, ChessManual chessManual) {
+        Match match = new Match();
+        BufferedReader br = null;
+        try {
+            String sgf = null;
+            if (TextUtils.isEmpty(chessManual.getSgfContent())) {
+                int type = chessManual.getType();
+                switch (type) {
+                case ChessManual.ONLINE_CHESS_MANUAL: {
+                    sgf = WebUtil.getHttpGet(context, chessManual.getSgfUrl(),
+                            chessManual.getCharset());
+                }
+                    break;
+                case ChessManual.LOCAL_CHESS_MANUAL: {
+                    sgf = StringUtil.inputStream2String(
+                            new FileInputStream(chessManual.getSgfUrl()), chessManual.getCharset());
+                }
+                    break;
+                }
+            } else {
+                sgf = chessManual.getSgfContent();
+            }
+            br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(sgf.getBytes())));
+            match.setSGFTrees(SGFTree.load(br));
+            match.setSgfSource(sgf);
+            MatchInfo matchInfo = match.getMatchInfo();
+            if (TextUtils.isEmpty(matchInfo.getBlackName())) {
+                matchInfo.setBlackName(chessManual.getBlackName());
+            }
+            if (TextUtils.isEmpty(matchInfo.getWhiteName())) {
+                matchInfo.setWhiteName(chessManual.getWhiteName());
+            }
+            if (TextUtils.isEmpty(matchInfo.getResult())) {
+                matchInfo.setResult(chessManual.getMatchResult());
+            }
+            if (TextUtils.isEmpty(matchInfo.getDate())) {
+                matchInfo.setDate(chessManual.getMatchTime());
+            }
+            if (TextUtils.isEmpty(matchInfo.getMatchName())) {
+                matchInfo.setMatchName(chessManual.getMatchName());
+            }
 
-			if (!TextUtils.isEmpty(matchInfo.getBlackName())) {
-				chessManual.setBlackName(matchInfo.getBlackName());
-			}
-			if (!TextUtils.isEmpty(matchInfo.getWhiteName())) {
-				chessManual.setWhiteName(matchInfo.getWhiteName());
-			}
-			if (!TextUtils.isEmpty(matchInfo.getMatchName())) {
-				chessManual.setMatchName(matchInfo.getMatchName());
-			}
-			if (!TextUtils.isEmpty(matchInfo.getResult())) {
-				chessManual.setMatchResult(matchInfo.getResult());
-			}
-			if (!TextUtils.isEmpty(matchInfo.getDate())) {
-				chessManual.setMatchTime(matchInfo.getDate());
-			}
-			if (!TextUtils.isEmpty(match.getSgfSource())) {
-				chessManual.setSgfContent(match.getSgfSource());
-			}
-			HistoryManager.getInstance().addHistory(chessManual);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return match;
-	}
+            if (!TextUtils.isEmpty(matchInfo.getBlackName())) {
+                chessManual.setBlackName(matchInfo.getBlackName());
+            }
+            if (!TextUtils.isEmpty(matchInfo.getWhiteName())) {
+                chessManual.setWhiteName(matchInfo.getWhiteName());
+            }
+            if (!TextUtils.isEmpty(matchInfo.getMatchName())) {
+                chessManual.setMatchName(matchInfo.getMatchName());
+            }
+            if (!TextUtils.isEmpty(matchInfo.getResult())) {
+                chessManual.setMatchResult(matchInfo.getResult());
+            }
+            if (!TextUtils.isEmpty(matchInfo.getDate())) {
+                chessManual.setMatchTime(matchInfo.getDate());
+            }
+            if (!TextUtils.isEmpty(match.getSgfSource())) {
+                chessManual.setSgfContent(match.getSgfSource());
+            }
+            HistoryManager.getInstance().addHistory(chessManual);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return match;
+    }
 }

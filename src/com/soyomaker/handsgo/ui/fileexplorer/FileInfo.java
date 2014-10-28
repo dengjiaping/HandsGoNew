@@ -2,23 +2,23 @@ package com.soyomaker.handsgo.ui.fileexplorer;
 
 public class FileInfo {
 
-	public String fileName;
+    public String fileName;
 
-	public String filePath;
+    public String filePath;
 
-	public long fileSize;
+    public long fileSize;
 
-	public boolean IsDir;
+    public boolean IsDir;
 
-	public int Count;
+    public int Count;
 
-	public long ModifiedDate;
+    public long ModifiedDate;
 
-	public boolean canRead;
+    public boolean canRead;
 
-	public boolean canWrite;
+    public boolean canWrite;
 
-	public boolean isHidden;
+    public boolean isHidden;
 
-	public long dbId; // id in the database, if is from database
+    public long dbId; // id in the database, if is from database
 }

@@ -5,22 +5,22 @@ import com.soyomaker.handsgo.server.HistoryServer;
 
 public class HistoryManager {
 
-	private static HistoryManager mInstance = new HistoryManager();
-	private HistoryServer mHistoryServer;
+    private static HistoryManager mInstance = new HistoryManager();
+    private HistoryServer mHistoryServer;
 
-	private HistoryManager() {
-		mHistoryServer = ChessManualServerManager.getHistoryServer();
-	}
+    private HistoryManager() {
+        mHistoryServer = ChessManualServerManager.getHistoryServer();
+    }
 
-	public static HistoryManager getInstance() {
-		return mInstance;
-	}
+    public static HistoryManager getInstance() {
+        return mInstance;
+    }
 
-	public boolean isHistory(ChessManual chessManual) {
-		return mHistoryServer.isHistory(chessManual);
-	}
+    public boolean isHistory(ChessManual chessManual) {
+        return mHistoryServer.isHistory(chessManual);
+    }
 
-	public void addHistory(ChessManual chessManual) {
-		mHistoryServer.addHistory(chessManual);
-	}
+    public void addHistory(ChessManual chessManual) {
+        mHistoryServer.addHistory(chessManual);
+    }
 }

@@ -2,7 +2,7 @@ package com.soyomaker.handsgo.manager;
 
 import com.soyomaker.handsgo.server.CollectServer;
 import com.soyomaker.handsgo.server.HistoryServer;
-import com.soyomaker.handsgo.server.SinaServer;
+import com.soyomaker.handsgo.server.SINAServer;
 import com.soyomaker.handsgo.server.TOMServer;
 import com.soyomaker.handsgo.server.XGOOServer;
 
@@ -14,36 +14,36 @@ import com.soyomaker.handsgo.server.XGOOServer;
  */
 public class ChessManualServerManager {
 
-	private static SinaServer mSinaServer = new SinaServer();
+    private static SINAServer mSinaServer = new SINAServer();
 
-	private static XGOOServer mXgooServer = new XGOOServer();
+    private static XGOOServer mXgooServer = new XGOOServer();
 
-	private static TOMServer mTomServer = new TOMServer();
+    private static TOMServer mTomServer = new TOMServer();
 
-	private static HistoryServer mHistoryServer = new HistoryServer();
+    private static HistoryServer mHistoryServer = new HistoryServer();
 
-	private static CollectServer mCollectServer = new CollectServer();
+    private static CollectServer mCollectServer = new CollectServer();
 
-	private ChessManualServerManager() {
-	}
+    private ChessManualServerManager() {
+    }
 
-	public static SinaServer getSinaServer() {
-		return mSinaServer;
-	}
+    public static SINAServer getSinaServer() {
+        return mSinaServer;
+    }
 
-	public static TOMServer getTomServer() {
-		return mTomServer;
-	}
+    public static TOMServer getTomServer() {
+        return mTomServer;
+    }
 
-	public static XGOOServer getXgooServer() {
-		return mXgooServer;
-	}
+    public static XGOOServer getXgooServer() {
+        return mXgooServer;
+    }
 
-	public static HistoryServer getHistoryServer() {
-		return mHistoryServer;
-	}
+    public static HistoryServer getHistoryServer() {
+        return mHistoryServer;
+    }
 
-	public static CollectServer getCollectServer() {
-		return mCollectServer;
-	}
+    public static CollectServer getCollectServer() {
+        return mCollectServer;
+    }
 }

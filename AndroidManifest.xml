@@ -5,8 +5,8 @@
     android:versionName="3.1" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="9"
+        android:targetSdkVersion="14" />
 
     <!-- 文件读写 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -92,15 +92,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.soyomaker.handsgo.ui.LaboratoryActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.soyomaker.handsgo.ui.SearchActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.soyomaker.handsgo.ui.LocalFightActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

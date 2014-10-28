@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/common_bg" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         android:paddingTop="20dp" >
 
         <RelativeLayout
             android:id="@+id/layout_user_info"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="20dp"
@@ -89,7 +89,7 @@
             android:orientation="vertical" >
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:visibility="gone" >
 
@@ -113,12 +113,12 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp" >
 
                 <TextView
@@ -141,12 +141,12 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp" >
 
                 <TextView
@@ -169,12 +169,12 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp" >
 
                 <TextView
@@ -211,7 +211,7 @@
 
             <RelativeLayout
                 android:id="@+id/choose_board_color"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
                 android:clickable="true" >
@@ -234,13 +234,13 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
                 android:id="@+id/choose_piece_style"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
                 android:clickable="true" >
@@ -263,13 +263,13 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/darker_gray" />
 
             <RelativeLayout
                 android:id="@+id/choose_auto_play_interval"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
                 android:clickable="true" >
@@ -306,7 +306,7 @@
 
             <RelativeLayout
                 android:id="@+id/about_app"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/selector_list_item"
                 android:clickable="true" >

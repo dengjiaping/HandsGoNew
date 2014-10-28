@@ -12,92 +12,92 @@ import com.soyomaker.handsgo.util.AppPrefrence;
 
 public class SplashActivity extends BaseActivity {
 
-	private static final String TAG = "SplashActivity";
+    private static final String TAG = "SplashActivity";
 
-	private static final String SHORTCUT_INTENT = "com.android.launcher.action.INSTALL_SHORTCUT";
+    private static final String SHORTCUT_INTENT = "com.android.launcher.action.INSTALL_SHORTCUT";
 
-	private static final int MIN_DELAY_TIME = 2000;
+    private static final int MIN_DELAY_TIME = 2000;
 
-	private Handler mMainHandler = new Handler();
+    private Handler mMainHandler = new Handler();
 
-	private boolean mMainHasLaunch = false;
+    private boolean mMainHasLaunch = false;
 
-	private Runnable mToMainRunnable = new Runnable() {
+    private Runnable mToMainRunnable = new Runnable() {
 
-		@Override
-		public void run() {
-			launchMainActivity();
-		}
-	};
+        @Override
+        public void run() {
+            launchMainActivity();
+        }
+    };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 不显示系统的标题栏
-		setContentView(R.layout.activity_splash);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 不显示系统的标题栏
+        setContentView(R.layout.activity_splash);
 
-		initData();
+        initData();
 
-		mMainHandler.postDelayed(mToMainRunnable, MIN_DELAY_TIME);
-	}
+        mMainHandler.postDelayed(mToMainRunnable, MIN_DELAY_TIME);
+    }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			return true; // 返回true表示执行结束不需继续执行父类按键响应
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true; // 返回true表示执行结束不需继续执行父类按键响应
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-	/**
-	 * 初始化数据
-	 */
-	private void initData() {
-		// 首次启动添加快捷方式
-		if (AppPrefrence.getIsFirstLaunch(this)) {
-			AppPrefrence.saveIsFirstLaunch(this, false);
-			addShortcut();
-		}
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        // 首次启动添加快捷方式
+        if (AppPrefrence.getIsFirstLaunch(this)) {
+            AppPrefrence.saveIsFirstLaunch(this, false);
+            addShortcut();
+        }
 
-		// 异步加载耗时操作
-		// TODO
-	}
+        // 异步加载耗时操作
+        // TODO
+    }
 
-	private void launchMainActivity() {
-		if (!mMainHasLaunch) {
-			mMainHasLaunch = true;
-			Intent intent = new Intent();
-			intent.setClass(this, MainActivity.class);
-			startActivity(intent);
-			finish();
-		}
-	}
+    private void launchMainActivity() {
+        if (!mMainHasLaunch) {
+            mMainHasLaunch = true;
+            Intent intent = new Intent();
+            intent.setClass(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
-	private void addShortcut() {
-		Intent shortCutIntent = new Intent(SHORTCUT_INTENT);
-		String appName = this.getString(R.string.app_name);
-		shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, appName);
-		// 不用重复创建
-		shortCutIntent.putExtra("duplicate", false);
-		Intent localIntent = new Intent(Intent.ACTION_MAIN, null);
-		localIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		localIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		String packageName = this.getPackageName();
-		String className = packageName + "." + this.getLocalClassName();
-		ComponentName localComponentName = new ComponentName(packageName, className);
-		localIntent.setComponent(localComponentName);
-		shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, localIntent);
-		Intent.ShortcutIconResource localShortcutIconResource = Intent.ShortcutIconResource
-				.fromContext(this, R.drawable.ic_launcher);
-		shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, localShortcutIconResource);
+    private void addShortcut() {
+        Intent shortCutIntent = new Intent(SHORTCUT_INTENT);
+        String appName = this.getString(R.string.app_name);
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, appName);
+        // 不用重复创建
+        shortCutIntent.putExtra("duplicate", false);
+        Intent localIntent = new Intent(Intent.ACTION_MAIN, null);
+        localIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        localIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        String packageName = this.getPackageName();
+        String className = packageName + "." + this.getLocalClassName();
+        ComponentName localComponentName = new ComponentName(packageName, className);
+        localIntent.setComponent(localComponentName);
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, localIntent);
+        Intent.ShortcutIconResource localShortcutIconResource = Intent.ShortcutIconResource
+                .fromContext(this, R.drawable.ic_launcher);
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, localShortcutIconResource);
 
-		this.sendBroadcast(shortCutIntent);
-	}
+        this.sendBroadcast(shortCutIntent);
+    }
 
-	@Override
-	public String getPageName() {
-		return "闪屏界面";
-	}
+    @Override
+    public String getPageName() {
+        return "闪屏界面";
+    }
 }

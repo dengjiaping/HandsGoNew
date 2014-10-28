@@ -16,13 +16,13 @@ import com.soyomaker.handsgo.model.ChessManual;
  */
 public interface IChessManualReader extends Serializable {
 
-	/**
-	 * 读取指定页的棋谱
-	 * 
-	 * @param context
-	 * @param page
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<ChessManual> readChessManuals(Context context, int page) throws IOException;
+    /**
+     * 读取指定页的棋谱
+     * 
+     * @param context
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    public ArrayList<ChessManual> readChessManuals(Context context, int page) throws IOException;
 }

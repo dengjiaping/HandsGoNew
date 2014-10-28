@@ -7,7 +7,7 @@ package com.soyomaker.handsgo.network;
  */
 public interface ICancelable {
 
-	boolean cancel(boolean mayInterruptIfRunning);
+    boolean cancel(boolean mayInterruptIfRunning);
 
-	boolean isCancelled();
+    boolean isCancelled();
 }
