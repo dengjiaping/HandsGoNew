@@ -114,6 +114,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.soyomaker.handsgo.ui.GameHallActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.soyomaker.handsgo.ui.KeywordsSearchActivity"
             android:screenOrientation="portrait" >
         </activity>

@@ -1,33 +1,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_local"
+        android:id="@+id/action_game_hall"
         android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_game_hall"/>
+    <item
+        android:id="@+id/action_local"
+        android:orderInCategory="101"
         android:showAsAction="always"
         android:title="@string/action_local"/>
     <item
         android:id="@+id/action_search"
-        android:orderInCategory="101"
-        android:showAsAction="always"
+        android:orderInCategory="102"
+        android:showAsAction="ifRoom"
         android:title="@string/action_search"/>
     <item
         android:id="@+id/action_collect"
-        android:orderInCategory="102"
+        android:orderInCategory="103"
         android:showAsAction="ifRoom"
         android:title="@string/action_collect"/>
     <item
         android:id="@+id/action_history"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         android:showAsAction="ifRoom"
         android:title="@string/action_history"/>
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="104"
+        android:orderInCategory="105"
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_feedback"
-        android:orderInCategory="105"
+        android:orderInCategory="106"
         android:showAsAction="ifRoom"
         android:title="@string/action_feedback"/>
 

@@ -4,8 +4,8 @@
     <!-- 应用新型 -->
     <string name="app_name">掌中围棋</string>
     <string name="app_info">做最好用的掌中围棋软件!</string>
-    <string name="app_version">3.1</string>
-    <string name="v_app_version">V 3.1</string>
+    <string name="app_version">3.2</string>
+    <string name="v_app_version">V 3.2</string>
     <string name="qq_group">棋友交流QQ群：278743263</string>
     <string name="qq">开发者QQ：397093109</string>
 
@@ -17,6 +17,7 @@
     <string name="btn_reset">重置</string>
 
     <!-- 菜单 -->
+    <string name="action_game_hall">游戏大厅</string>
     <string name="action_collect">我的收藏</string>
     <string name="action_local">本地棋谱</string>
     <string name="action_search">搜索棋谱</string>
@@ -45,6 +46,7 @@
     <string name="title_settings">应用设置</string>
     <string name="title_local_fight">单机对弈</string>
     <string name="title_about">关于软件</string>
+    <string name="title_game_hall">游戏大厅</string>
     <string name="title_local">本地棋谱</string>
     <string name="title_laboratory">实验室</string>
     <string name="title_login">登录账号</string>
