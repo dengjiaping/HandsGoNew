@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.igexin.sdk.PushManager;
 import com.sina.sae.cloudservice.api.CloudClient;
 import com.soyomaker.handsgo.R;
 import com.soyomaker.handsgo.manager.ChessManualServerManager;
@@ -64,6 +65,8 @@ public class MainActivity extends BaseFragmentActivity implements ActionBar.TabL
 				}
 			}.start();
 		}
+
+		PushManager.getInstance().initialize(this.getApplicationContext());
 	}
 
 	public void onDestory() {
